@@ -1,0 +1,175 @@
+import { useForm } from '@tanstack/react-form'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { Mail } from 'lucide-react'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { useI18n } from '@/i18n/context'
+import { authClient } from '../../../lib/auth-client'
+import { AuthShell, Divider, GoogleIcon } from './-shared'
+
+export const Route = createFileRoute('/_auth/signup')({
+  validateSearch: (search: Record<string, unknown>): { callbackURL?: string } => {
+    return {
+      callbackURL: search.callbackURL as string | undefined,
+    }
+  },
+  component: SignupPage,
+})
+
+function SignupPage() {
+  const { t } = useI18n()
+  const l = t.auth.signup
+  const { callbackURL } = Route.useSearch()
+  const [isSignedUp, setIsSignedUp] = useState(false)
+
+  const schema = z.object({
+    name: z.string().min(2, l.nameMin),
+    email: z.string().email(l.emailInvalid),
+    password: z.string().min(12, 'Password must be at least 12 characters'),
+  })
+
+  const form = useForm({
+    defaultValues: { name: '', email: '', password: '' },
+    validators: { onSubmit: schema },
+    onSubmit: async ({ value }) => {
+      const { error } = await authClient.signUp.email({
+        name: value.name,
+        email: value.email,
+        password: value.password,
+        callbackURL: '/login', // Go to login after verification to avoid flashing
+      })
+      if (error) {
+        toast.error(error.message ?? l.error)
+        return
+      }
+
+      setIsSignedUp(true)
+    },
+  })
+
+  if (isSignedUp) {
+    return (
+      <AuthShell badge={l.badge} heading={l.heading} subheading={l.subheading}>
+        <div className="flex flex-col gap-6 text-center py-4">
+          <div className="h-16 w-16 rounded-full bg-teal-500/10 flex items-center justify-center mx-auto">
+            <Mail className="h-8 w-8 text-teal-600" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              Verify your email
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              We've sent a verification link to your email. Please check your inbox and click the
+              link to activate your account.
+            </p>
+          </div>
+          <Button variant="outline" className="w-full mt-4" onClick={() => setIsSignedUp(false)}>
+            Back to sign up
+          </Button>
+        </div>
+      </AuthShell>
+    )
+  }
+
+  const fields = [
+    {
+      name: 'name' as const,
+      label: l.name,
+      type: 'text',
+      placeholder: l.namePlaceholder,
+      autoComplete: 'name',
+    },
+    {
+      name: 'email' as const,
+      label: l.email,
+      type: 'email',
+      placeholder: l.emailPlaceholder,
+      autoComplete: 'email',
+    },
+    {
+      name: 'password' as const,
+      label: l.password,
+      type: 'password',
+      placeholder: l.passwordPlaceholder,
+      autoComplete: 'new-password',
+    },
+  ]
+
+  return (
+    <AuthShell badge={l.badge} heading={l.heading} subheading={l.subheading}>
+      <div className="flex flex-col gap-6">
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{l.title}</h2>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{l.subtitle}</p>
+        </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            form.handleSubmit()
+          }}
+          className="flex flex-col gap-4"
+        >
+          {fields.map((f) => (
+            <form.Field key={f.name} name={f.name}>
+              {(field) => (
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor={field.name}>{f.label}</Label>
+                  <Input
+                    id={field.name}
+                    type={f.type}
+                    autoComplete={f.autoComplete}
+                    placeholder={f.placeholder}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  {field.state.meta.isTouched && field.state.meta.errors[0] && (
+                    <p className="text-xs text-red-500">{String(field.state.meta.errors[0])}</p>
+                  )}
+                </div>
+              )}
+            </form.Field>
+          ))}
+
+          <form.Subscribe selector={(s) => s.isSubmitting}>
+            {(isSubmitting) => (
+              <Button type="submit" disabled={isSubmitting} className="mt-1 h-10 w-full">
+                {isSubmitting ? l.submitting : l.submit}
+              </Button>
+            )}
+          </form.Subscribe>
+        </form>
+
+        <Divider />
+
+        <Button
+          type="button"
+          variant="outline"
+          className="h-10 w-full gap-2"
+          onClick={() =>
+            authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' })
+          }
+        >
+          <GoogleIcon />
+          {l.google}
+        </Button>
+
+        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+          {l.hasAccount}{' '}
+          <Link
+            to="/login"
+            search={{ callbackURL }}
+            className="font-semibold text-teal-600 dark:text-teal-400 hover:opacity-80"
+          >
+            {l.signInLink}
+          </Link>
+        </p>
+      </div>
+    </AuthShell>
+  )
+}

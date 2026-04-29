@@ -1,0 +1,101 @@
+import { Buildings, Gear, Image as PhosphorImage, SquaresFour, Users } from '@phosphor-icons/react'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from '@/components/ui/sidebar'
+import { useI18n } from '@/i18n/context'
+import { NavMain } from './nav-main'
+import { NavUser } from './nav-user'
+import { OrgSwitcher } from './org-switcher'
+
+interface Org {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  role: string
+}
+
+interface AppSidebarProps {
+  orgs: Org[]
+  currentSlug?: string
+  currentOrg?: { id: string; name: string; slug: string } | null
+}
+
+export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
+  const { t, dir } = useI18n()
+  const slug = currentSlug ?? orgs[0]?.slug ?? ''
+
+  const currentOrg = orgs?.find((o) => o.slug === slug)
+  const userRole = currentOrg?.role
+
+  // Group 1: Workspace Core items (Always visible)
+  const platformItems = slug
+    ? [
+        {
+          title: t.sidebar.dashboard,
+          to: `/organizations/${slug}/dashboard`,
+          icon: SquaresFour,
+        },
+        {
+          title: t.sidebar.gallery,
+          to: `/organizations/${slug}/gallery`,
+          icon: PhosphorImage,
+        },
+      ]
+    : []
+
+  // Group 2: Management / Administration (Only for Owner & Admin per matrix)
+  const adminItems =
+    slug && userRole !== 'member'
+      ? [
+          {
+            title: t.sidebar.team,
+            to: `/organizations/${slug}/members`,
+            icon: Users,
+          },
+          {
+            title: t.sidebar.workspaceSettings,
+            to: `/organizations/${slug}/settings`,
+            icon: Gear,
+          },
+        ]
+      : []
+
+  // Group 3: Account / Personal (Flat as requested)
+  const accountItems = [
+    {
+      title: t.sidebar.accountSettings,
+      to: '/settings',
+      icon: Gear,
+    },
+  ]
+
+  return (
+    <Sidebar collapsible="icon" side={dir === 'rtl' ? 'right' : 'left'}>
+      <SidebarHeader className="gap-4 group-data-[collapsible=icon]:p-2 p-4 pb-2">
+        <OrgSwitcher orgs={orgs} currentSlug={slug} />
+      </SidebarHeader>
+      <SidebarContent>
+        {/* Workspace Operations & Personal Account (Merged for consistent spacing) */}
+        <NavMain items={[...platformItems, ...accountItems]} label="GENERAL" />
+
+        {/* Administration & Global Organizations */}
+        <NavMain
+          items={[
+            ...adminItems,
+            { title: t.sidebar.workspaces, to: '/organizations', icon: Buildings },
+          ]}
+          label={t.sidebar.administration.toUpperCase()}
+        />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  )
+}
