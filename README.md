@@ -1,4 +1,4 @@
-# LaunchKit-Better 🚀 — SaaS Multi-tenancy Boilerplate
+# RefactKit 🚀 — SaaS Multi-tenancy Boilerplate
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
@@ -37,7 +37,7 @@
 
 <a id="introduction"></a>
 ## 🌟 Introduction
-**LaunchKit-Better** is a high-performance SaaS foundation designed for developers building multi-tenant applications (B2B, B2C, or internal tools). It provides a full-featured workspace environment with advanced permission management, localized interfaces, and a premium developer experience.
+**RefactKit** is a high-performance SaaS foundation designed for developers building multi-tenant applications (B2B, B2C, or internal tools). It provides a full-featured workspace environment with advanced permission management, localized interfaces, and a premium developer experience.
 
 ### Core Philosophy
 - **Multi-tenancy First**: Every piece of data is isolated within an organization context.
@@ -62,6 +62,7 @@
 | **State Management**| <img src="https://tanstack.com/favicons/favicon-32x32.png" width="20" /> **TanStack Query** | Robust data fetching and server-state sync. |
 | **Emails** | <img src="https://resend.com/static/favicon.ico" width="20" /> **Resend** | Transactional emails with modern API. |
 | **Quality** | <img src="https://biomejs.dev/favicon.ico" width="20" /> **Biome** | Ultra-fast Rust-based toolchain. |
+| **Magic UI** | <img src="https://magicui.design/favicon.ico" width="20" /> **Magic UI** | Beautiful animated components (Marquee, etc.). |
 | **Testing** | <img src="https://vitest.dev/favicon.ico" width="20" /> **Vitest & Playwright**| Unit & E2E testing for mission-critical apps. |
 
 ### ⚠️ Dependency Update Warnings (Must Read)
@@ -107,6 +108,7 @@ This project is built on **Nitro v3**, the most advanced web server engine for t
     - `$slug/`: Context-aware organization workspace.
 - **`src/i18n/`**: Full internationalization with Arabic (RTL), French, Spanish, and Portuguese support.
 - **`src/hooks/`**: Custom hooks for theme and font management.
+- **`src/components/shared/`**: Unified components (Header, Auth UI) shared across the platform.
 
 ---
 
@@ -265,11 +267,12 @@ Because authentication and organization state are tightly coupled through Better
 <a id="roles"></a>
 ## 👥 Roles & Permissions (RBAC)
 
-LaunchKit uses a granular permission matrix powered by the Better Auth Organization plugin.
+RefactKit uses a granular permission matrix powered by the Better Auth Organization plugin.
 
 | Capability | Member | Admin | Owner |
 |---|---|---|---|
 | View Dashboard | ✅ | ✅ | ✅ |
+| Create New Organizations | ❌ | ✅ | ✅ |
 | Access Team Management | ❌ | ✅ | ✅ |
 | Invite New People | ❌ | ✅ (Up to Admin) | ✅ (Full) |
 | Manage Member Roles | ❌ | ✅ (non-owners) | ✅ |
@@ -461,7 +464,7 @@ pnpm dev              # Launch dev server on port 3000
 
 ## 🤖 AI-Assisted Development (Using Skills)
 
-LaunchKit-Better is built with AI coding assistants in mind (Antigravity/Gemini, Windsurf, Claude, Cursor, etc.). The repository includes specialized "Skills" in the `.agents/skills/` directory that teach the AI exactly how to write code for this specific stack.
+RefactKit is built with AI coding assistants in mind (Antigravity/Gemini, Windsurf, Claude, Cursor, etc.). The repository includes specialized "Skills" in the `.agents/skills/` directory that teach the AI exactly how to write code for this specific stack.
 
 ### How to use Skills with your AI
 When asking your AI assistant to build a feature, explicitly `@mention` the relevant skill file or ask the AI to read it before coding.
@@ -488,7 +491,7 @@ pnpm dlx skills add better-auth # Authentication & Organizations
 
 <a id="fr-introduction"></a>
 ## 🌟 Introduction
-**LaunchKit-Better** est une fondation SaaS haute performance conçue pour les développeurs créant des applications multi-tenant (B2B, B2C ou outils internes). Il offre un environnement de travail complet avec gestion avancée des rôles, interfaces localisées et une expérience développeur premium.
+**RefactKit** est une fondation SaaS haute performance conçue pour les développeurs créant des applications multi-tenant (B2B, B2C ou outils internes). Il offre un environnement de travail complet avec gestion avancée des rôles, interfaces localisées et une expérience développeur premium.
 
 ### Philosophie Coeur
 - **Multi-tenancy Natif** : Chaque donnée est isolée dans le contexte d'une organisation.
@@ -562,11 +565,12 @@ LaunchKit s'appuie sur **Better Auth** pour une authentification robuste et mode
 <a id="fr-roles"></a>
 ## 👥 Matrice des Permissions (RBAC)
 
-LaunchKit utilise une matrice de permissions granulaire via le plugin Organization de Better Auth.
+RefactKit utilise une matrice de permissions granulaire via le plugin Organization de Better Auth.
 
 | Capacité | Membre | Admin | Propriétaire |
 |---|---|---|---|
 | Voir le Dashboard | ✅ | ✅ | ✅ |
+| Créer des Organisations | ❌ | ✅ | ✅ |
 | Accéder à l'Équipe | ❌ | ✅ | ✅ |
 | Inviter des Membres | ❌ | ✅ (Admin max) | ✅ (Tous) |
 | Gérer les Rôles | ❌ | ✅ (Sauf Owner) | ✅ |

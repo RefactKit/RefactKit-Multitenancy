@@ -1,9 +1,9 @@
 # AGENTS.md 🤖
 
-This file provides context and instructions for AI coding agents working on the **LaunchKit-Better** project.
+This file provides context and instructions for AI coding agents working on the **RefactKit** project.
 
 ## 🌟 Project Overview
-LaunchKit-Better is a high-performance SaaS boilerplate built with **TanStack Start** and **React 19**. It is designed for multi-tenant applications with a focus on type-safety, accessibility (Base UI), and universal deployment (Nitro v3).
+**RefactKit** is a high-performance SaaS boilerplate built with **TanStack Start** and **React 19**. It is designed for multi-tenant applications with a focus on type-safety, accessibility (Base UI), and universal deployment (Nitro v3).
 
 ## 🛠️ Setup & Commands
 - **Install dependencies**: `pnpm install`
