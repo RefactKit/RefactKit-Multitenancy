@@ -71,6 +71,23 @@ export const auth = betterAuth({
         html: `<p>Click the link below to reset your password:</p><a href="${url}">Reset Password</a>`,
       })
     },
+    // Called when someone tries to sign up with an already-registered email.
+    // Because requireEmailVerification: true enables anti-enumeration mode,
+    // the API always returns 200 OK — so we notify the real account owner instead.
+    onExistingUserSignUp: async ({ user }) => {
+      const loginUrl = `${getBaseURL()}/login`
+      sendEmail({
+        to: user.email,
+        subject: 'Sign-in attempt on your account',
+        html: `
+          <p>Hi ${user.name || 'there'},</p>
+          <p>Someone tried to create a new account using your email address <strong>${user.email}</strong>.</p>
+          <p>If this was you and you've forgotten your password, you can reset it from the login page:</p>
+          <p><a href="${loginUrl}">Go to login</a></p>
+          <p>If this wasn't you, you can safely ignore this email — your account is secure.</p>
+        `,
+      })
+    },
   },
 
   advanced: {

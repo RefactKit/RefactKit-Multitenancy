@@ -42,11 +42,21 @@ function SignupPage() {
         password: value.password,
         callbackURL: '/login', // Go to login after verification to avoid flashing
       })
+
       if (error) {
-        toast.error(error.message ?? l.error)
+        // Only surface genuine technical errors (network failures, validation, etc.)
+        // Per the security skill: never reveal whether an email is registered.
+        // Better Auth with requireEmailVerification already uses anti-enumeration
+        // mode — USER_ALREADY_EXISTS triggers onExistingUserSignUp on the server
+        // (notifies the real account owner) but returns 200 OK to this client.
+        // Any unexpected error code still gets a generic message.
+        toast.error(l.error)
         return
       }
 
+      // In all success cases — new signup or duplicate email — show the same
+      // "check your inbox" screen. The real owner is notified via onExistingUserSignUp.
+      // This is the correct OWASP-compliant account-enumeration-safe UX pattern.
       setIsSignedUp(true)
     },
   })
