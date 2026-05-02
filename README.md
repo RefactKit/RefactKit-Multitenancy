@@ -1,22 +1,27 @@
 # RefactKit 🚀 — Multi-Tenant SaaS Boilerplate
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![React](https://img.shields.io/badge/React-19-blue?logo=react)
-![Framework](https://img.shields.io/badge/TanStack-Start-orange)
-![Engine](https://img.shields.io/badge/Nitro-v3-green)
-![Auth](https://img.shields.io/badge/Better--Auth-1.6+-purple)
-![DB](https://img.shields.io/badge/Drizzle-ORM-yellow)
-![Deploy](https://img.shields.io/badge/Vercel-Ready-black?logo=vercel)
+![Edition](https://img.shields.io/badge/edition-Community-10b981?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+![React](https://img.shields.io/badge/React-19-blue?logo=react&style=flat-square)
+![Framework](https://img.shields.io/badge/TanStack-Start-orange?style=flat-square)
+![Engine](https://img.shields.io/badge/Nitro-v3-green?style=flat-square)
+![Auth](https://img.shields.io/badge/Better--Auth-1.6+-purple?style=flat-square)
+![DB](https://img.shields.io/badge/Drizzle-ORM-yellow?style=flat-square)
+![Deploy](https://img.shields.io/badge/Vercel-Ready-black?logo=vercel&style=flat-square)
 
 > **RefactKit** is a production-ready, high-performance SaaS foundation for building multi-tenant applications. It ships with authentication, organizations, RBAC, internationalization, and a premium design system — all wired together with end-to-end type safety.
+
+> [!NOTE]
+> **RefactKit Community Edition** — free and open-source under the MIT license. Build with it, learn from it, share what you create. Contributions, bug reports, and showcases are warmly welcome. 🙌
 
 ---
 
 **Table of Contents**
 
 - [🌟 Introduction](#-introduction)
-- [🏗️ Architecture](#️-architecture)
+- [🚀 Quick Start](#-quick-start)
 - [🛠️ Tech Stack](#️-tech-stack)
+- [🏗️ Architecture](#️-architecture)
 - [🔒 Authentication & Security](#-authentication--security)
 - [👥 Roles & RBAC](#-roles--rbac)
 - [💻 Frontend Architecture](#-frontend-architecture)
@@ -25,8 +30,9 @@
 - [🌐 Internationalization](#-internationalization)
 - [📝 Forms & Design System](#-forms--design-system)
 - [🧪 DevOps, Observability & Testing](#-devops-observability--testing)
-- [🚀 Quick Start](#-quick-start)
+- [💳 Payments & Billing (Pro)](#-payments--billing-pro)
 - [🤖 AI-Assisted Development](#-ai-assisted-development)
+- [📄 License](#-license)
 
 ---
 
@@ -1056,6 +1062,70 @@ pnpm dlx skills add better-auth  # Authentication & Organizations
 
 ---
 
+## 💳 Payments & Billing (Pro)
+
+> [!NOTE]
+> Payment and billing features are **not included in the Community Edition**. They are reserved for **RefactKit Pro**, currently in development.
+
+RefactKit Pro will ship with a complete, production-ready billing system built around two providers:
+
+### Stripe — Subscriptions & One-Time Payments
+
+| Feature | Details |
+|---|---|
+| Checkout | Stripe Checkout (hosted) + Elements (custom UI) |
+| Pricing models | Flat-rate, per-seat (synced with org `membershipLimit`), metered usage, one-off payments |
+| Subscription lifecycle | `trial → active → past_due → cancelled → expired` with automatic status sync via webhooks |
+| Webhook handler | `/api/billing/webhook` — signature verification, event routing, DB sync |
+| Customer portal | Self-service billing: manage plans, payment methods, download invoices |
+| Test/Live mode | Single `STRIPE_SECRET_KEY` env swap — no code changes needed |
+
+### Polar — Open-Source Friendly Monetization
+
+| Feature | Details |
+|---|---|
+| Subscriptions | Usage-based and flat-rate plans |
+| One-time purchases | Lifetime licenses, add-ons |
+| Open-source integration | Designed for developer tools and open-core products |
+| Benefits | Grant GitHub repo access, Discord roles, or file downloads on purchase |
+
+### What Billing Unlocks in Pro
+
+```
+Community (this repo)          Pro (coming soon)
+──────────────────────         ──────────────────
+✅ Auth & Organizations         ✅ Everything in Community
+✅ RBAC                         ✅ Stripe Subscriptions & Webhooks
+✅ Multi-tenancy                ✅ Polar Integration
+✅ i18n (5 languages)           ✅ Admin Dashboard
+✅ Storage uploads              ✅ Super-admin Impersonation
+✅ Gallery module               ✅ Per-seat Billing
+                                ✅ Customer Portal
+                                ✅ Priority Support
+```
+
+> [!TIP]
+> Want to be notified when RefactKit Pro launches? Star the repo and watch for releases.
+
+---
+
 ## 📄 License
 
-MIT — see [LICENSE](LICENSE) for details.
+RefactKit is released under the **MIT License** — free to use, modify, and distribute, for any purpose, including commercial projects.
+
+See [LICENSE](LICENSE) for the full text.
+
+---
+
+### 🤝 Contributing
+
+This project is community-driven and every contribution matters — whether it's a bug fix, a new feature, a translation, or simply spreading the word.
+
+- **Found a bug?** [Open an issue](https://github.com/your-org/refactkit-multitenancy/issues)
+- **Have an idea?** [Start a discussion](https://github.com/your-org/refactkit-multitenancy/discussions)
+- **Want to contribute code?** Fork the repo, create a branch, and open a pull request. Make sure `pnpm format` and `pnpm lint` pass before submitting.
+- **Built something with RefactKit?** Share it in the [Discussions → Show & Tell](https://github.com/your-org/refactkit-multitenancy/discussions) section — we'd love to see what you build. 🚀
+
+> [!TIP]
+> If RefactKit saves you time, the best way to give back is to ⭐ **star the repo** — it helps other developers discover the project and grows the community.
+
