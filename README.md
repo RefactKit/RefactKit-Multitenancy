@@ -69,40 +69,138 @@ cd refactkit-multitenancy
 pnpm install
 ```
 
-### 2. Environment Variables
+### 2. Environment Variables — Where to Get Each Value
 
-Copy `.env.example` to `.env` and fill in:
+Copy `.env.example` to `.env.local`, then follow the steps below to retrieve each variable.
+
+---
+
+#### 🗄️ Supabase — `DATABASE_URL`, `VITE_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
+
+1. Create a free project at **[supabase.com](https://supabase.com)** → **New Project**
+2. Once created, go to **Project Settings → Database**
+3. Scroll to **Connection string** → select **URI** tab → copy the **Transaction pooler** string (port `6543`) → this is your `DATABASE_URL`
 
 ```env
+# ✅ Use port 6543 (Transaction pooler) — required for serverless/Vercel
 DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres"
-BETTER_AUTH_SECRET="your-32-char-secret"
-BETTER_AUTH_URL="http://localhost:3000"
-RESEND_API_KEY="re_..."
-VITE_SUPABASE_URL="https://xxx.supabase.co"
-SUPABASE_SERVICE_ROLE_KEY="eyJ..."
 ```
+
+4. Go to **Project Settings → API**
+   - Copy **Project URL** → `VITE_SUPABASE_URL`
+   - Copy **`service_role` secret key** → `SUPABASE_SERVICE_ROLE_KEY`
+
+```env
+VITE_SUPABASE_URL="https://xxxxxxxxxxxx.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+> [!CAUTION]
+> `SUPABASE_SERVICE_ROLE_KEY` bypasses Row Level Security. **Never expose it client-side.** Keep it server-only and never prefix it with `VITE_`.
+
+📖 Supabase docs: [Database connection strings](https://supabase.com/docs/guides/database/connecting-to-postgres) · [API keys](https://supabase.com/docs/guides/api/api-keys)
+
+---
+
+#### 📧 Resend — `RESEND_API_KEY`, `EMAIL_FROM`
+
+1. Create a free account at **[resend.com](https://resend.com)**
+2. Go to **API Keys** → **Create API Key** → copy the key
+
+```env
+RESEND_API_KEY="re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+EMAIL_FROM="RefactKit <noreply@yourdomain.com>"
+```
+
+3. Verify your sending domain under **Domains** → add the provided DNS records (SPF, DKIM) to your DNS provider.
+
+> [!NOTE]
+> During development you can use Resend's sandbox — no domain verification required. For production, a verified domain is mandatory to avoid emails landing in spam.
+
+📖 Resend docs: [Getting started](https://resend.com/docs/introduction) · [Domains](https://resend.com/docs/dashboard/domains/introduction)
+
+---
+
+#### 🔐 Better Auth — `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`
+
+Generate a strong secret with:
+
+```bash
+openssl rand -base64 32
+```
+
+```env
+BETTER_AUTH_SECRET="paste-the-output-here"
+BETTER_AUTH_URL="http://localhost:3000"        # In production: https://yourdomain.com
+```
+
+> [!WARNING]
+> Rotating `BETTER_AUTH_SECRET` in production invalidates **all existing sessions**. Plan any secret rotation accordingly.
+
+##### 🧭 Better Auth Dashboard (Optional)
+
+RefactKit ships with the `dash()` plugin from `@better-auth/infra`, which exposes a built-in admin panel to monitor users, sessions, and organizations.
+
+| Mode | How to access | Use case |
+|---|---|---|
+| **Local dev** | `http://localhost:3000/api/auth/dashboard` | Inspect sessions during development |
+| **Self-hosted** (Infra) | Deploy `@better-auth/infra` on your own server | Full control, no third-party |
+| **Better Auth Cloud** | [better-auth.com](https://better-auth.com) | Managed dashboard, no setup needed |
+
+```env
+# Required to access the /api/auth/dashboard panel
+BETTER_AUTH_API_KEY="ba_xxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+📖 Better Auth docs: [Dashboard plugin](https://better-auth.com/docs/plugins/admin) · [better-auth/infra](https://github.com/better-auth/infra)
+
+---
+
+#### Full `.env` Reference
+
+| Variable | Required | Where to find it |
+|---|:---:|---|
+| `DATABASE_URL` | ✅ | Supabase → Project Settings → Database → Transaction pooler URI (port 6543) |
+| `BETTER_AUTH_SECRET` | ✅ | Generate with `openssl rand -base64 32` |
+| `BETTER_AUTH_URL` | ✅ | Your app's public URL (`http://localhost:3000` in dev) |
+| `RESEND_API_KEY` | ✅ | Resend → API Keys |
+| `EMAIL_FROM` | ✅ | Your verified sender address (e.g. `App <noreply@yourdomain.com>`) |
+| `VITE_SUPABASE_URL` | ✅ | Supabase → Project Settings → API → Project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase → Project Settings → API → `service_role` key |
+| `BETTER_AUTH_API_KEY` | ⚪ Optional | Better Auth dashboard → API Keys (only needed for admin panel) |
+| `VITE_APP_URL` | ⚪ Optional | Override base URL for the auth client (defaults to relative) |
+
+---
 
 ### 3. Database Setup
 
 ```bash
-# Push schema to Supabase
+# Push schema to Supabase (run after every schema change)
 npx drizzle-kit push
 
-# (Optional) Open visual database browser
+# (Optional) Open visual database browser at https://local.drizzle.studio
 npx drizzle-kit studio
 ```
 
+📖 Drizzle docs: [drizzle-kit push](https://orm.drizzle.team/docs/drizzle-kit-push) · [Supabase + Drizzle guide](https://supabase.com/docs/guides/database/drizzle)
+
 ### 4. Supabase Storage
 
-Run in the Supabase SQL Editor:
+In your **Supabase Dashboard → SQL Editor**, run:
+
 ```sql
+-- Create the avatars bucket (public read)
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('avatars', 'avatars', true)
 ON CONFLICT (id) DO NOTHING;
 
+-- Allow public read access for avatar images
 CREATE POLICY "Public Access" ON storage.objects
 FOR SELECT USING (bucket_id = 'avatars');
 ```
+
+> [!TIP]
+> You can also create the bucket visually in **Supabase Dashboard → Storage → New bucket**. Set it to **Public** and add the same SELECT policy.
 
 ### 5. Launch
 
