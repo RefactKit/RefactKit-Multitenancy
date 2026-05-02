@@ -135,9 +135,9 @@ pnpm dev    # → http://localhost:3000
 - **Client State**: TanStack Query  
 
 ### UI Components
-- **Base Primitives**: Base UI (Google)  
-- **Icon System**: Heroicons +lucide-react  
-- **Design Tokens**: CSS variables via `@theme`  
+- **Base Primitives**: shadcn/ui built on Base UI — preset-based theming, fully customizable
+- **Icon System**: Phosphor Icons + Lucide React
+- **Design Tokens**: CSS variables via `@theme` (Tailwind CSS v4)
 
 ### Routing & Navigation
 - **Type-Safe Router**: TanStack Router  
@@ -329,10 +329,10 @@ RefactKit-multitenancy/
 | **Database** | Supabase (PostgreSQL) | — | Managed PostgreSQL with connection pooling (port 6543), Row Level Security, and dashboard for visual data management. |
 | **Storage** | Supabase Storage | — | S3-compatible object storage for avatars, logos, gallery images. Server-only uploads via service role key. |
 | **Styling** | Tailwind CSS | v4 | Utility-first CSS with CSS variables, `@theme` directives, and ultra-fast Vite plugin compilation. |
-| **UI Primitives** | Base UI + Shadcn | 1.4+ / 4.5+ | Accessible component primitives (WAI-ARIA). Shadcn CLI for component scaffolding with Base UI backend. |
+| **UI Primitives** | shadcn/ui (Base UI) | 4.5+ | Accessible WAI-ARIA components built on Base UI primitives. Preset-based theming — generate and apply any theme with `npx shadcn apply --preset`. Tailwind CSS v4 powered. |
 | **Emails** | Resend | — | Transactional email API for verification, password reset, invitations, and security alerts. |
 | **i18n** | Custom (i18next-based) | — | 5 languages (EN, FR, ES, PT, AR). RTL support. Cookie-based locale persistence. Server-side locale detection. |
-| **Icons** | Lucide React | 0.545+ | Consistent, tree-shakeable icon set. |
+| **Icons** | Phosphor Icons + Lucide React | latest | Dual icon system — Phosphor for expressive, multi-weight icons; Lucide for crisp, consistent UI icons. Both tree-shakeable. |
 | **Animations** | Framer Motion | 12.x | Smooth page transitions and micro-interactions. |
 | **Validation** | Zod | 4.x | Runtime type validation for server functions, form inputs, and search params. |
 | **Code Quality** | Biome | 2.4+ | Rust-based linter + formatter. Replaces ESLint + Prettier with 10x speed. |
@@ -1129,3 +1129,13 @@ This project is community-driven and every contribution matters — whether it's
 > [!TIP]
 > If RefactKit saves you time, the best way to give back is to ⭐ **star the repo** — it helps other developers discover the project and grows the community.
 
+---
+
+<div align="center">
+
+Built with care by **[@devh2t](https://github.com/devh2t)** — a Software Builder who believes great tooling should be accessible to everyone.
+
+*Made with ❤️ for indie developers, makers, and founders shipping their next big thing.*
+
+
+</div>
