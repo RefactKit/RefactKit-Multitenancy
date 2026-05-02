@@ -46,6 +46,102 @@
 
 ---
 
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** 20+
+- **pnpm** (recommended) — `npm install -g pnpm`
+- **Supabase** account with a PostgreSQL project
+- **Resend** account for transactional emails
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/your-org/refactkit-multitenancy.git
+cd refactkit-multitenancy
+pnpm install
+```
+
+### 2. Environment Variables
+
+Copy `.env.example` to `.env` and fill in:
+
+```env
+DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres"
+BETTER_AUTH_SECRET="your-32-char-secret"
+BETTER_AUTH_URL="http://localhost:3000"
+RESEND_API_KEY="re_..."
+VITE_SUPABASE_URL="https://xxx.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="eyJ..."
+```
+
+### 3. Database Setup
+
+```bash
+# Push schema to Supabase
+npx drizzle-kit push
+
+# (Optional) Open visual database browser
+npx drizzle-kit studio
+```
+
+### 4. Supabase Storage
+
+Run in the Supabase SQL Editor:
+```sql
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('avatars', 'avatars', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Public Access" ON storage.objects
+FOR SELECT USING (bucket_id = 'avatars');
+```
+
+### 5. Launch
+
+```bash
+pnpm dev    # → http://localhost:3000
+```
+
+---
+## 🛠️ Tech Stack
+
+### Core Framework
+- **Runtime**: Node.js 22+  
+- **Build/Server**: Nitro v3  
+- **UI Framework**: React 19  
+- **Type System**: TypeScript 5.x  
+
+### Authentication
+- **Identity Provider**: Better Auth (self-hosted)  
+- **Database Adapter**: Supabase PostgreSQL  
+- **Session Storage**: Encrypted cookies (JWE)  
+
+### Data Layer
+- **Database**: PostgreSQL (Supabase)  
+- **ORM/Query Builder**: Drizzle ORM  
+- **Storage**: Supabase Storage (S3-compatible)  
+
+### Forms & State Management
+- **Form Builder**: TanStack Form  
+- **Validation**: Zod + Superforms  
+- **Client State**: TanStack Query  
+
+### UI Components
+- **Base Primitives**: Base UI (Google)  
+- **Icon System**: Heroicons +lucide-react  
+- **Design Tokens**: CSS variables via `@theme`  
+
+### Routing & Navigation
+- **Type-Safe Router**: TanStack Router  
+
+### Infrastructure & DevOps
+- **Deployment**: Vercel (primary), Cloudflare, Node.js, AWS  
+- **Package Manager**: pnpm  
+- **Code Quality**: Biome (lint/format)  
+- **Testing**: Vitest (unit), Playwright (E2E)  
+
 ## 🏗️ Architecture
 
 ### High-Level Design (HLD)
@@ -211,7 +307,7 @@ RefactKit-multitenancy/
 
 ---
 
-## 🛠️ Tech Stack
+
 
 | Layer | Technology | Version | Role in Architecture |
 |---|---|---|---|
@@ -917,63 +1013,6 @@ npx drizzle-kit push # Schema synced
 
 ---
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Node.js** 20+
-- **pnpm** (recommended) — `npm install -g pnpm`
-- **Supabase** account with a PostgreSQL project
-- **Resend** account for transactional emails
-
-### 1. Clone & Install
-
-```bash
-git clone https://github.com/your-org/refactkit-multitenancy.git
-cd refactkit-multitenancy
-pnpm install
-```
-
-### 2. Environment Variables
-
-Copy `.env.example` to `.env` and fill in:
-
-```env
-DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres"
-BETTER_AUTH_SECRET="your-32-char-secret"
-BETTER_AUTH_URL="http://localhost:3000"
-RESEND_API_KEY="re_..."
-VITE_SUPABASE_URL="https://xxx.supabase.co"
-SUPABASE_SERVICE_ROLE_KEY="eyJ..."
-```
-
-### 3. Database Setup
-
-```bash
-# Push schema to Supabase
-npx drizzle-kit push
-
-# (Optional) Open visual database browser
-npx drizzle-kit studio
-```
-
-### 4. Supabase Storage
-
-Run in the Supabase SQL Editor:
-```sql
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('avatars', 'avatars', true)
-ON CONFLICT (id) DO NOTHING;
-
-CREATE POLICY "Public Access" ON storage.objects
-FOR SELECT USING (bucket_id = 'avatars');
-```
-
-### 5. Launch
-
-```bash
-pnpm dev    # → http://localhost:3000
-```
 
 ---
 
