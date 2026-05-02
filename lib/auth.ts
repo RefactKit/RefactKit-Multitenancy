@@ -64,6 +64,8 @@ export const auth = betterAuth({
     requireEmailVerification: true,
     revokeSessionsOnPasswordReset: true,
     minPasswordLength: 12,
+    maxPasswordLength: 128, // Prevent DoS via bcrypt long-password attacks
+    resetPasswordTokenExpiresIn: 60 * 30, // 30 min (default is 1 hour)
     sendResetPassword: async ({ user, url }) => {
       sendEmail({
         to: user.email,
@@ -90,6 +92,48 @@ export const auth = betterAuth({
     },
   },
 
+  // OWASP: Brute force protection — persistent DB storage survives Vercel restarts
+  rateLimit: {
+    enabled: true,
+    storage: 'database',
+    customRules: {
+      '/api/auth/sign-in/email': { window: 60, max: 5 },
+      '/api/auth/sign-up/email': { window: 60, max: 3 },
+      '/api/auth/forget-password': { window: 60, max: 3 },
+    },
+  },
+
+  // Session with encrypted cookie cache — reduces DB queries, JWE = encrypted
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // refresh every 24h
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5, // 5 min client-side cache
+      strategy: 'jwe', // AES-256-GCM encrypted — safest for SaaS
+    },
+  },
+
+  // OWASP: Audit logging for sensitive user/session events
+  databaseHooks: {
+    session: {
+      create: {
+        after: async ({ data }) => {
+          console.log(`[AUDIT] New session created for user: ${data.userId}`)
+        },
+      },
+    },
+    user: {
+      update: {
+        after: async ({ data, oldData }) => {
+          if (oldData?.email !== data.email) {
+            console.log(`[AUDIT] Email changed for user ${data.id}: ${oldData?.email} → ${data.email}`)
+          }
+        },
+      },
+    },
+  },
+
   advanced: {
     backgroundTasks: {
       handler: (promise) => {
@@ -99,6 +143,10 @@ export const auth = betterAuth({
           ;(globalThis as any).waitUntil(promise)
         }
       },
+    },
+    // Vercel sits behind a proxy — read real client IP from forwarded header
+    ipAddress: {
+      ipAddressHeaders: ['x-forwarded-for'],
     },
   },
 
@@ -121,6 +169,7 @@ export const auth = betterAuth({
       organizationLimit: 5,
       membershipLimit: 100,
       allowUserToCreateOrganization: false, // Enforced via server-side logic in org-fns.ts
+      invitationExpiresIn: 60 * 60 * 24 * 7, // 7 days (default is 48h — better UX)
 
       ac,
       roles: {

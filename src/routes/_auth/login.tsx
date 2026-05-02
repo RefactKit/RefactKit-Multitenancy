@@ -39,7 +39,8 @@ function LoginPage() {
         password: value.password,
       })
       if (error) {
-        toast.error(error.message ?? l.error)
+        // OWASP: Always use generic message — never reveal if email exists or password is wrong
+        toast.error(l.error)
         return
       }
 

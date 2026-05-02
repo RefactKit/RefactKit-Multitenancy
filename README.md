@@ -1,886 +1,1022 @@
-# RefactKit 🚀 — SaaS Multi-tenancy Boilerplate
+# RefactKit 🚀 — Multi-Tenant SaaS Boilerplate
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
-![Framework](https://img.shields.io/badge/TanStack-Start-orange?logo=tanstack)
-![Engine](https://img.shields.io/badge/Nitro-v3-green?logo=nitro)
-![Auth](https://img.shields.io/badge/Better--Auth-1.6+-purple?logo=better-auth)
+![Framework](https://img.shields.io/badge/TanStack-Start-orange)
+![Engine](https://img.shields.io/badge/Nitro-v3-green)
+![Auth](https://img.shields.io/badge/Better--Auth-1.6+-purple)
+![DB](https://img.shields.io/badge/Drizzle-ORM-yellow)
+![Deploy](https://img.shields.io/badge/Vercel-Ready-black?logo=vercel)
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/tanstack/router/main/media/repo-header.png" width="400px" alt="TanStack Logo" />
-</p>
+> **RefactKit** is a production-ready, high-performance SaaS foundation for building multi-tenant applications. It ships with authentication, organizations, RBAC, internationalization, and a premium design system — all wired together with end-to-end type safety.
 
-> 🇬🇧 [English version](#english-version) &nbsp;|&nbsp; 🇫🇷 [Version française](#version-française)
-> &nbsp;
-> **Table of Contents**
-> - [🇬🇧 English Version](#english-version)
->   - [🌟 Introduction](#introduction)
->   - [🛠️ Tech Stack](#tech-stack)
->   - [⚡ Powered by Nitro v3](#powered-by-nitro)
->   - [🏗️ Architecture](#architecture)
->   - [🛠️ Development Guide](#development-guide)
->     - [🏗️ Backend](#backend)
->     - [💻 Frontend](#frontend)
->   - [🧪 Testing](#testing)
->   - [🌐 i18n & Typography](#i18n)
->   - [🔒 Auth & Security](#auth)
->   - [👥 Roles & RBAC](#roles)
->   - [📝 Forms](#forms)
->   - [📧 Email Setup](#emails)
->   - [🎨 Design System](#design)
->   - [🖼️ Media & Storage](#storage)
->   - [🚀 DevOps & Setup](#devops)
-> - [🇫🇷 Version Française](#version-française)
+---
 
-<a name="english-version"></a>
-# 🇬🇧 English Version
+**Table of Contents**
 
-<a id="introduction"></a>
+- [🌟 Introduction](#-introduction)
+- [🏗️ Architecture](#️-architecture)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🔒 Authentication & Security](#-authentication--security)
+- [👥 Roles & RBAC](#-roles--rbac)
+- [💻 Frontend Architecture](#-frontend-architecture)
+- [⚙️ Backend Architecture](#️-backend-architecture)
+- [🗄️ Database & Schema](#️-database--schema)
+- [🌐 Internationalization](#-internationalization)
+- [📝 Forms & Design System](#-forms--design-system)
+- [🧪 DevOps, Observability & Testing](#-devops-observability--testing)
+- [🚀 Quick Start](#-quick-start)
+- [🤖 AI-Assisted Development](#-ai-assisted-development)
+
+---
+
 ## 🌟 Introduction
-**RefactKit** is a high-performance SaaS foundation designed for developers building multi-tenant applications (B2B, B2C, or internal tools). It provides a full-featured workspace environment with advanced permission management, localized interfaces, and a premium developer experience.
+
+**RefactKit** is designed for developers building B2B platforms, B2C SaaS products, or internal tools that require workspace isolation. Every piece of data flows through an organization context, making tenant separation a first-class architectural concern rather than an afterthought.
 
 ### Core Philosophy
-- **Multi-tenancy First**: Every piece of data is isolated within an organization context.
-- **Type-Safety Everywhere**: From your database schema to your UI components, powered by TypeScript.
-- **Base UI Foundation**: We use **Base UI** (formerly Radix UI rival) primitives to ensure perfect accessibility and styling freedom.
-- **Modern Performance**: Built on React 19 and the Nitro v3 server engine.
+
+| Principle | How It's Enforced |
+|---|---|
+| **Multi-tenancy First** | Every data table includes `organizationId`. Server functions validate tenant membership before any query. |
+| **Type-Safety Everywhere** | TypeScript strict mode, Drizzle typed SQL, Zod runtime validation, TanStack typed routes. |
+| **Accessible by Default** | Base UI primitives ensure WAI-ARIA compliance. Semantic color tokens prevent hardcoded values. |
+| **OWASP-Compliant Security** | Anti-enumeration, rate limiting, JWE-encrypted sessions, audit logging — all built in. |
+| **Universal Deployment** | Nitro v3 engine targets Vercel, Cloudflare, Node.js, and AWS with a single build. |
 
 ---
 
-<a id="tech-stack"></a>
-## 🛠️ Tech Stack & Detailed Tools
+## 🏗️ Architecture
 
-| Layer | Technology | Key Features |
-|---|---|---|
-| **Meta-Framework** | <img src="https://tanstack.com/favicons/favicon-32x32.png" width="20" /> **TanStack Start** | React 19, Full-stack Router, Server Functions. |
-| **Server Engine**  | <img src="https://nitro.unjs.io/icon.svg" width="20" /> **Nitro v3** | Universal deployment, high-performance runtime. |
-| **Authentication** | <img src="https://www.better-auth.com/favicon.ico" width="20" /> **Better Auth 1.6+** | Organizations, RBAC, Sentinel (Dash), TanStack Start integration. |
-| **UI Components** | <img src="https://base-ui.com/favicon.ico" width="20" /> **Base UI / Shadcn** | Accessible primitives, premium design system. |
-| **Styling** | <img src="https://tailwindcss.com/favicons/favicon-32x32.png" width="20" /> **Tailwind CSS v4** | Next-gen utility-first CSS, ultra-fast compilation. |
-| **Database** | <img src="https://supabase.com/favicons/favicon-32x32.png" width="20" /> **Supabase** | Scalable cloud database with connection pooling. |
-| **ORM** | <img src="https://orm.drizzle.team/favicon-32x32.png" width="20" /> **Drizzle ORM** | Type-safe SQL, easy migrations, Drizzle Studio. |
-| **State Management**| <img src="https://tanstack.com/favicons/favicon-32x32.png" width="20" /> **TanStack Query** | Robust data fetching and server-state sync. |
-| **Emails** | <img src="https://resend.com/static/favicon.ico" width="20" /> **Resend** | Transactional emails with modern API. |
-| **Quality** | <img src="https://biomejs.dev/favicon.ico" width="20" /> **Biome** | Ultra-fast Rust-based toolchain. |
-| **Magic UI** | <img src="https://magicui.design/favicon.ico" width="20" /> **Magic UI** | Beautiful animated components (Marquee, etc.). |
-| **Testing** | <img src="https://vitest.dev/favicon.ico" width="20" /> **Vitest & Playwright**| Unit & E2E testing for mission-critical apps. |
+### High-Level Design (HLD)
 
-### ⚠️ Dependency Update Warnings (Must Read)
-When maintaining this project, please follow these strict rules for updating dependencies:
+```mermaid
+graph TB
+    subgraph Client["Client — Browser"]
+        UI["React 19 UI"]
+        Router["TanStack Router"]
+        Query["TanStack Query Cache"]
+        Form["TanStack Form"]
+    end
 
-1. **TanStack Start & Nitro v3**: The `nitro` dependency is currently pinned to a `beta` channel (`3.0.x-beta`) to support Start. **Do not blindly run `pnpm update`** on `@tanstack/react-start`, `@tanstack/react-router`, or `nitro`. These packages are tightly coupled, and version mismatches can easily crash the SSR server.
-2. **Better Auth (v1.6+)**: If you update `better-auth`, always check their changelog. Updates often introduce new columns to the database schema (especially for the `organization` plugin). You must manually verify and update your `db/schema.ts` to match their core schema requirements before pushing changes.
-3. **React 19**: This boilerplate relies heavily on React 19 features (Server Functions, Actions, `use` hook). Do not install legacy UI libraries that strictly require React 18, and never downgrade the core `react` packages.
+    subgraph Server["Server — Nitro v3"]
+        SSR["SSR / Hydration"]
+        SF["Server Functions<br/>(createServerFn)"]
+        Auth["Better Auth<br/>Middleware"]
+        Email["Resend<br/>Email Service"]
+    end
 
----
+    subgraph Data["Data Layer"]
+        DB["PostgreSQL<br/>(Supabase)"]
+        S3["Supabase Storage<br/>(S3-compatible)"]
+        ORM["Drizzle ORM"]
+    end
 
-<a id="powered-by-nitro"></a>
-## ⚡ Powered by Nitro v3
-
-This project is built on **Nitro v3**, the most advanced web server engine for the modern web.
-
-- **Universal Deployment**: Run your app anywhere (Vercel, Cloudflare Workers, Node.js, AWS, Netlify) with a single build.
-- **Extreme Performance**: Ultra-fast cold starts and a minimal footprint optimized for the edge.
-- **Integrated Server Functions**: Seamlessly bridge your frontend and backend with type-safe server handlers.
-- **Dynamic Caching**: Advanced caching layers to keep your SaaS responsive and scalable.
-
----
-
-<a id="architecture"></a>
-<a id="fr-architecture"></a>
-## 🏗️ Architecture Breakdown
-
-### Logical Folder Structure
-
-- **`db/`**: Database core.
-    - `schema.ts`: Single source of truth for tables and RBAC relationships.
-    - `index.ts`: Optimized connection setup using `postgres.js`.
-- **`lib/`**: Core infrastructure.
-    - `auth.ts`: Better Auth configuration (Roles: Member, Admin, Owner).
-    - `auth-client.ts`: Browser client with organization support.
-- **`src/components/`**: Modular UI components.
-    - `dashboard/`: Sidebar (compact), Navbar, Breadcrumbs.
-    - `settings/`: New Tab-based settings (Account, Security, Appearance).
-    - `ui/`: Base UI primitives.
-- **`src/routes/`**: File-based routing (TanStack Router).
-    - `_auth/`: Public routes (Login, Signup, Verification).
-    - `_app/`: Secure root for organizations and settings.
-    - `$slug/`: Context-aware organization workspace.
-- **`src/i18n/`**: Full internationalization with Arabic (RTL), French, Spanish, and Portuguese support.
-- **`src/hooks/`**: Custom hooks for theme and font management.
-- **`src/components/shared/`**: Unified components (Header, Auth UI) shared across the platform.
-
----
-
-<a id="development-guide"></a>
-## 🛠️ Development Guide
-
-This section explains how to extend LaunchKit-Better by adding new features, database tables, and routes while respecting the core architecture.
-
-<a id="backend"></a>
-### 🏗️ Backend (API & Database)
-
-#### 1. Server Functions & Zod
-LaunchKit handles backend logic using **TanStack Start Server Functions** (`createServerFn`). These are type-safe functions that run strictly on the server (Nitro) and use **Zod** for validation.
-
-```typescript
-import { createServerFn } from '@tanstack/start'
-import { z } from 'zod'
-import { db } from '@/db'
-import { myTable } from '@/db/schema'
-
-export const createItem = createServerFn({ method: 'POST' })
-  .validator((data: unknown) => z.object({ name: z.string() }).parse(data))
-  .handler(async ({ data }) => {
-    // This runs strictly on the server
-    const newItem = await db.insert(myTable).values({ name: data.name }).returning();
-    return { item: newItem[0] };
-  });
+    UI --> Router
+    Router --> Query
+    Query --> SF
+    Form --> SF
+    SF --> Auth
+    Auth --> ORM
+    ORM --> DB
+    SF --> S3
+    Auth --> Email
+    SSR --> SF
+    SSR --> UI
 ```
 
-#### 2. Database Schema (Drizzle)
-To add a new table or modify existing ones:
-1. **Modify Schema**: Open `db/schema.ts` and define your table.
-   ```typescript
-   export const myTable = pgTable("my_table", {
-     id: text("id").primaryKey(),
-     name: text("name").notNull(),
-     organizationId: text("organization_id").references(() => organization.id),
-   });
-   ```
-2. **Push Changes**: Synchronize with your database immediately:
-   ```bash
-   npx drizzle-kit push
-   ```
-3. **Explore Data**: Use `npx drizzle-kit studio` to manage records visually.
+### Low-Level Design (LLD) — Module Interaction
 
-> [!TIP]
-> Always include an `organizationId` in your tables to ensure strict tenant isolation (Multi-tenancy).
+```mermaid
+graph LR
+    subgraph Routes["src/routes/"]
+        AuthRoutes["_auth/<br/>login, signup,<br/>forgot-password"]
+        AppRoutes["_app/<br/>dashboard, settings"]
+        OrgRoutes["$slug/<br/>dashboard, members,<br/>gallery, settings"]
+    end
 
-<a id="frontend"></a>
-### 💻 Frontend (Routing & UI)
+    subgraph ServerFns["src/server/"]
+        AuthFns["auth-fns.ts"]
+        OrgFns["org-fns.ts"]
+        DashFns["dashboard-fns.ts"]
+        StorageFns["storage-fns.ts"]
+        GalleryFns["gallery-fns.ts"]
+        QueryKeys["query-keys.ts"]
+    end
 
-#### 1. Creating a New Route
-LaunchKit uses **file-based routing**. To create a new page within an organization workspace:
-1. Create a file: `src/routes/_app/organizations/$slug/my-page.tsx`.
-2. Define the route:
-   ```tsx
-   import { createFileRoute } from '@tanstack/react-router'
+    subgraph Core["lib/"]
+        AuthConfig["auth.ts<br/>(Better Auth config)"]
+        AuthClient["auth-client.ts<br/>(Browser client)"]
+        EmailLib["email.ts<br/>(Resend)"]
+        EnvLib["env.ts"]
+    end
 
-   export const Route = createFileRoute('/_app/organizations/$slug/my-page')({
-     component: MyPage,
-     loader: async ({ context }) => {
-       // Seed the TanStack Query cache for SSR
-       await context.queryClient.ensureQueryData(myQueryOptions(context.params.slug));
-     }
-   })
-   ```
+    subgraph DB["db/"]
+        Schema["schema.ts"]
+        DBConn["index.ts<br/>(postgres.js pool)"]
+    end
 
-#### 2. Making Requests with SSR (Best Practices)
-To ensure high performance and SEO-friendly pages, follow these rules:
-- **Seed the Cache**: Always use `queryClient.ensureQueryData` in the route `loader`. This avoids extra network requests on the client during hydration.
-- **Internal SSR Fetching**: Never `fetch` your own API over the network during SSR. Use direct server function calls or relative URLs through Nitro's internal bridge.
-- **Route Protection**: Use `beforeLoad` in your routes to verify sessions and roles before any rendering occurs.
+    AuthRoutes --> AuthFns
+    AppRoutes --> OrgFns
+    OrgRoutes --> DashFns & GalleryFns & StorageFns
+    OrgFns --> AuthConfig
+    AuthFns --> AuthConfig
+    AuthConfig --> EmailLib
+    AuthConfig --> DBConn
+    OrgFns --> DBConn
+    DashFns --> DBConn
+    DBConn --> Schema
+```
 
-#### 3. Reactivity & UX Excellence
-- **Stable Keys**: Never use array indexes as keys. Always use unique database IDs (e.g., `key={item.id}`).
-- **Form State Reset**: When a user switches organizations, reset local state by using the organization ID as a `key` on the main container (e.g., `<div key={org.id}>`).
-- **Derived State Pattern**: For media (avatars/logos), use a derived state to avoid UI flickering:
-  ```tsx
-  const [uploadedImg, setUploadedImg] = useState<string | undefined>()
-  const currentImg = uploadedImg || defaultValue // defaultValue from SSR/Query
-  ```
+### Request Lifecycle — SSR + Hydration Flow
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant N as Nitro v3 (SSR)
+    participant R as TanStack Router
+    participant SF as Server Function
+    participant BA as Better Auth
+    participant DB as PostgreSQL
+
+    B->>N: GET /organizations/acme/dashboard
+    N->>R: Match route → _app/$slug/dashboard
+    R->>R: beforeLoad → check session
+    R->>SF: loader → getOrgBySlug("acme")
+    SF->>BA: getSession(headers)
+    BA->>DB: SELECT session WHERE token = ?
+    DB-->>BA: Session { userId, activeOrgId }
+    BA-->>SF: Authenticated ✅
+    SF->>DB: SELECT org WHERE slug = "acme"
+    SF->>DB: SELECT member WHERE orgId AND userId
+    DB-->>SF: Org data + role
+    SF-->>R: { org, role }
+    R->>R: ensureQueryData → seed cache
+    N-->>B: Full HTML + dehydrated query cache
+    B->>B: Hydrate → React 19 takes over
+    B->>B: TanStack Query uses cached data (no refetch)
+```
+
+### Folder Structure
+
+```
+RefactKit-multitenancy/
+├── db/
+│   ├── schema.ts              # Single source of truth — all tables & relations
+│   └── index.ts               # postgres.js connection pool (Supabase pooler)
+├── lib/
+│   ├── auth.ts                # Better Auth config (RBAC, rate limiting, hooks)
+│   ├── auth-client.ts         # Browser auth client (organizationClient plugin)
+│   ├── email.ts               # Resend transactional email service
+│   ├── env.ts                 # Environment variable helpers
+│   └── supabase.ts            # Supabase client for storage
+├── src/
+│   ├── components/
+│   │   ├── dashboard/         # Sidebar, Navbar, Breadcrumbs
+│   │   ├── settings/          # Account, Security, Appearance tabs
+│   │   ├── shared/            # Header, AuthShell, shared UI
+│   │   ├── landing/           # Landing page components
+│   │   └── ui/                # Base UI primitives (Button, Input, Dialog...)
+│   ├── hooks/                 # useFont, useTheme
+│   ├── i18n/
+│   │   ├── context.tsx        # React context provider
+│   │   ├── index.ts           # Locale detection & cookie management
+│   │   └── locales/           # en, fr, es, pt, ar translations
+│   ├── routes/
+│   │   ├── __root.tsx         # Root layout (providers, meta, fonts)
+│   │   ├── index.tsx          # Landing page
+│   │   ├── _auth/             # Public: login, signup, forgot/reset-password
+│   │   ├── _app/              # Protected: dashboard shell, settings
+│   │   │   └── organizations/
+│   │   │       └── $slug/     # Org workspace: dashboard, members, gallery, settings
+│   │   ├── api/auth/          # Better Auth API route handler
+│   │   ├── onboarding.tsx     # First-time org creation
+│   │   └── accept-invite.tsx  # Invitation acceptance flow
+│   ├── server/
+│   │   ├── auth-fns.ts        # Session helpers
+│   │   ├── org-fns.ts         # CRUD organizations + membership checks
+│   │   ├── dashboard-fns.ts   # Org statistics
+│   │   ├── gallery-fns.ts     # Gallery CRUD
+│   │   ├── storage-fns.ts     # Supabase file upload (server-only)
+│   │   └── query-keys.ts      # TanStack Query option factories
+│   └── styles/
+│       └── globals.css        # Tailwind v4, CSS variables, font imports
+├── e2e/                       # Playwright E2E test scenarios
+├── vite.config.ts             # Vite + TanStack Start + Nitro + Tailwind
+├── drizzle.config.ts          # Drizzle Kit configuration
+├── playwright.config.ts       # Playwright multi-browser config
+├── biome.json                 # Biome linter/formatter config
+└── package.json               # Scripts, dependencies
+```
 
 ---
 
-<a id="testing"></a>
-## 🧪 Testing Strategy
+## 🛠️ Tech Stack
 
-LaunchKit-Better implements a multi-layered testing strategy to ensure reliability across the entire stack.
+| Layer | Technology | Version | Role in Architecture |
+|---|---|---|---|
+| **Meta-Framework** | TanStack Start | latest | Full-stack React framework. Provides SSR, file-based routing, server functions, and hydration via Nitro v3. |
+| **Server Engine** | Nitro v3 | 3.0.x-beta | Universal deployment engine. Powers SSR, server functions, and API routes. Single build targets Vercel, Cloudflare, Node.js. |
+| **UI Framework** | React | 19.2+ | Core UI library. Uses React 19 features: Server Functions, Actions, `use` hook. |
+| **Router** | TanStack Router | latest | Type-safe file-based routing with `beforeLoad` guards, loaders, search params validation, and code splitting. |
+| **Data Fetching** | TanStack Query | 5.x | Server-state synchronization. `queryOptions` factory pattern, `ensureQueryData` for SSR cache seeding, automatic background refetching. |
+| **Forms** | TanStack Form | 1.x | Type-safe form state management with Zod validators, field-level error tracking, and submit state. |
+| **Tables** | TanStack Table | 8.x | Headless table engine for members list, gallery grid, and data tables. |
+| **Authentication** | Better Auth | 1.6+ | Full auth system: email/password, OAuth (Google), organizations, RBAC, rate limiting, session management, OWASP compliance. |
+| **ORM** | Drizzle ORM | 0.45+ | Type-safe SQL query builder. Schema-as-code with `pgTable`, relational queries, zero-overhead. |
+| **Database** | Supabase (PostgreSQL) | — | Managed PostgreSQL with connection pooling (port 6543), Row Level Security, and dashboard for visual data management. |
+| **Storage** | Supabase Storage | — | S3-compatible object storage for avatars, logos, gallery images. Server-only uploads via service role key. |
+| **Styling** | Tailwind CSS | v4 | Utility-first CSS with CSS variables, `@theme` directives, and ultra-fast Vite plugin compilation. |
+| **UI Primitives** | Base UI + Shadcn | 1.4+ / 4.5+ | Accessible component primitives (WAI-ARIA). Shadcn CLI for component scaffolding with Base UI backend. |
+| **Emails** | Resend | — | Transactional email API for verification, password reset, invitations, and security alerts. |
+| **i18n** | Custom (i18next-based) | — | 5 languages (EN, FR, ES, PT, AR). RTL support. Cookie-based locale persistence. Server-side locale detection. |
+| **Icons** | Lucide React | 0.545+ | Consistent, tree-shakeable icon set. |
+| **Animations** | Framer Motion | 12.x | Smooth page transitions and micro-interactions. |
+| **Validation** | Zod | 4.x | Runtime type validation for server functions, form inputs, and search params. |
+| **Code Quality** | Biome | 2.4+ | Rust-based linter + formatter. Replaces ESLint + Prettier with 10x speed. |
+| **Unit Tests** | Vitest | 4.x | Fast unit/integration testing with JSDOM, React Testing Library, and v8 coverage. |
+| **E2E Tests** | Playwright | 1.59+ | Cross-browser E2E testing (Chromium, Firefox, WebKit). Auto-starts dev server. |
+| **Build** | Vite | 8.x | Next-gen build tool. Plugins: TanStack Start, React, Tailwind CSS, Nitro. |
 
-### 1. Unit & Integration Tests (Vitest)
-Used for testing server functions, hooks, and UI components in isolation.
-- **Commands**:
-  - Run all tests: `pnpm test`
-  - Watch mode: `pnpm test:watch`
-  - UI Mode: `npx vitest --ui`
-- **Setup**: Powered by **Vitest** and **React Testing Library** with a JSDOM environment.
-- **Location**: Files ending in `.test.ts` or `.test.tsx` located within the `src/` directory.
+### ⚠️ Dependency Coupling Warnings
 
-### 2. End-to-End Tests (Playwright)
-Used for testing complete user flows in real browsers.
-- **Commands**:
-  - Run E2E tests: `pnpm test:e2e`
-  - Interactive mode: `npx playwright test --ui`
-- **Location**: Scenarios are located in the `e2e/` directory.
+> [!WARNING]
+> **TanStack Start + Nitro v3**: These are tightly coupled. The `nitro` package is pinned to `3.0.x-beta`. Do **not** blindly run `pnpm update` on `@tanstack/react-start`, `@tanstack/react-router`, or `nitro` — version mismatches crash the SSR server.
 
-### 3. Code Coverage
-Monitor your testing progress and identify untested logic paths.
-- **Run Coverage**: `pnpm test:coverage`
-- **Setup**: Uses the `v8` provider. Ensure you have `@vitest/coverage-v8` installed.
-- **Report**: A detailed HTML report is generated in the `coverage/` directory after execution.
+> [!WARNING]
+> **Better Auth (v1.6+)**: Updates often introduce new DB columns (especially for the `organization` plugin). Always check the changelog and run `npx drizzle-kit push` after updating.
 
----
-
-<a id="i18n"></a>
-## 🌐 Internationalization & Typography
-
-LaunchKit-Better uses a dynamic, direction-aware typography system.
-
-### Direction-Aware Fonts
-The application automatically switches between premium fonts based on the document direction:
-- **LTR (English, French, etc.)**: Uses **Google Sans Flex** by default.
-- **RTL (Arabic)**: Uses **Zain** by default.
-
-### Adding a New Font
-1. **Install the font**: `pnpm add @fontsource/font-name`
-2. **Import in `globals.css`**: `@import "@fontsource/font-name";`
-3. **Register the variable**:
-   ```css
-   [data-font="my-font"] {
-     --font-family: "My Font", sans-serif;
-   }
-   ```
-4. **Update the hook**: Add the font key to `src/hooks/use-font.ts`.
-5. **Add to Settings**: Update the dropdown in `src/components/settings/account/appearance.tsx`.
+> [!CAUTION]
+> **React 19**: This boilerplate uses React 19 features (Server Functions, Actions). Do not install legacy UI libraries requiring React 18, and never downgrade the core `react` packages.
 
 ---
 
-<a id="auth"></a>
 ## 🔒 Authentication & Security
 
-LaunchKit relies on **Better Auth** for robust, modern authentication and security.
+RefactKit uses **Better Auth** with a hardened, OWASP-compliant configuration. Authentication and organization state are tightly coupled — users can **never** access data outside their workspace.
 
-### How Better Auth Works Here
-- **Core Authentication**: Handles email/password flows, OAuth (Google), and session management securely out of the box.
-- **Session & Cookie Management**: By default, sessions use secure, HTTP-only cookies valid for 7 days. Better Auth automatically handles session refreshing (rolling sessions), ensuring active users stay logged in securely without manual refresh token logic.
-- **Authentication Flow**: When a user logs in, an opaque session token is generated in the database. The browser receives the secure cookie, and every subsequent request is validated by the server. OAuth access/refresh tokens are securely stored in the `account` table.
-- **Multi-tenancy via Plugins**: We use the Better Auth `organization` plugin to seamlessly manage workspaces, meaning tenants and users are intrinsically linked at the auth layer.
-- **Middleware & RBAC**: Every request is intercepted by our server middleware. It verifies the session, identifies the active organization context, and strictly enforces Role-Based Access Control (RBAC). 
-- **Extensibility (SSO & OIDC)**: You can easily add Enterprise Single Sign-On (SSO) or OpenID Connect (OIDC). Simply prompt the AI assistant to use the provided `better-auth-best-practices` and `create-auth-skill` skills to integrate these features in minutes.
+### Authentication Flow
 
-### The Advantage
-Because authentication and organization state are tightly coupled through Better Auth, the application guarantees that users can **never** access data belonging to a workspace they aren't part of. Permissions are validated on the server before the UI even renders.
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as Client
+    participant BA as Better Auth
+    participant DB as Database
+    participant E as Resend Email
 
----
+    Note over U,E: Sign-Up Flow
+    U->>C: Fill signup form
+    C->>BA: signUp.email({ name, email, password })
+    BA->>DB: Check if email exists
+    alt New User
+        BA->>DB: INSERT user + account (scrypt hash)
+        BA->>E: Send verification email
+        BA-->>C: 200 OK { user }
+        C-->>U: "Check your inbox" screen
+    else Existing User (anti-enumeration)
+        BA->>E: Send "someone tried to sign up" alert
+        BA-->>C: 200 OK (identical response)
+        C-->>U: Same "Check your inbox" screen
+    end
 
-<a id="roles"></a>
-## 👥 Roles & Permissions (RBAC)
+    Note over U,E: Sign-In Flow
+    U->>C: Fill login form
+    C->>BA: signIn.email({ email, password })
+    BA->>DB: Verify credentials (scrypt)
+    BA->>DB: CREATE session token
+    BA-->>C: Set-Cookie: session_token (HttpOnly, Secure, SameSite=Lax)
+    C-->>U: Redirect to dashboard
 
-RefactKit uses a granular permission matrix powered by the Better Auth Organization plugin.
+    Note over U,E: Subsequent Requests
+    C->>BA: Request with cookie
+    BA->>BA: Check JWE cookie cache (5 min TTL)
+    alt Cache Hit
+        BA-->>C: Session from encrypted cache ⚡
+    else Cache Miss
+        BA->>DB: SELECT session WHERE token = ?
+        BA-->>C: Refresh cache + return session
+    end
+```
 
-| Capability | Member | Admin | Owner |
+### OWASP Security Checklist
+
+Every item below is implemented in `lib/auth.ts`:
+
+| # | OWASP Control | Implementation | Config |
 |---|---|---|---|
-| View Dashboard | ✅ | ✅ | ✅ |
-| Create New Organizations | ❌ | ✅ | ✅ |
-| Access Team Management | ❌ | ✅ | ✅ |
-| Invite New People | ❌ | ✅ (Up to Admin) | ✅ (Full) |
-| Manage Member Roles | ❌ | ✅ (non-owners) | ✅ |
-| Workspace Settings | ❌ | ❌ | ✅ |
-| Delete Organization | ❌ | ❌ | ✅ |
+| 1 | **Account Enumeration Prevention** | Signup returns identical 200 for new + existing emails. `onExistingUserSignUp` notifies real owner. | `requireEmailVerification: true` |
+| 2 | **Brute Force Protection** | Rate limiting on all auth endpoints, persisted in DB (survives serverless restarts). | `rateLimit: { storage: 'database' }` |
+| 3 | **Rate Limit Rules** | Sign-in: 5/min, Sign-up: 3/min, Forgot-password: 3/min. | `customRules: { ... }` |
+| 4 | **Encrypted Session Cache** | JWE (AES-256-GCM) encrypted cookie cache eliminates DB queries for 5 min windows. | `cookieCache: { strategy: 'jwe' }` |
+| 5 | **Password Policy** | Min 12 chars, max 128 chars (prevents bcrypt DoS). | `minPasswordLength / maxPasswordLength` |
+| 6 | **Session Revocation** | All sessions revoked on password reset. | `revokeSessionsOnPasswordReset: true` |
+| 7 | **Reset Token Expiry** | Tokens expire in 30 minutes (default was 1 hour). Single-use. | `resetPasswordTokenExpiresIn: 60 * 30` |
+| 8 | **Audit Logging** | `databaseHooks` log session creation and email changes. | `databaseHooks: { session, user }` |
+| 9 | **Proxy IP Tracking** | Reads real client IP from `x-forwarded-for` (Vercel proxy). | `ipAddress.ipAddressHeaders` |
+| 10 | **CSRF Protection** | Multi-layer: origin validation, Fetch Metadata, first-login protection. | Default enabled |
+| 11 | **Generic Error Messages** | Login/forgot-password never reveal if email exists. | Client: `toast.error(l.error)` |
+| 12 | **Background Task Safety** | Email sending uses `waitUntil` to prevent timing attacks. | `backgroundTasks.handler` |
+
+### Key Security Files
+
+| File | Purpose |
+|---|---|
+| `lib/auth.ts` | Server-side Better Auth configuration with all OWASP controls |
+| `lib/auth-client.ts` | Browser client with `organizationClient()` + `sentinelClient()` plugins |
+| `src/routes/_auth/signup.tsx` | Anti-enumeration safe signup (same UI for new + existing emails) |
+| `src/routes/_auth/login.tsx` | Generic error messages only |
+| `src/routes/_auth/forgot-password.tsx` | Always shows "check inbox" regardless of email existence |
 
 ---
 
-        </Button>
-      </CardContent>
-    </Card>
-  )
+## 👥 Roles & RBAC
+
+RefactKit uses Better Auth's `createAccessControl` with a granular resource→action permission model.
+
+### Permission Matrix
+
+| Resource → Action | Member | Admin | Owner |
+|---|:---:|:---:|:---:|
+| `dashboard:read` | ✅ | ✅ | ✅ |
+| `member:read` | — | ✅ | ✅ |
+| `member:create` | — | ✅ | ✅ |
+| `member:update` | — | ✅ | ✅ |
+| `member:delete` | — | — | ✅ |
+| `invitation:read` | — | ✅ | ✅ |
+| `invitation:create` | — | ✅ | ✅ |
+| `invitation:update` | — | — | ✅ |
+| `invitation:delete` | — | ✅ | ✅ |
+| `organization:update` | — | — | ✅ |
+| `organization:delete` | — | — | ✅ |
+
+### Role Hierarchy
+
+```mermaid
+graph TB
+    Owner["🔑 Owner<br/>Full control over org,<br/>members, invitations,<br/>settings, deletion"]
+    Admin["🛡️ Admin<br/>Manage members (non-owners),<br/>send invitations,<br/>read dashboard"]
+    Member["👤 Member<br/>View dashboard only.<br/>No management access."]
+
+    Owner --> Admin --> Member
+```
+
+### How RBAC Is Enforced
+
+1. **Server-side** (`lib/auth.ts`): `createAccessControl` defines resources and actions. Roles are assigned via `ac.newRole()`.
+2. **Membership check** (`src/server/org-fns.ts`): Every server function queries `member` table to verify the user belongs to the organization and has the required role.
+3. **Route guards** (`_app/route.tsx`): `beforeLoad` verifies session existence before rendering any protected route.
+4. **Owner protection**: Better Auth prevents removing the last owner. Ownership must be transferred first.
+
+### Adding a New Permission Resource
+
+```typescript
+// 1. Add to access control (lib/auth.ts)
+const ac = createAccessControl({
+  dashboard: ['read'],
+  member: ['read', 'create', 'update', 'delete'],
+  billing: ['read', 'manage'],  // ← NEW
+})
+
+// 2. Assign to roles
+const adminRole = ac.newRole({
+  billing: ['read'],  // Admin can view billing
+})
+const ownerRole = ac.newRole({
+  billing: ['read', 'manage'],  // Owner can manage billing
+})
+
+// 3. Check in server functions
+const { data } = await authClient.organization.hasPermission({
+  permission: 'billing:manage',
+})
+```
+
+---
+
+## 💻 Frontend Architecture
+
+### TanStack Router — File-Based Routing
+
+Routes are organized by access level using layout route prefixes:
+
+| Prefix | Access | Layout | Purpose |
+|---|---|---|---|
+| `_auth/` | Public | `AuthShell` | Login, signup, password flows |
+| `_app/` | Protected | Dashboard shell (sidebar + navbar) | Organization workspace |
+| `$slug/` | Protected + org-scoped | Inherits `_app` | Org-specific pages (dashboard, members, gallery) |
+
+**Route protection** happens in `_app/route.tsx` via `beforeLoad`:
+
+```typescript
+export const Route = createFileRoute('/_app')({
+  beforeLoad: async ({ context }) => {
+    const session = await getSession({ headers: getRequest().headers })
+    if (!session) throw redirect({ to: '/login' })
+    return { session }
+  },
+  component: AppLayout,
+})
+```
+
+### TanStack Query — Data Fetching Strategy
+
+RefactKit uses a **query options factory pattern** (`src/server/query-keys.ts`) to ensure consistent cache keys across SSR and client:
+
+```typescript
+// Define once
+export const orgBySlugQuery = (slug: string) =>
+  queryOptions({
+    queryKey: ['org', slug] as const,
+    queryFn: () => getOrgBySlug({ data: { slug } }),
+  })
+
+// Use in route loader (SSR)
+loader: async ({ context, params }) => {
+  await context.queryClient.ensureQueryData(orgBySlugQuery(params.slug))
+}
+
+// Use in component (client)
+const { data } = useQuery(orgBySlugQuery(slug))
+// → No refetch! Data is already in cache from SSR.
+```
+
+**Caching configuration** (`src/router.tsx`):
+
+| Setting | Value | Effect |
+|---|---|---|
+| `staleTime` | 30 seconds | Queries won't refetch for 30s after becoming stale |
+| `defaultPreloadStaleTime` | 30 seconds | Preloaded data stays fresh during navigation |
+| `scrollRestoration` | `true` | Scroll position restored on back navigation |
+| `defaultPreload` | `'intent'` | Routes preload on hover/focus intent |
+
+### Creating a New Page
+
+**Step 1** — Create the route file:
+```typescript
+// src/routes/_app/organizations/$slug/my-page.tsx
+import { createFileRoute } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+
+export const Route = createFileRoute('/_app/organizations/$slug/my-page')({
+  component: MyPage,
+  loader: async ({ context, params }) => {
+    // Seed cache for SSR — no client-side refetch needed
+    await context.queryClient.ensureQueryData(myDataQuery(params.slug))
+  },
+})
+
+function MyPage() {
+  const { slug } = Route.useParams()
+  const { data } = useQuery(myDataQuery(slug))
+  return <div>{/* Your UI */}</div>
 }
 ```
 
----
+**Step 2** — Create the server function:
+```typescript
+// src/server/my-fns.ts
+import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
+import { z } from 'zod'
+import { db } from '../../db/index'
+import { auth } from '../../lib/auth'
 
-<a id="forms"></a>
-## 📝 Forms Management (TanStack Form)
-
-LaunchKit-Better uses **TanStack Form** for complex state management and validation. We enforce strict UI composition rules based on Base UI primitives.
-
-### Best Practices for Forms
-- **Composition**: Always use `<FieldGroup>` and `<Field>` to structure your forms. Do not use generic `<div>` tags with arbitrary spacing classes.
-- **Validation State**: Validation is handled via `data-invalid` and `aria-invalid` attributes.
-- **Example**:
-  ```tsx
-  import { useForm } from '@tanstack/react-form'
-  import { FieldGroup, Field, FieldLabel, Input, FieldDescription } from '@/components/ui'
-
-  export function ProfileForm() {
-    const form = useForm({ defaultValues: { email: '' } })
-    return (
-      <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit() }}>
-        <FieldGroup>
-          <form.Field name="email">
-            {(field) => (
-              <Field data-invalid={field.state.meta.errors.length > 0}>
-                <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-                <Input 
-                  id={field.name} 
-                  value={field.state.value} 
-                  onChange={(e) => field.handleChange(e.target.value)} 
-                  aria-invalid={field.state.meta.errors.length > 0} 
-                />
-                {field.state.meta.errors.map(err => <FieldDescription key={err}>{err}</FieldDescription>)}
-              </Field>
-            )}
-          </form.Field>
-        </FieldGroup>
-      </form>
-    )
-  }
-  ```
-
----
-
-<a id="emails"></a>
-## 📧 Email Configuration (Resend)
-
-Transactional emails (invitations, password resets, verification) are powered by **Resend**.
-
-### Setup Instructions
-1. **Create an Account**: Go to [Resend.com](https://resend.com) and sign up.
-2. **Verify your Domain**: In the Resend dashboard, add your domain and configure the provided DNS records (TXT/MX).
-3. **Generate an API Key**: Create an API key with sending permissions.
-4. **Environment Setup**: Add your key to `.env`:
-   ```env
-   RESEND_API_KEY="re_123456789"
-   ```
-5. **Usage**: The logic is pre-configured in `lib/email.ts`. Better Auth automatically triggers emails via the `sendEmail` utility during core authentication flows.
-
----
-
-<a id="design"></a>
-## 🎨 Design System & Theming (Base UI / Shadcn)
-
-Our UI foundation relies on **Base UI** primitives composed via a specialized Shadcn CLI.
-
-### Theming Principles
-- **Semantic Colors Only**: Use tokens like `bg-primary` or `text-muted-foreground`. **Never** use hardcoded values like `bg-blue-500` or `dark:bg-slate-900`.
-- **Spacing**: Avoid `space-y-*` or `space-x-*`. Instead, use `flex flex-col gap-4`.
-- **Dimensions**: Use `size-*` for equal width/height (e.g., `size-10`).
-- **Icons**: Use the `data-icon="inline-start"` property when placing icons inside buttons.
-- **Presets & Customization**: You can apply a completely new theme by generating a preset code from [ui.shadcn.com](https://ui.shadcn.com) and running:
-  ```bash
-  npx shadcn@latest apply --preset <your-preset-code>
-  ```
-
----
-
-<a id="storage"></a>
-## 🖼️ Media & Storage (Supabase)
-
-LaunchKit-Better uses **Supabase Storage** for avatars, logos, and gallery images.
-
-### 1. Secure Upload Workflow
-To keep your `SUPABASE_SERVICE_ROLE_KEY` secure, we **never** perform uploads directly from the client. Instead, we use a dedicated server function:
-
-1. **Client**: The `ImageUpload` component sends a `FormData` containing the file to the server.
-2. **Server**: The `uploadImage` function (`src/server/storage-fns.ts`) receives the file, validates its size/type, and uploads it to Supabase using the service role key.
-3. **Response**: The server returns the `publicUrl` of the uploaded file.
-
-### 2. Global State Invalidation & Reactivity
-When an avatar or logo is updated, we ensure the UI reflects the change globally:
-```tsx
-const { mutate } = useMutation({
-  onSuccess: () => {
-    // 1. Invalidate TanStack Query caches
-    queryClient.invalidateQueries({ queryKey: ['user-orgs'] })
-    // 2. Invalidate TanStack Router loaders (refreshes session and global state)
-    router.invalidate()
-  }
+export const getMyData = createServerFn({ method: 'GET' }).handler(async ({ data }) => {
+  const { slug } = z.object({ slug: z.string() }).parse(data)
+  const request = getRequest()
+  const session = await auth.api.getSession({ headers: request.headers })
+  if (!session) throw new Error('Unauthorized')
+  // ... your query logic
 })
 ```
 
-**Pro-tip for Low Latency**: In your components, use the **Derived State Pattern** to avoid flickering:
-```tsx
-const [uploadedImg, setUploadedImg] = useState<string | undefined>()
-const currentImg = uploadedImg || defaultValue // defaultValue comes from TanStack Query prop
-```
-This ensures that the cached logo from the previous organization is replaced **instantly** by the new one from the cache, without waiting for a re-render cycle.
-
-### 3. Configuration
-Ensure your `.env` contains:
-- `VITE_SUPABASE_URL`: Your Supabase project URL.
-- `SUPABASE_SERVICE_ROLE_KEY`: Your service role key (kept on server).
-- **Bucket**: Ensure a bucket named `avatars` exists in your Supabase dashboard with public read access.
-
-#### SQL Setup (Supabase Dashboard)
-Run this in your Supabase SQL Editor to initialize the storage:
-```sql
--- 1. Create the "avatars" bucket
-insert into storage.buckets (id, name, public)
-values ('avatars', 'avatars', true)
-on conflict (id) do nothing;
-
--- 2. Allow public access to read files
-create policy "Public Access"
-on storage.objects for select
-using ( bucket_id = 'avatars' );
-
--- 3. Allow service role (server) to manage files (already default, but good to ensure)
--- Note: Our server functions use the Service Role Key, which bypasses RLS.
+**Step 3** — Create the query option:
+```typescript
+// src/server/query-keys.ts
+export const myDataQuery = (slug: string) =>
+  queryOptions({
+    queryKey: ['my-data', slug] as const,
+    queryFn: () => getMyData({ data: { slug } }),
+  })
 ```
 
----
+### Reactivity Best Practices
 
-<a id="devops"></a>
-## 🚀 DevOps & Deployment
-
-### Vercel Deployment (Nitro v3)
-This project is optimized for **Vercel** using the high-performance Nitro v3 engine.
-
-1. **Preset Configuration**: The build command is pre-configured in `package.json`:
-   ```bash
-   "build": "NITRO_PRESET=vercel vite build"
-   ```
-2. **Environment Variables**: Ensure the following are set in your Vercel Dashboard:
-   - `DATABASE_URL`: Your Supabase connection string.
-   - `BETTER_AUTH_SECRET`: Generate via `openssl rand -base64 32`.
-   - `BETTER_AUTH_URL`: Your production URL (e.g., `https://myapp.com`).
-3. **Database Sync**: Run migrations before/after deployment using:
-   ```bash
-   npx drizzle-kit push
-   ```
+| Pattern | Rule |
+|---|---|
+| **Stable Keys** | Never use array indexes. Always use `key={item.id}`. |
+| **Org Switch Reset** | Use `key={org.id}` on the page container to reset state on org change. |
+| **Derived State** | For images: `const currentImg = uploadedImg \|\| defaultValue` to avoid flickering. |
+| **Cache Invalidation** | After mutations: `queryClient.invalidateQueries()` + `router.invalidate()`. |
 
 ---
 
-## 🚀 Setup Guide
+## ⚙️ Backend Architecture
 
-### 1. Environment Configuration
-Create a `.env` file based on `.env.example`:
-```env
-DATABASE_URL="postgresql://..."
-BETTER_AUTH_SECRET="..."
-BETTER_AUTH_URL="http://localhost:3000"
-RESEND_API_KEY="re_..."
+### Server Functions (createServerFn)
+
+All backend logic runs through **TanStack Start Server Functions** — type-safe functions that execute exclusively on Nitro v3. They never ship to the client bundle.
+
+```mermaid
+graph LR
+    Client["Client Component"] -->|"call fn({ data })"| SF["Server Function<br/>(runs on Nitro)"]
+    SF -->|"Zod validation"| Val["z.object().parse()"]
+    Val --> Auth["getSession(headers)"]
+    Auth -->|"membership check"| DB["Drizzle → PostgreSQL"]
+    DB -->|"typed result"| SF
+    SF -->|"JSON response"| Client
 ```
 
-### 2. Installation & DB Sync
-```bash
-pnpm install
-npx drizzle-kit push  # Sync schema with DB
-pnpm dev              # Launch dev server on port 3000
-```
+**Server function files** (`src/server/`):
 
----
+| File | Responsibility |
+|---|---|
+| `auth-fns.ts` | Session retrieval helpers |
+| `org-fns.ts` | Create, read, update, delete organizations + membership validation |
+| `dashboard-fns.ts` | Organization statistics (member count, etc.) |
+| `gallery-fns.ts` | Gallery image CRUD (scoped to org) |
+| `storage-fns.ts` | Supabase file upload (server-only, service role key) |
+| `query-keys.ts` | TanStack Query option factories for consistent cache keys |
 
-## 🤖 AI-Assisted Development (Using Skills)
+### Server Function Pattern
 
-RefactKit is built with AI coding assistants in mind (Antigravity/Gemini, Windsurf, Claude, Cursor, etc.). The repository includes specialized "Skills" in the `.agents/skills/` directory that teach the AI exactly how to write code for this specific stack.
-
-### How to use Skills with your AI
-When asking your AI assistant to build a feature, explicitly `@mention` the relevant skill file or ask the AI to read it before coding.
-
-- **UI & Components**: "Create a new Pricing table component using the guidelines in `@.agents/skills/shadcn/SKILL.md`." (This forces the AI to use Base UI, `FieldGroup`, and semantic colors).
-- **Authentication**: "Add a Google SSO login button. Read `@.agents/skills/better-auth-best-practices/SKILL.md` first to understand our auth setup."
-- **General Architecture**: Always refer the AI to `@AGENTS.md`, which acts as the supreme context file for the whole repository.
-
-### 🛠️ Adding Specialized Skills
-To provide even deeper context for your AI agent, you can add specialized skills for each technology in our stack:
-```bash
-pnpm dlx skills add shadcn/ui    # UI & Base UI components
-pnpm dlx skills add tanstack    # Router, Query, Start, Form
-pnpm dlx skills add drizzle     # Database & ORM
-pnpm dlx skills add supabase    # Storage & Infrastructure
-pnpm dlx skills add better-auth # Authentication & Organizations
-```
-
-*Pro tip: The more you explicitly reference these markdown skills in your prompt, the less hallucination you'll get, and the code will perfectly match the project's strict typing and composition rules.*
-
----
-<a name="version-française"></a>
-# 🇫🇷 Version Française
-
-<a id="fr-introduction"></a>
-## 🌟 Introduction
-**RefactKit** est une fondation SaaS haute performance conçue pour les développeurs créant des applications multi-tenant (B2B, B2C ou outils internes). Il offre un environnement de travail complet avec gestion avancée des rôles, interfaces localisées et une expérience développeur premium.
-
-### Philosophie Coeur
-- **Multi-tenancy Natif** : Chaque donnée est isolée dans le contexte d'une organisation.
-- **Sûreté Typée** : Du schéma de base de données aux composants UI, tout est rigoureusement typé avec TypeScript.
-- **Base UI Foundation** : Utilisation des primitives **Base UI** pour une accessibilité parfaite et une liberté de design totale.
-- **Performance Moderne** : Propulsé par React 19 et le moteur de serveur Nitro v3.
-
----
-
-<a id="fr-tech-stack"></a>
-## 🛠️ Stack Technique & Outils Détaillés
-
-  - [🏗️ Architecture](#fr-architecture)
-  - [🛠️ Guide de Développement](#fr-development-guide)
-    - [🏗️ Backend](#fr-backend)
-    - [💻 Frontend](#fr-frontend)
-  - [🧪 Stratégie de Tests](#fr-testing)
-  - [🌐 i18n & Typographie](#fr-i18n)
-  - [🔒 Auth & Sécurité](#fr-auth)
-  - [👥 Rôles & RBAC](#fr-roles)
-  - [📝 Formulaires](#fr-forms)
-  - [📧 Emails](#fr-emails)
-  - [🎨 Design Système](#fr-design)
-  - [🖼️ Médias & Stockage](#fr-storage)
-  - [🚀 DevOps & Déploiement](#fr-devops)
-
----
-
-<a id="fr-i18n"></a>
-## 🌐 Internationalisation & Typographie
-
-LaunchKit-Better utilise un système de typographie dynamique qui s'adapte à la direction de lecture.
-
-### Polices Sensibles à la Direction
-L'application change automatiquement de police selon la direction du document :
-- **LTR (Français, Anglais, etc.)** : Utilise **Google Sans Flex** par défaut.
-- **RTL (Arabe)** : Utilise **Zain** par défaut.
-
-### Ajouter une Nouvelle Police
-1. **Installer la police** : `pnpm add @fontsource/nom-de-la-police`
-2. **Importer dans `globals.css`** : `@import "@fontsource/nom-de-la-police";`
-3. **Enregistrer la variable** :
-   ```css
-   [data-font="ma-police"] {
-     --font-family: "Ma Police", sans-serif;
-   }
-   ```
-4. **Mettre à jour le hook** : Ajoutez la clé de la police dans `src/hooks/use-font.ts`.
-5. **Ajouter aux paramètres** : Mettez à jour le menu déroulant dans `src/components/settings/account/appearance.tsx`.
-
----
-
-<a id="fr-auth"></a>
-## 🔒 Authentification & Sécurité
-
-LaunchKit s'appuie sur **Better Auth** pour une authentification robuste et moderne.
-
-### Comment Better Auth gère la sécurité
-- **Authentification Centrale** : Gère nativement les flux e-mail/mot de passe, OAuth (Google), et la sécurité des sessions.
-- **Gestion des Sessions & Cookies** : Les sessions utilisent des cookies sécurisés (HTTP-only) valides pour 7 jours par défaut. Better Auth gère automatiquement le rafraîchissement des sessions (rolling sessions) pour maintenir les utilisateurs actifs connectés en toute sécurité.
-- **Le Flux d'Authentification** : Lors de la connexion, un token de session opaque est généré en base de données. Le navigateur reçoit le cookie sécurisé, et chaque requête suivante est validée par le serveur. Les tokens d'accès/rafraîchissement OAuth sont stockés en toute sécurité dans la table `account`.
-- **Multi-tenancy via Plugins** : L'utilisation du plugin `organization` de Better Auth permet de lier intrinsèquement les utilisateurs à leurs espaces de travail dès la couche d'authentification.
-- **Middleware & RBAC** : Chaque requête est interceptée par notre middleware serveur. Il vérifie la session, identifie le contexte de l'organisation active et applique strictement le contrôle d'accès basé sur les rôles (RBAC).
-- **Extensibilité (SSO & OIDC)** : Vous pouvez facilement ajouter le Single Sign-On (SSO) d'entreprise ou OpenID Connect (OIDC). Demandez simplement à l'assistant IA d'utiliser les compétences `better-auth-best-practices` et `create-auth-skill` pour intégrer ces fonctionnalités en quelques minutes.
-
-### L'Avantage
-Étant donné que l'authentification et l'état de l'organisation sont étroitement couplés via Better Auth, l'application garantit qu'un utilisateur ne peut **jamais** accéder aux données d'un espace de travail dont il ne fait pas partie. Les permissions sont validées côté serveur avant même le rendu de l'interface.
-
----
-
-<a id="fr-roles"></a>
-## 👥 Matrice des Permissions (RBAC)
-
-RefactKit utilise une matrice de permissions granulaire via le plugin Organization de Better Auth.
-
-| Capacité | Membre | Admin | Propriétaire |
-|---|---|---|---|
-| Voir le Dashboard | ✅ | ✅ | ✅ |
-| Créer des Organisations | ❌ | ✅ | ✅ |
-| Accéder à l'Équipe | ❌ | ✅ | ✅ |
-| Inviter des Membres | ❌ | ✅ (Admin max) | ✅ (Tous) |
-| Gérer les Rôles | ❌ | ✅ (Sauf Owner) | ✅ |
-| Paramètres Workspace | ❌ | ❌ | ✅ |
-| Supprimer l'Organisation | ❌ | ❌ | ✅ |
-
----
-
-<a id="fr-development-guide"></a>
-## 🛠️ Guide de Développement
-
-Cette section explique comment étendre LaunchKit-Better en ajoutant de nouvelles fonctionnalités, des tables de base de données et des routes, tout en respectant l'architecture de base.
-
-<a id="fr-backend"></a>
-### 🏗️ Backend (API & Base de données)
-
-#### 1. Fonctions Serveur & Zod
-LaunchKit gère la logique backend via les **TanStack Start Server Functions** (`createServerFn`). Ce sont des fonctions typées qui s'exécutent strictement sur le serveur (Nitro) et utilisent **Zod** pour la validation.
+Every server function follows the same security pattern:
 
 ```typescript
-import { createServerFn } from '@tanstack/start'
-import { z } from 'zod'
-import { db } from '@/db'
-import { maTable } from '@/db/schema'
+export const myFunction = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
+  // 1. Validate input with Zod
+  const { name, orgId } = z.object({ name: z.string(), orgId: z.string() }).parse(data)
 
-export const createItem = createServerFn({ method: 'POST' })
-  .validator((data: unknown) => z.object({ name: z.string() }).parse(data))
-  .handler(async ({ data }) => {
-    // S'exécute uniquement sur le serveur
-    const newItem = await db.insert(maTable).values({ name: data.name }).returning();
-    return { item: newItem[0] };
-  });
-```
+  // 2. Authenticate — get session from cookies
+  const request = getRequest()
+  const session = await auth.api.getSession({ headers: request.headers })
+  if (!session) throw new Error('Unauthorized')
 
-#### 2. Schéma de Base de Données (Drizzle)
-Pour ajouter une nouvelle table ou modifier l'existant :
-1. **Modifier le Schéma** : Ouvrez `db/schema.ts` et définissez votre table.
-   ```typescript
-   export const maTable = pgTable("ma_table", {
-     id: text("id").primaryKey(),
-     name: text("name").notNull(),
-     organizationId: text("organization_id").references(() => organization.id),
-   });
-   ```
-2. **Pousser les Changements** : Synchronisez immédiatement avec votre base de données :
-   ```bash
-   npx drizzle-kit push
-   ```
-3. **Explorer les Données** : Utilisez `npx drizzle-kit studio` pour gérer vos enregistrements visuellement.
+  // 3. Authorize — verify org membership + role
+  const membership = await db.query.member.findFirst({
+    where: and(eq(member.organizationId, orgId), eq(member.userId, session.user.id)),
+  })
+  if (!membership || membership.role !== 'owner') throw new Error('Forbidden')
 
-> [!TIP]
-> Incluez toujours un `organizationId` dans vos tables pour garantir une isolation stricte des données (Multi-tenancy).
-
-<a id="fr-frontend"></a>
-### 💻 Frontend (Routage & UI)
-
-#### 1. Créer une Nouvelle Route
-LaunchKit utilise un **routage basé sur les fichiers**. Pour créer une nouvelle page dans un espace de travail :
-1. Créez un fichier : `src/routes/_app/organizations/$slug/ma-page.tsx`.
-2. Définissez la route :
-   ```tsx
-   import { createFileRoute } from '@tanstack/react-router'
-
-   export const Route = createFileRoute('/_app/organizations/$slug/ma-page')({
-     component: MaPage,
-     loader: async ({ context }) => {
-       // Alimente le cache TanStack Query pour le SSR
-       await context.queryClient.ensureQueryData(maQueryOptions(context.params.slug));
-     }
-   })
-   ```
-
-#### 2. Requêtes avec SSR (Bonnes Pratiques)
-Pour garantir des performances élevées et des pages optimisées pour le SEO :
-- **Alimenter le Cache** : Utilisez toujours `queryClient.ensureQueryData` dans le `loader` de la route. Cela évite des requêtes réseau inutiles sur le client lors de l'hydratation.
-- **Appels SSR Internes** : Ne faites jamais de `fetch` vers votre propre API via le réseau pendant le SSR. Utilisez des appels directs de fonctions serveur ou des URL relatives via Nitro.
-- **Protection des Routes** : Utilisez `beforeLoad` pour vérifier les sessions et les rôles avant tout rendu.
-
-#### 3. Réactivité & Excellence UX
-- **Clés Stables** : N'utilisez jamais les index de tableau comme clés. Utilisez toujours des IDs uniques (ex: `key={item.id}`).
-- **Réinitialisation d'État** : Lorsqu'un utilisateur change d'organisation, réinitialisez l'état local en utilisant l'ID de l'organisation comme `key` sur le conteneur principal (ex: `<div key={org.id}>`).
-- **Pattern d'État Dérivé** : Pour les médias, utilisez un état dérivé pour éviter tout scintillement :
-  ```tsx
-  const [uploadedImg, setUploadedImg] = useState<string | undefined>()
-  const currentImg = uploadedImg || defaultValue // defaultValue provient du SSR/Query
-  ```
-
----
-
-<a id="fr-testing"></a>
-## 🧪 Stratégie de Tests
-
-LaunchKit-Better implémente une stratégie de tests multi-couches pour garantir la fiabilité de l'ensemble de la stack.
-
-### 1. Tests Unitaires & d'Intégration (Vitest)
-Utilisés pour tester les fonctions serveur, les hooks et les composants UI isolés.
-- **Commandes** :
-  - Lancer les tests : `pnpm test`
-  - Mode Watch : `pnpm test:watch`
-  - Mode UI : `npx vitest --ui`
-- **Configuration** : Propulsé par **Vitest** et **React Testing Library** avec un environnement JSDOM.
-- **Emplacement** : Fichiers se terminant par `.test.ts` ou `.test.tsx` dans le dossier `src/`.
-
-### 2. Tests End-to-End (Playwright)
-Utilisés pour tester les flux utilisateurs complets dans de vrais navigateurs.
-- **Commandes** :
-  - Lancer les tests E2E : `pnpm test:e2e`
-  - Mode Interactif : `npx playwright test --ui`
-- **Emplacement** : Les scénarios sont situés dans le dossier `e2e/`.
-
-### 3. Couverture de Code (Code Coverage)
-Suivez l'avancement de vos tests et identifiez les chemins logiques non testés.
-- **Lancer la Couverture** : `pnpm test:coverage`
-- **Configuration** : Utilise le fournisseur `v8`. Assurez-vous que `@vitest/coverage-v8` est installé.
-- **Rapport** : Un rapport HTML détaillé est généré dans le dossier `coverage/` après l'exécution.
-
----
-
-<a id="fr-forms"></a>
-## 📝 Gestion des Formulaires (TanStack Form)
-
-LaunchKit-Better utilise **TanStack Form** pour la gestion d'état et la validation. Nous imposons des règles strictes de composition d'interface basées sur Base UI.
-
-### Bonnes Pratiques
-- **Composition** : Utilisez toujours `<FieldGroup>` et `<Field>` pour structurer vos formulaires. N'utilisez pas de `<div>` avec des classes d'espacement arbitraires.
-- **Validation** : Les états d'erreur utilisent les attributs `data-invalid` et `aria-invalid`.
-- **Exemple** :
-  ```tsx
-  import { useForm } from '@tanstack/react-form'
-  import { FieldGroup, Field, FieldLabel, Input, FieldDescription } from '@/components/ui'
-
-  export function ProfileForm() {
-    const form = useForm({ defaultValues: { email: '' } })
-    return (
-      <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit() }}>
-        <FieldGroup>
-          <form.Field name="email">
-            {(field) => (
-              <Field data-invalid={field.state.meta.errors.length > 0}>
-                <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-                <Input 
-                  id={field.name} 
-                  value={field.state.value} 
-                  onChange={(e) => field.handleChange(e.target.value)} 
-                  aria-invalid={field.state.meta.errors.length > 0} 
-                />
-                {field.state.meta.errors.map(err => <FieldDescription key={err}>{err}</FieldDescription>)}
-              </Field>
-            )}
-          </form.Field>
-        </FieldGroup>
-      </form>
-    )
-  }
-  ```
-
----
-
-<a id="fr-emails"></a>
-## 📧 Envoi d'E-mails (Resend)
-
-Les e-mails transactionnels (invitations, réinitialisation de mot de passe) sont gérés par **Resend**.
-
-### Configuration
-1. **Créer un Compte** : Inscrivez-vous sur [Resend.com](https://resend.com).
-2. **Vérifier le Domaine** : Ajoutez votre domaine dans le dashboard et configurez vos enregistrements DNS.
-3. **Générer une clé API** : Créez une clé avec les droits d'envoi.
-4. **Environnement** : Ajoutez-la au fichier `.env` :
-   ```env
-   RESEND_API_KEY="re_123456789"
-   ```
-5. **Utilisation** : La logique est centralisée dans `lib/email.ts`. Better Auth utilise automatiquement `sendEmail` pour les flux d'authentification.
-
----
-
-<a id="fr-design"></a>
-## 🎨 Design Système & Theming (Base UI / Shadcn)
-
-Notre fondation UI repose sur **Base UI** et est gérée via un CLI Shadcn spécialisé.
-
-### Principes de Theming
-- **Couleurs Sémantiques Uniquement** : Utilisez `bg-primary` ou `text-muted-foreground`. N'utilisez **jamais** de valeurs brutes comme `bg-blue-500` ou `dark:bg-slate-900`.
-- **Espacement** : Évitez `space-y-*` ou `space-x-*`. Privilégiez `flex flex-col gap-4`.
-- **Dimensions** : Utilisez `size-*` pour les largeurs/hauteurs égales (ex: `size-10`).
-- **Icônes** : Utilisez `data-icon="inline-start"` pour aligner correctement les icônes dans les boutons.
-- **Presets & Personnalisation** : Vous pouvez appliquer un nouveau thème global généré sur [ui.shadcn.com](https://ui.shadcn.com) en lançant :
-  ```bash
-  npx shadcn@latest apply --preset <votre-code-preset>
-  ```
-
----
-
-<a id="fr-storage"></a>
-## 🖼️ Médias & Stockage (Supabase)
-
-LaunchKit-Better utilise **Supabase Storage** pour les avatars, les logos et la galerie d'images.
-
-### 1. Workflow d'Upload Sécurisé
-Pour garantir la sécurité de votre `SUPABASE_SERVICE_ROLE_KEY`, nous n'effectuons **jamais** d'uploads directement depuis le client. Nous utilisons une fonction serveur dédiée :
-
-1. **Client** : Le composant `ImageUpload` envoie un `FormData` contenant le fichier au serveur.
-2. **Serveur** : La fonction `uploadImage` (`src/server/storage-fns.ts`) reçoit le fichier, valide sa taille/type, et l'upload vers Supabase via la clé service role.
-3. **Réponse** : Le serveur renvoie la `publicUrl` du fichier uploadé.
-
-### 2. Invalidation de l'État Global & Réactivité
-Lorsqu'un avatar ou un logo est mis à jour, nous forçons l'UI à se rafraîchir partout :
-```tsx
-const { mutate } = useMutation({
-  onSuccess: () => {
-    // 1. Invalider les caches TanStack Query
-    queryClient.invalidateQueries({ queryKey: ['user-orgs'] })
-    // 2. Invalider les loaders TanStack Router (rafraîchit la session et l'état global)
-    router.invalidate()
-  }
+  // 4. Execute business logic
+  return await db.insert(myTable).values({ name, organizationId: orgId }).returning()
 })
 ```
 
-**Astuce pour une latence zéro** : Dans vos composants, utilisez le **Pattern d'État Dérivé** pour éviter tout scintillement :
+### Storage — Secure Upload Workflow
+
+Uploads are **server-only** to protect the `SUPABASE_SERVICE_ROLE_KEY`:
+
+```mermaid
+sequenceDiagram
+    participant C as Client (ImageUpload)
+    participant SF as Server Function (storage-fns.ts)
+    participant S3 as Supabase Storage
+
+    C->>C: User selects file
+    C->>SF: FormData { file, bucket: "avatars" }
+    SF->>SF: Validate: size ≤ 2MB, type check
+    SF->>SF: Generate random filename
+    SF->>S3: upload(fileName, arrayBuffer, { contentType })
+    S3-->>SF: Success
+    SF->>S3: getPublicUrl(fileName)
+    S3-->>SF: https://...supabase.co/storage/v1/object/public/...
+    SF-->>C: { url: publicUrl }
+    C->>C: setState(url) → instant preview via derived state
+```
+
+### API Routes
+
+Better Auth handles its own API at `src/routes/api/auth/`:
+
+| Endpoint | Handler |
+|---|---|
+| `/api/auth/*` | Better Auth catch-all (sign-in, sign-up, session, OAuth callbacks, org operations) |
+| `/api/test` | Health check endpoint |
+
+### How to Add a New API Endpoint
+
+```typescript
+// src/routes/api/my-endpoint.ts
+import { createAPIFileRoute } from '@tanstack/react-start/api'
+
+export const APIRoute = createAPIFileRoute('/api/my-endpoint')({
+  GET: async ({ request }) => {
+    return new Response(JSON.stringify({ status: 'ok' }), {
+      headers: { 'Content-Type': 'application/json' },
+    })
+  },
+})
+```
+
+---
+
+## 🗄️ Database & Schema
+
+### Entity Relationship Diagram
+
+```mermaid
+erDiagram
+    USER {
+        text id PK
+        text name
+        text email UK
+        boolean email_verified
+        text image
+        text image_url
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    SESSION {
+        text id PK
+        timestamp expires_at
+        text token UK
+        text ip_address
+        text user_agent
+        text user_id FK
+        text active_organization_id
+    }
+
+    ACCOUNT {
+        text id PK
+        text account_id
+        text provider_id
+        text user_id FK
+        text access_token
+        text refresh_token
+        text password
+    }
+
+    VERIFICATION {
+        text id PK
+        text identifier
+        text value
+        timestamp expires_at
+    }
+
+    ORGANIZATION {
+        text id PK
+        text name
+        text slug UK
+        text logo
+        text logo_url
+        text metadata
+        timestamp created_at
+    }
+
+    MEMBER {
+        text id PK
+        text organization_id FK
+        text user_id FK
+        text role
+        timestamp created_at
+    }
+
+    INVITATION {
+        text id PK
+        text organization_id FK
+        text email
+        text role
+        text status
+        timestamp expires_at
+        text inviter_id FK
+    }
+
+    GALLERY_IMAGE {
+        text id PK
+        text name
+        text url
+        text size
+        text organization_id FK
+        timestamp created_at
+    }
+
+    USER ||--o{ SESSION : "has"
+    USER ||--o{ ACCOUNT : "has"
+    USER ||--o{ MEMBER : "belongs to"
+    USER ||--o{ INVITATION : "invites"
+    ORGANIZATION ||--o{ MEMBER : "has"
+    ORGANIZATION ||--o{ INVITATION : "has"
+    ORGANIZATION ||--o{ GALLERY_IMAGE : "owns"
+```
+
+### Multi-Tenancy Pattern
+
+Every tenant-scoped table includes an `organizationId` foreign key with cascade delete:
+
+```typescript
+export const myTable = pgTable("my_table", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  organizationId: text("organization_id")
+    .notNull()
+    .references(() => organization.id, { onDelete: 'cascade' }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("my_table_organizationId_idx").on(table.organizationId),
+])
+```
+
+> [!TIP]
+> Always add an index on `organizationId` — it's queried on every tenant-scoped request.
+
+### Database Connection
+
+`db/index.ts` uses `postgres.js` with Supabase transaction pooler settings:
+
+```typescript
+const client = postgres(process.env.DATABASE_URL, {
+  ssl: 'require',
+  prepare: false,    // CRITICAL for Supabase Pooler (port 6543)
+  max: 10,           // Connection pool size
+  idle_timeout: 20,  // Seconds before idle connection is closed
+  connect_timeout: 10,
+})
+export const db = drizzle(client, { schema })
+```
+
+### Database Commands
+
+| Command | Purpose |
+|---|---|
+| `npx drizzle-kit push` | Sync schema.ts changes directly to PostgreSQL |
+| `npx drizzle-kit studio` | Visual database browser at https://local.drizzle.studio |
+| `npx drizzle-kit generate` | Generate SQL migration files (for version control) |
+
+---
+
+## 🌐 Internationalization
+
+RefactKit uses a **custom React context** wrapping i18next for full SSR-compatible internationalization.
+
+### Supported Locales
+
+| Locale | Language | Direction | Default Font |
+|---|---|---|---|
+| `en` | English | LTR | Google Sans Flex |
+| `fr` | French | LTR | Google Sans Flex |
+| `es` | Spanish | LTR | Google Sans Flex |
+| `pt` | Portuguese | LTR | Google Sans Flex |
+| `ar` | Arabic | RTL | Zain |
+
+### How It Works
+
+1. **Server**: `getServerLocale()` reads the `locale` cookie from the request headers during SSR.
+2. **Root layout**: Passes locale to `<I18nProvider initialLocale={locale}>` and sets `<html lang dir>`.
+3. **Components**: Use `const { t, locale, dir } = useI18n()` to access translations.
+4. **Switching**: `setLocale('ar')` updates state + persists cookie + flips `document.dir`.
+
+### Adding a New Locale
+
+1. Create `src/i18n/locales/de.ts` with all translation keys.
+2. Register it in `src/i18n/index.ts`:
+   ```typescript
+   import de from './locales/de'
+   const translations = { en, fr, es, pt, ar, de }
+   export type Locale = 'en' | 'fr' | 'es' | 'pt' | 'ar' | 'de'
+   ```
+3. Add the font (if needed) in `src/styles/globals.css`.
+
+---
+
+## 📝 Forms & Design System
+
+### TanStack Form + Zod Validation
+
+Forms use **TanStack Form** with Zod schema validators and **Base UI** primitives:
+
 ```tsx
-const [uploadedImg, setUploadedImg] = useState<string | undefined>()
-const currentImg = uploadedImg || defaultValue // defaultValue provient de TanStack Query
+import { useForm } from '@tanstack/react-form'
+import { z } from 'zod'
+
+const schema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Invalid email'),
+})
+
+const form = useForm({
+  defaultValues: { name: '', email: '' },
+  validators: { onSubmit: schema },
+  onSubmit: async ({ value }) => {
+    await myServerFunction({ data: value })
+  },
+})
 ```
-Ceci garantit que le logo en cache de la nouvelle organisation s'affiche **immédiatement**, sans attendre un cycle de re-rendu ou un délai d'effet.
 
-### 3. Configuration
-Assurez-vous que votre `.env` contient :
-- `VITE_SUPABASE_URL` : L'URL de votre projet Supabase.
-- `SUPABASE_SERVICE_ROLE_KEY` : Votre clé service role (uniquement côté serveur).
-- **Bucket** : Créez un bucket nommé `avatars` dans votre dashboard Supabase avec un accès public en lecture.
+### Design System Rules
 
-#### Configuration SQL (Supabase Dashboard)
-Exécutez ceci dans votre éditeur SQL Supabase pour initialiser le stockage :
-```sql
--- 1. Créer le bucket "avatars"
-insert into storage.buckets (id, name, public)
-values ('avatars', 'avatars', true)
-on conflict (id) do nothing;
+| Rule | Do | Don't |
+|---|---|---|
+| **Colors** | `bg-primary`, `text-muted-foreground` | `bg-blue-500`, `dark:bg-slate-900` |
+| **Spacing** | `flex flex-col gap-4` | `space-y-4` |
+| **Dimensions** | `size-10` (equal w/h) | `w-10 h-10` |
+| **Icons** | `data-icon="inline-start"` | Raw SVG inline |
+| **Themes** | CSS variables via `@theme` | Hardcoded color values |
 
--- 2. Autoriser l'accès public en lecture
-create policy "Public Access"
-on storage.objects for select
-using ( bucket_id = 'avatars' );
+### Applying a New Theme
 
--- 3. Note : Nos fonctions serveur utilisent la Service Role Key, qui contourne les politiques RLS.
+Generate a preset at [ui.shadcn.com](https://ui.shadcn.com) and apply:
+```bash
+npx shadcn@latest apply --preset <your-preset-code>
 ```
 
 ---
 
-<a id="fr-devops"></a>
-## 🚀 DevOps & Déploiement
+## 🧪 DevOps, Observability & Testing
 
-### Déploiement sur Vercel (Nitro v3)
-Ce projet est optimisé pour **Vercel** grâce au moteur ultra-performant Nitro v3.
+### Deployment
 
-1. **Configuration du Build** : La commande est pré-configurée dans le `package.json` :
-   ```bash
-   "build": "NITRO_PRESET=vercel vite build"
-   ```
-2. **Variables d'Environnement** : Assurez-vous que les variables suivantes sont définies dans votre tableau de bord Vercel :
-   - `DATABASE_URL` : Votre chaîne de connexion Supabase.
-   - `BETTER_AUTH_SECRET` : Généré via `openssl rand -base64 32`.
-   - `BETTER_AUTH_URL` : Votre URL de production (ex: `https://monapp.com`).
-3. **Synchronisation DB** : Lancez les synchronisations de schéma avant/après le déploiement :
-   ```bash
-   npx drizzle-kit push
-   ```
+#### Vercel (Primary — Recommended)
+
+Pre-configured in `package.json`:
+```bash
+"build": "NITRO_PRESET=vercel vite build"
+```
+
+**Required environment variables** (Vercel Dashboard → Settings → Environment Variables):
+
+| Variable | Value | Required |
+|---|---|---|
+| `DATABASE_URL` | Supabase connection string (port 6543 for pooler) | ✅ |
+| `BETTER_AUTH_SECRET` | `openssl rand -base64 32` | ✅ |
+| `BETTER_AUTH_URL` | `https://your-domain.com` | ✅ |
+| `RESEND_API_KEY` | `re_...` from Resend dashboard | ✅ |
+| `VITE_SUPABASE_URL` | `https://xxx.supabase.co` | ✅ |
+| `SUPABASE_SERVICE_ROLE_KEY` | From Supabase dashboard | ✅ |
+| `VITE_APP_URL` | `https://your-domain.com` | Optional |
+
+#### Other Targets (Cloudflare, Node.js)
+
+Change the Nitro preset:
+```bash
+# Cloudflare Workers
+NITRO_PRESET=cloudflare-module vite build
+
+# Standalone Node.js
+NITRO_PRESET=node vite build
+node .output/server/index.mjs
+```
+
+### Observability
+
+| Tool | What It Shows | How to Access |
+|---|---|---|
+| **Drizzle Studio** | Visual database browser — view/edit all tables | `npx drizzle-kit studio` |
+| **Supabase Dashboard** | Database logs, storage browser, RLS policies | `https://app.supabase.com` |
+| **Server Audit Logs** | `[AUDIT]` prefixed console logs for session/email events | Terminal / Vercel Function Logs |
+| **Better Auth Dash** | Built-in admin panel (`dash()` plugin) | `/api/auth/admin` |
+| **TanStack DevTools** | Query cache inspector, router state | Auto-loaded in dev mode |
+
+### Code Quality
+
+| Tool | Command | Purpose |
+|---|---|---|
+| **Biome Lint** | `pnpm lint` | Catch code issues (Rust-speed) |
+| **Biome Format** | `pnpm format` | Auto-format all files |
+| **Biome Check** | `pnpm check` | Lint + format in one pass |
+| **TypeScript** | Strict mode enabled in `tsconfig.json` | Compile-time type safety |
+
+### Testing
+
+#### Unit & Integration Tests (Vitest)
+
+```bash
+pnpm test              # Run all tests (includes Biome check)
+pnpm test:watch        # Watch mode for development
+pnpm test:coverage     # Generate v8 coverage report → coverage/
+npx vitest --ui        # Visual test runner in browser
+```
+
+- **Framework**: Vitest 4.x + React Testing Library + JSDOM
+- **Location**: `src/**/*.{test,spec}.{ts,tsx}`
+- **Setup**: `src/test/setup.ts`
+
+#### End-to-End Tests (Playwright)
+
+```bash
+pnpm test:e2e                  # Run all E2E tests
+npx playwright test --ui       # Interactive mode with trace viewer
+npx playwright test --headed   # See browser during test
+```
+
+- **Framework**: Playwright 1.59+ (Chromium, Firefox, WebKit)
+- **Location**: `e2e/` directory
+- **Auto-server**: Playwright starts `pnpm dev` automatically before tests
+- **Config**: `playwright.config.ts` — HTML reporter, trace on first retry
+
+### Pre-Deploy Checklist
+
+```bash
+pnpm check           # Biome lint + format
+pnpm test            # Unit tests pass
+pnpm test:e2e        # E2E tests pass
+npx drizzle-kit push # Schema synced
+```
 
 ---
 
-<a id="fr-setup"></a>
-## 🚀 Guide d'Installation
+## 🚀 Quick Start
 
-### 1. Variables d'Environnement
-Créez votre `.env` à partir de `.env.example` :
+### Prerequisites
+
+- **Node.js** 20+
+- **pnpm** (recommended) — `npm install -g pnpm`
+- **Supabase** account with a PostgreSQL project
+- **Resend** account for transactional emails
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/your-org/refactkit-multitenancy.git
+cd refactkit-multitenancy
+pnpm install
+```
+
+### 2. Environment Variables
+
+Copy `.env.example` to `.env` and fill in:
+
 ```env
-DATABASE_URL="postgresql://..."
-BETTER_AUTH_SECRET="..."
+DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres"
+BETTER_AUTH_SECRET="your-32-char-secret"
 BETTER_AUTH_URL="http://localhost:3000"
 RESEND_API_KEY="re_..."
+VITE_SUPABASE_URL="https://xxx.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="eyJ..."
 ```
 
-### 2. Synchronisation & Lancement
+### 3. Database Setup
+
 ```bash
-pnpm install
-npx drizzle-kit push  # Synchronise le schéma avec la base de données
-pnpm dev              # Lance le serveur de dev (port 3000)
+# Push schema to Supabase
+npx drizzle-kit push
+
+# (Optional) Open visual database browser
+npx drizzle-kit studio
+```
+
+### 4. Supabase Storage
+
+Run in the Supabase SQL Editor:
+```sql
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('avatars', 'avatars', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Public Access" ON storage.objects
+FOR SELECT USING (bucket_id = 'avatars');
+```
+
+### 5. Launch
+
+```bash
+pnpm dev    # → http://localhost:3000
 ```
 
 ---
 
-<a id="fr-ai"></a>
-## 🤖 Développement Assisté par l'IA (Utilisation des Skills)
+## 🤖 AI-Assisted Development
 
-LaunchKit-Better est conçu pour être utilisé avec des assistants de codage IA (Antigravity/Gemini, Windsurf, Claude, Cursor, etc.). Le dépôt inclut des "Skills" spécialisés dans le dossier `.agents/skills/` qui apprennent à l'IA exactement comment coder pour cette stack technique spécifique.
+RefactKit includes specialized **Skills** in `.agents/skills/` that teach AI coding assistants the exact patterns, APIs, and conventions of this stack.
 
-### Comment utiliser les Skills avec votre IA
-Lorsque vous demandez à votre assistant IA de créer une fonctionnalité, mentionnez explicitement (`@mention`) le fichier de skill pertinent ou demandez à l'IA de le lire avant de coder.
+### Available Skills
 
-- **UI & Composants** : "Crée un nouveau composant de tableau de prix en suivant les règles de `@.agents/skills/shadcn/SKILL.md`." (Cela force l'IA à utiliser Base UI, `FieldGroup`, et les couleurs sémantiques).
-- **Authentification** : "Ajoute un bouton de connexion SSO Google. Lis d'abord `@.agents/skills/better-auth-best-practices/SKILL.md` pour comprendre notre configuration."
-- **Architecture Générale** : Renvoyez toujours l'IA vers le fichier `@AGENTS.md`, qui agit comme le fichier de contexte suprême pour tout le dépôt.
+| Skill | When to Use |
+|---|---|
+| `better-auth-best-practices` | Auth config, sessions, plugins, database adapters |
+| `better-auth-security-best-practices` | Rate limiting, CSRF, cookies, IP tracking, audit logging |
+| `email-and-password-best-practices` | Email verification, password reset, hashing |
+| `organization-best-practices` | Orgs, members, invitations, RBAC, teams |
+| `create-auth-skill` | Scaffolding auth from scratch |
+| `shadcn` | UI components, theming, presets |
 
-### 🛠️ Ajouter des Skills Spécialisés
-Pour fournir un contexte encore plus riche à votre agent IA, vous pouvez ajouter des "skills" spécialisés pour chaque technologie de notre stack :
-```bash
-pnpm dlx skills add shadcn/ui    # Composants UI & Base UI
-pnpm dlx skills add tanstack    # Router, Query, Start, Form
-pnpm dlx skills add drizzle     # Base de données & ORM
-pnpm dlx skills add supabase    # Stockage & Infrastructure
-pnpm dlx skills add better-auth # Authentification & Organisations
+### How to Use with Your AI
+
+When prompting your AI assistant, **@mention** the relevant skill:
+
+```
+"Add a billing page with Stripe integration.
+ Read @.agents/skills/shadcn/SKILL.md for UI patterns
+ and @AGENTS.md for the overall architecture."
 ```
 
-*Astuce pro : Plus vous référencez explicitement ces skills markdown dans votre prompt, moins l'IA hallucine, et plus le code généré respectera parfaitement les règles strictes de typage et de composition du projet.*
+### Adding New Skills
+
+```bash
+pnpm dlx skills add shadcn/ui    # UI & Base UI components
+pnpm dlx skills add tanstack     # Router, Query, Start, Form
+pnpm dlx skills add drizzle      # Database & ORM
+pnpm dlx skills add supabase     # Storage & Infrastructure
+pnpm dlx skills add better-auth  # Authentication & Organizations
+```
+
+> [!TIP]
+> The more explicitly you reference skill files in your prompts, the less hallucination you get — code will match the project's strict typing and composition rules.
+
+---
+
+## 📄 License
+
+MIT — see [LICENSE](LICENSE) for details.

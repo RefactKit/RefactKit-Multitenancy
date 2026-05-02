@@ -1,7 +1,6 @@
 import { useForm } from '@tanstack/react-form'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
-import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -27,17 +26,13 @@ function ForgotPasswordPage() {
     defaultValues: { email: '' },
     validators: { onSubmit: schema },
     onSubmit: async ({ value }) => {
-      const { error } = await authClient.requestPasswordReset({
+      // OWASP: Never reveal if email exists — always show "check your inbox".
+      // Better Auth performs dummy operations server-side for unknown emails
+      // so response timing stays consistent regardless of whether email is registered.
+      await authClient.requestPasswordReset({
         email: value.email,
         redirectTo: '/reset-password',
       })
-
-      if (error) {
-        toast.error(error.message)
-        return
-      }
-
-      toast.success(l.success)
       setIsSubmitted(true)
     },
   })
