@@ -9,7 +9,7 @@
 ![DB](https://img.shields.io/badge/Drizzle-ORM-yellow?style=flat-square)
 ![Deploy](https://img.shields.io/badge/Vercel-Ready-black?logo=vercel&style=flat-square)
 
-> **RefactKit** is a production-ready, high-performance SaaS foundation for building multi-tenant applications. It ships with authentication, organizations, RBAC, internationalization, and a premium design system — all wired together with end-to-end type safety.
+> **RefactKit** is a production-ready, **full-stack SaaS boilerplate** — front-end UI *and* a scalable backend API — built on **React 19** and the **TanStack ecosystem** (Start, Router, Query, Form). It ships with authentication, organizations, RBAC, internationalization, and a premium design system — all wired together with end-to-end type safety and zero compromise on performance.
 
 > [!NOTE]
 > **RefactKit Community Edition** — free and open-source under the MIT license. Build with it, learn from it, share what you create. Contributions, bug reports, and showcases are warmly welcome. 🙌
