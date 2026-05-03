@@ -186,23 +186,39 @@ npx drizzle-kit studio
 
 ### 4. Supabase Storage
 
+RefactKit requires two public buckets: `avatars` (for profiles) and `app-images` (for the gallery module).
+
 In your **Supabase Dashboard → SQL Editor**, run:
 
 ```sql
--- Create the avatars bucket (public read)
+-- Create the buckets (public read)
 INSERT INTO storage.buckets (id, name, public)
-VALUES ('avatars', 'avatars', true)
+VALUES 
+  ('avatars', 'avatars', true),
+  ('app-images', 'app-images', true)
 ON CONFLICT (id) DO NOTHING;
 
--- Allow public read access for avatar images
+-- Allow public read access for both buckets
 CREATE POLICY "Public Access" ON storage.objects
-FOR SELECT USING (bucket_id = 'avatars');
+FOR SELECT USING (bucket_id IN ('avatars', 'app-images'));
 ```
 
 > [!TIP]
-> You can also create the bucket visually in **Supabase Dashboard → Storage → New bucket**. Set it to **Public** and add the same SELECT policy.
+> You can also create these buckets visually in **Supabase Dashboard → Storage → New bucket**. Ensure both are set to **Public** and add the same SELECT policy.
 
-### 5. Launch
+### 5. Seed Gallery Images (Optional)
+
+To test the gallery module, you can use the provided seeding script to upload 25 sample images:
+
+```bash
+# Set a valid Organization ID in your .env first
+TEST_ORG_ID="your-org-id" 
+
+# Run the upload script
+node scripts/upload-images.js
+```
+
+### 6. Launch
 
 ```bash
 pnpm dev    # → http://localhost:3000

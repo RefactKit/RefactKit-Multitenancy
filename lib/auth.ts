@@ -8,6 +8,11 @@ import * as schema from '../db/schema'
 import { db } from '../db/index'
 import { sendEmail } from './email'
 import { getBaseURL } from './env'
+import { VerifyEmail } from '../src/emails/verify-email'
+import { ResetPassword } from '../src/emails/reset-password'
+import { InvitationEmail } from '../src/emails/invitation'
+import { SecurityAlert } from '../src/emails/security-alert'
+import React from 'react'
 
 const ac = createAccessControl({
   dashboard: ['read'],
@@ -74,7 +79,7 @@ export const auth = betterAuth({
       sendEmail({
         to: user.email,
         subject: 'Reset your password',
-        html: `<p>Click the link below to reset your password:</p><a href="${url}">Reset Password</a>`,
+        template: React.createElement(ResetPassword, { url }),
       })
     },
     // Called when someone tries to sign up with an already-registered email.
@@ -91,13 +96,11 @@ export const auth = betterAuth({
       sendEmail({
         to: user.email,
         subject: 'Sign-in attempt on your account',
-        html: `
-          <p>Hi ${user.name || 'there'},</p>
-          <p>Someone tried to create a new account using your email address <strong>${user.email}</strong>.</p>
-          <p>If this was you and you've forgotten your password, you can reset it from the login page:</p>
-          <p><a href="${loginUrl}">Go to login</a></p>
-          <p>If this wasn't you, you can safely ignore this email — your account is secure.</p>
-        `,
+        template: React.createElement(SecurityAlert, {
+          userName: user.name || 'there',
+          email: user.email,
+          loginUrl,
+        }),
       })
     },
     onPasswordReset: async ({ user }) => {
@@ -200,7 +203,7 @@ export const auth = betterAuth({
       sendEmail({
         to: user.email,
         subject: 'Verify your email address',
-        html: `<p>Click the link below to verify your email:</p><a href="${url}">Verify Email</a>`,
+        template: React.createElement(VerifyEmail, { url }),
       })
     },
   },
@@ -225,11 +228,13 @@ export const auth = betterAuth({
         const acceptUrl = `${getBaseURL()}/accept-invite?id=${data.invitation.id}`
         sendEmail({
           to: data.email,
-          subject: `Join ${data.organization.name} on LaunchKIT`,
-          html: `
-            <p><strong>${data.inviter.user.name || 'Someone'}</strong> invited you to join <strong>${data.organization.name}</strong>.</p>
-            <p><a href="${acceptUrl}">Click here to accept the invitation</a></p>
-          `,
+          subject: `Join ${data.organization.name} on RefactKit`,
+          template: React.createElement(InvitationEmail, {
+            orgName: data.organization.name,
+            inviterName: data.inviter.user.name || 'Someone',
+            url: acceptUrl,
+            orgLogo: data.organization.logoUrl || undefined,
+          }),
         })
       },
     }),
