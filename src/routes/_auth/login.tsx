@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { useI18n } from '@/i18n/context'
 import { getUserOrgs } from '@/server/org-fns'
@@ -120,9 +121,8 @@ function LoginPage() {
                     {l.forgotPassword}
                   </Link>
                 </div>
-                <Input
+                <PasswordInput
                   id={field.name}
-                  type="password"
                   autoComplete="current-password"
                   placeholder={l.passwordPlaceholder}
                   value={field.state.value}

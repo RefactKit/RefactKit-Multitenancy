@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { useI18n } from '@/i18n/context'
 import { authClient } from '../../../lib/auth-client'
@@ -129,15 +130,26 @@ function SignupPage() {
               {(field) => (
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor={field.name}>{f.label}</Label>
-                  <Input
-                    id={field.name}
-                    type={f.type}
-                    autoComplete={f.autoComplete}
-                    placeholder={f.placeholder}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
+                  {f.type === 'password' ? (
+                    <PasswordInput
+                      id={field.name}
+                      autoComplete={f.autoComplete}
+                      placeholder={f.placeholder}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  ) : (
+                    <Input
+                      id={field.name}
+                      type={f.type}
+                      autoComplete={f.autoComplete}
+                      placeholder={f.placeholder}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  )}
                   {field.state.meta.isTouched && field.state.meta.errors[0] && (
                     <p className="text-xs text-red-500">
                       {field.state.meta.errors

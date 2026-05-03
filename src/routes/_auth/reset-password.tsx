@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { useI18n } from '@/i18n/context'
 import { authClient } from '../../../lib/auth-client'
@@ -111,9 +112,8 @@ function ResetPasswordPage() {
             {(field) => (
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor={field.name}>{l.password}</Label>
-                <Input
+                <PasswordInput
                   id={field.name}
-                  type="password"
                   autoComplete="new-password"
                   placeholder={l.passwordPlaceholder}
                   value={field.state.value}
@@ -131,9 +131,8 @@ function ResetPasswordPage() {
             {(field) => (
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor={field.name}>Confirm password</Label>
-                <Input
+                <PasswordInput
                   id={field.name}
-                  type="password"
                   autoComplete="new-password"
                   placeholder="••••••••"
                   value={field.state.value}

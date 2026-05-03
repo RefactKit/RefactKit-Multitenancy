@@ -80,6 +80,12 @@ export const auth = betterAuth({
     // Because requireEmailVerification: true enables anti-enumeration mode,
     // the API always returns 200 OK — so we notify the real account owner instead.
     onExistingUserSignUp: async ({ user }) => {
+      // If the user is not verified yet, they are likely retrying the signup process
+      // or a double-submit occurred. We don't want to send a security alert in this case.
+      if (!user.emailVerified) {
+        return
+      }
+
       const loginUrl = `${getBaseURL()}/login`
       sendEmail({
         to: user.email,
