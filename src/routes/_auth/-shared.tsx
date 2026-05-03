@@ -13,6 +13,7 @@ import { Header } from '@/components/shared/header'
 import { LanguageToggle, ThemeToggle } from '@/components/shared/auth-ui'
 import type { Locale } from '@/i18n'
 import { useI18n } from '@/i18n/context'
+import { DotPattern } from '@/components/ui/dot-pattern'
 
 export function AuthShell({
   children,
@@ -28,25 +29,29 @@ export function AuthShell({
   features?: string[]
 }) {
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-gray-950">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
       <div className="flex flex-1 overflow-hidden">
         {/* Left panel */}
-        <div className="relative hidden w-1/2 flex-col lg:flex border-r border-gray-100 dark:border-gray-800">
-          <div className="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/5 blur-[140px]" />
-          <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-teal-500/5 blur-[120px]" />
+        <div className="relative hidden w-1/2 flex-col lg:flex border-r border-border/40 bg-muted/5">
+          <DotPattern
+            cr={1.5}
+            className="[mask-image:radial-gradient(500px_circle_at_center,white,transparent)] opacity-40 text-primary/30"
+          />
+          <div className="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[140px]" />
+          <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-primary/5 blur-[120px]" />
           <div className="relative z-10 flex h-full flex-col justify-center p-12">
             <div className="max-w-md">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal-500/20 bg-teal-500/8 px-3 py-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
-                <span className="text-xs font-medium text-teal-700 dark:text-teal-400">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-3 py-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <span className="text-xs font-medium text-primary">
                   {badge}
                 </span>
               </div>
-              <h1 className="text-4xl font-semibold leading-tight text-gray-900 dark:text-white">
+              <h1 className="text-4xl font-semibold leading-tight text-foreground">
                 {heading}
               </h1>
-              <p className="mt-4 text-lg leading-relaxed text-gray-500 dark:text-gray-400">
+              <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
                 {subheading}
               </p>
               {features && (
@@ -54,11 +59,11 @@ export function AuthShell({
                   {features.map((f) => (
                     <li
                       key={f}
-                      className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400"
+                      className="flex items-center gap-3 text-sm text-muted-foreground"
                     >
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-500/20">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
                         <Check
-                          className="h-3 w-3 text-teal-600 dark:text-teal-400"
+                          className="h-3 w-3 text-primary"
                           strokeWidth={3}
                         />
                       </span>
@@ -70,14 +75,14 @@ export function AuthShell({
             </div>
           </div>
           <div className="absolute bottom-12 left-12">
-            <p className="text-sm text-gray-400 dark:text-gray-600">
+            <p className="text-sm text-muted-foreground/60">
               © {new Date().getFullYear()} RefactKit
             </p>
           </div>
         </div>
 
         {/* Right panel */}
-        <div className="relative flex w-full flex-col overflow-y-auto lg:w-1/2">
+        <div className="relative flex w-full flex-col overflow-y-auto lg:w-1/2 bg-background">
           <div className="flex flex-1 items-center justify-center px-5 py-10">
             <div className="w-full max-w-[360px]">{children}</div>
           </div>
