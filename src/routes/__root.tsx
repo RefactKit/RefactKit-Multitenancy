@@ -26,9 +26,9 @@ export const Route = createRootRouteWithContext<{
   head: (_ctx) => {
     const baseUrl = getBaseURL()
     const ogImage = `${baseUrl}/og.png`
-    const title = 'RefactKit — The High-Performance Foundation for Multi-tenant SaaS'
+    const title = 'Build your SaaS, with production-ready code — RefactKit'
     const description =
-      'Build rock-solid multi-tenant applications faster with RefactKit. Authentication, organizations, and premium architecture out of the box.'
+      'The ultimate full-stack starter for founders, devs, and indie hackers. Built with React 19 & TanStack, featuring a production-ready backend API, secure multi-tenancy, and an enterprise-grade dashboard.'
 
     return {
       meta: [

@@ -140,6 +140,14 @@ export const auth = betterAuth({
       },
     },
     user: {
+      create: {
+        after: async ({ data }) => {
+          // Field Consistency: Sync social 'image' to custom 'imageUrl' on first login
+          if (data.image) {
+            await db.update(user).set({ imageUrl: data.image }).where(eq(user.id, data.id))
+          }
+        },
+      },
       update: {
         after: async ({ data, oldData }) => {
           if (oldData?.email !== data.email) {
