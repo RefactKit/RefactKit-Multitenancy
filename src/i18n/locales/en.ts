@@ -201,12 +201,22 @@ export const en = {
       getStarted: 'Get Started',
     },
     hero: {
-      badge: 'RefactKit — Powered by React 19 & Nitro v3',
-      title: 'Build your SaaS with a solid foundation',
+      badge: 'Save 100+ hours of development',
+      title: 'Build your SaaS,',
+      titleWords: [
+        'with a modern full-stack kit',
+        'at the speed of light',
+        'with production-ready code',
+      ],
       subheading:
-        'RefactKit is a high-performance SaaS boilerplate built with TanStack Start, Better Auth, and Drizzle ORM. Designed for multi-tenant applications.',
+        'The ultimate full-stack starter for founders, devs, and indie hackers. Built with React 19 & TanStack, featuring a production-ready backend API, secure multi-tenancy, and an enterprise-grade dashboard.',
       getStarted: 'Get Started',
       viewDocs: 'View Documentation',
+      security: {
+        owasp: 'OWASP ASVS Compliant',
+        encrypted: 'AES-256 Encrypted',
+        tenant: 'Multi-Tenant Isolated',
+      },
     },
     features: {
       multiTenant: {

@@ -181,12 +181,22 @@ export const es: Translations = {
       getStarted: 'Empezar',
     },
     hero: {
-      badge: 'RefactKit — La Base Moderna para SaaS',
-      title: 'Construye tu SaaS con una base sólida',
+      badge: 'Ahorra más de 100 horas de desarrollo',
+      title: 'Construye tu SaaS,',
+      titleWords: [
+        'con un kit full-stack moderno',
+        'a la velocidad de la luz',
+        'con código listo para producción',
+      ],
       subheading:
-        'RefactKit es un boilerplate SaaS de alto rendimiento creado con TanStack Start, Better Auth y Drizzle ORM. Diseñado para aplicaciones multiinquilino.',
+        'El starter full-stack definitivo para fundadores, devs e indie hackers. Creado con React 19 y TanStack, con una API backend, multi-tenant seguro y un dashboard de nivel empresarial.',
       getStarted: 'Empezar',
       viewDocs: 'Ver Documentación',
+      security: {
+        owasp: 'Conforme a OWASP ASVS',
+        encrypted: 'Cifrado AES-256',
+        tenant: 'Aislamiento Multi-Tenant',
+      },
     },
     features: {
       multiTenant: {

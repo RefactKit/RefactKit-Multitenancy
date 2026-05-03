@@ -1,6 +1,6 @@
 {
-  "short_name": "TanStack App",
-  "name": "Create TanStack App Sample",
+  "short_name": "RefactKit",
+  "name": "RefactKit — The High-Performance SaaS Boilerplate",
   "icons": [
     {
       "src": "favicon.ico",
