@@ -1,4 +1,5 @@
 import { dash } from '@better-auth/infra'
+import { eq } from 'drizzle-orm'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { createAccessControl, organization } from 'better-auth/plugins'
@@ -98,6 +99,16 @@ export const auth = betterAuth({
           <p>If this wasn't you, you can safely ignore this email — your account is secure.</p>
         `,
       })
+    },
+    onPasswordReset: async ({ user }) => {
+      // If a user successfully resets their password, they have proven ownership of the email.
+      // We should mark them as verified to allow immediate sign-in.
+      if (!user.emailVerified) {
+        await db
+          .update(schema.user)
+          .set({ emailVerified: true })
+          .where(eq(schema.user.id, user.id))
+      }
     },
   },
 
