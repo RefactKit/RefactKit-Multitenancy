@@ -6,7 +6,9 @@ interface VerifyEmailProps {
   url: string;
 }
 
-const baseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+import { getBaseURL } from '../../lib/env';
+
+const baseUrl = getBaseURL();
 
 export const VerifyEmail = ({ url }: VerifyEmailProps) => (
   <EmailLayout preview="Confirm your email address">

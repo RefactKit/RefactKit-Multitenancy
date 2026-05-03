@@ -9,7 +9,9 @@ interface InvitationEmailProps {
   orgLogo?: string;
 }
 
-const baseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+import { getBaseURL } from '../../lib/env';
+
+const baseUrl = getBaseURL();
 
 export const InvitationEmail = ({
   orgName,

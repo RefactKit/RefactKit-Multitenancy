@@ -46,7 +46,7 @@ export const auth = betterAuth({
   trustedOrigins: [
     'http://localhost:3000',
     'http://localhost:3001',
-    'https://launch-kit-multitenancy.vercel.app', // Your production domain
+    'https://refact-kit-multitenancy.vercel.app', // Your actual production domain
     'https://refactkit.com',
     ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
   ],

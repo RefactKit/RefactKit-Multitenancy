@@ -6,7 +6,9 @@ interface ResetPasswordProps {
   url: string;
 }
 
-const baseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+import { getBaseURL } from '../../lib/env';
+
+const baseUrl = getBaseURL();
 
 export const ResetPassword = ({ url }: ResetPasswordProps) => (
   <EmailLayout preview="Reset your password">

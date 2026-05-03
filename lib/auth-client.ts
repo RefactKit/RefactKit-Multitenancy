@@ -3,10 +3,10 @@ import { inferAdditionalFields, organizationClient } from 'better-auth/client/pl
 import { createAuthClient } from 'better-auth/react'
 import type { auth } from './auth'
 
+import { getBaseURL } from '@/lib/base-url'
+
 export const authClient = createAuthClient({
-  // Use VITE_APP_URL if provided, otherwise default to undefined
-  // to force relative URLs which works best for unified SSR apps.
-  baseURL: import.meta.env.VITE_APP_URL || undefined,
+  baseURL: getBaseURL(),
   plugins: [organizationClient(), sentinelClient(), inferAdditionalFields<typeof auth>()],
 })
 

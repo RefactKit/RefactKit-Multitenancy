@@ -22,7 +22,9 @@ interface EmailLayoutProps {
   companyName?: string;
 }
 
-const baseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+import { getBaseURL } from '../../lib/env';
+
+const baseUrl = getBaseURL();
 
 export const EmailLayout = ({
   preview,
@@ -59,7 +61,7 @@ export const EmailLayout = ({
 
             {/* Main Content Boxed */}
             <Section className="bg-bg-2 rounded-[10px] px-[40px] py-[64px] text-center border border-stroke-strong">
-               {children}
+              {children}
             </Section>
 
             {/* Footer */}
@@ -70,17 +72,12 @@ export const EmailLayout = ({
 
               <Section className="mb-8">
                 <Link href="https://twitter.com/refactkit" className="inline-block px-2">
-                   <Text className="text-primary font-font-13 font-bold m-0">Twitter</Text>
+                  <Text className="text-primary font-font-13 font-bold m-0">Twitter</Text>
                 </Link>
                 <Link href="https://github.com/refactkit" className="inline-block px-2">
-                   <Text className="text-primary font-font-13 font-bold m-0">GitHub</Text>
+                  <Text className="text-primary font-font-13 font-bold m-0">GitHub</Text>
                 </Link>
               </Section>
-
-              <Text className="mt-4 mb-5 font-font-11 text-fg-3">
-                123 Tech Avenue, Suite 101<br />
-                San Francisco, CA 94107
-              </Text>
               <Text className="m-0 font-font-11 text-fg-3">
                 You're receiving this because you signed up for {companyName}.
               </Text>
