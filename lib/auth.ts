@@ -3,6 +3,7 @@ import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { createAccessControl, organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
+import * as schema from '../db/schema'
 import { db } from '../db/index'
 import { sendEmail } from './email'
 import { getBaseURL } from './env'
@@ -37,12 +38,14 @@ export const auth = betterAuth({
   baseURL: getBaseURL(),
   secret: process.env.BETTER_AUTH_SECRET,
   trustedOrigins: [
+    'http://localhost:3000',
+    'http://localhost:3001',
     'https://launch-kit-multitenancy.vercel.app', // Your production domain
     'https://refactkit.com',
     ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
   ],
 
-  database: drizzleAdapter(db, { provider: 'pg' }),
+  database: drizzleAdapter(db, { provider: 'pg', schema }),
 
   user: {
     deleteUser: {
@@ -92,6 +95,17 @@ export const auth = betterAuth({
     },
   },
 
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+    },
+  },
+
+  account: {
+    encryptOAuthTokens: true, // AES-256-GCM encryption for social tokens
+  },
+
   // OWASP: Brute force protection — persistent DB storage survives Vercel restarts
   rateLimit: {
     enabled: true,
@@ -119,7 +133,9 @@ export const auth = betterAuth({
     session: {
       create: {
         after: async ({ data }) => {
-          console.log(`[AUDIT] New session created for user: ${data.userId}`)
+          if (data?.userId) {
+            console.log(`[AUDIT] New session created for user: ${data.userId}`)
+          }
         },
       },
     },
@@ -135,6 +151,7 @@ export const auth = betterAuth({
   },
 
   advanced: {
+    useSecureCookies: process.env.NODE_ENV === 'production',
     backgroundTasks: {
       handler: (promise) => {
         // Platform-specific handler

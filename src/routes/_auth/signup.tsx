@@ -139,7 +139,13 @@ function SignupPage() {
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
                   {field.state.meta.isTouched && field.state.meta.errors[0] && (
-                    <p className="text-xs text-red-500">{String(field.state.meta.errors[0])}</p>
+                    <p className="text-xs text-red-500">
+                      {field.state.meta.errors
+                        .map((error: any) =>
+                          typeof error === 'string' ? error : error?.message || 'Invalid value',
+                        )
+                        .join(', ')}
+                    </p>
                   )}
                 </div>
               )}

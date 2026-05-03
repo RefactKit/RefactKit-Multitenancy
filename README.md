@@ -518,7 +518,54 @@ Every item below is implemented in `lib/auth.ts`:
 | 11 | **Generic Error Messages** | Login/forgot-password never reveal if email exists. | Client: `toast.error(l.error)` |
 | 12 | **Background Task Safety** | Email sending uses `waitUntil` to prevent timing attacks. | `backgroundTasks.handler` |
 
-### Key Security Files
+### ✅ Security Best Practices Compliance
+
+The authentication implementation in RefactKit strictly follows the official **Better Auth Best Practices** and **OWASP ASVS** standards. Every aspect has been hardened for production-ready deployment.
+
+- **Universal Rate Limiting**: Uses `storage: 'database'` to ensure consistent brute-force protection across all environments (Vercel, Netlify, Cloudflare).
+- **JWE Encryption**: Session cookies are encrypted using **AES-256-GCM**, ensuring no sensitive data is readable or modifiable client-side.
+- **Hardened OAuth Protection**: Google integration includes token encryption (`encryptOAuthTokens`) and strict `trustedOrigins` validation.
+- **Account Enumeration Prevention**: Signup and password recovery flows are designed to never confirm user existence to attackers.
+- **Audit Logging**: Full traceability via `databaseHooks` for critical events (session creation, email changes).
+- **Redirect Security**: Strict whitelist of authorized domains (`trustedOrigins`) to prevent malicious redirects after login.
+
+| `src/routes/_auth/forgot-password.tsx` | Always shows "check inbox" regardless of email existence |
+
+### 🔑 Google OAuth Flow & Security
+
+RefactKit implements the Google OAuth flow with maximum security (PKCE + AES Encryption).
+
+#### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as Frontend (React)
+    participant B as Backend (Better Auth)
+    participant G as Google OAuth
+    participant DB as Supabase (PostgreSQL)
+
+    U->>F: Clicks "Continue with Google"
+    F->>B: POST /api/auth/sign-in/social (provider: 'google')
+    B-->>B: Generates State & Code Verifier (PKCE)
+    B-->>F: Set-Cookie (state) + Redirect to Google
+    F->>G: Redirect to Consent Screen
+    U->>G: Approves access
+    G-->>F: Redirect back to /api/auth/callback/google?code=...
+    F->>B: GET /api/auth/callback/google
+    B->>G: Exchange Code for Tokens (Access/Refresh)
+    B-->>B: Encrypts Tokens with BETTER_AUTH_SECRET (AES-256-GCM)
+    B->>DB: Saves User + Account (Encrypted Tokens)
+    B-->>F: Set-Cookie (session) + Redirect to /dashboard
+    F->>U: Displays Dashboard
+```
+
+#### OAuth Token Security
+Unlike standard integrations, RefactKit **systematically encrypts** access and refresh tokens before storage.
+
+1.  **Encryption at Rest**: All Google tokens are encrypted via AES-256-GCM using your `BETTER_AUTH_SECRET`. Even in the event of a database leak, your users remain protected.
+2.  **Client Isolation**: The browser **never** sees the Google tokens. Decryption occurs exclusively server-side during authenticated API calls.
+3.  **PKCE Protection**: Automatic protection against authorization code interception, ensuring only your server can finalize the token exchange.
 
 | File | Purpose |
 |---|---|
