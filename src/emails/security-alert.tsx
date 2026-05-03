@@ -1,4 +1,4 @@
-import { Heading, Section, Text, Button } from '@react-email/components';
+import { Heading, Section, Text, Button, Img } from '@react-email/components';
 import React from 'react';
 import { EmailLayout } from './layout';
 
@@ -8,35 +8,48 @@ interface SecurityAlertProps {
   loginUrl: string;
 }
 
+const baseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+
 export const SecurityAlert = ({
   userName,
   email,
   loginUrl,
 }: SecurityAlertProps) => (
   <EmailLayout preview="Security Alert: Sign-in attempt on your account">
-    <Heading className="text-red-600 text-2xl font-bold text-center m-0 mb-4">
-      Security Alert
-    </Heading>
-    <Text className="text-fg-2 text-base leading-relaxed mb-4">
+    <Section className="mb-3">
+       <Img
+        src={`${baseUrl}/static/logo.png`}
+        alt="Logo"
+        width={48}
+        className="mx-auto mb-5 block"
+      />
+      <Heading as="h1" className="font-font-28 text-fg m-0 font-bold">
+        Security Alert
+      </Heading>
+    </Section>
+
+    <Text className="font-font-16 text-fg-2 mx-auto mt-0 mb-4 max-w-[380px] text-left">
       Hi {userName},
     </Text>
-    <Text className="text-fg-2 text-base leading-relaxed mb-6">
+
+    <Text className="font-font-16 text-fg-2 mx-auto mt-0 mb-8 max-w-[380px] text-left">
       Someone tried to create a new account using your email address (<strong>{email}</strong>).
+      If this was you and you've forgotten your password, you can reset it.
     </Text>
-    <Text className="text-fg-2 text-base leading-relaxed mb-8">
-      If this was you and you've forgotten your password, you can reset it from the login page. If this wasn't you, your account is still secure, and you can safely ignore this email.
-    </Text>
-    <Section className="text-center mb-8">
+
+    <Section className="mb-8 text-center">
       <Button
         href={loginUrl}
-        className="bg-fg text-white text-base font-bold py-3 px-8 rounded-lg"
+        className="bg-fg font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-bold leading-6"
       >
         Go to Login
       </Button>
     </Section>
-    <Section className="p-4 bg-gray-50 rounded-lg border border-gray-100">
-       <Text className="text-fg-3 text-xs m-0">
-         This is an automated security notification. For your protection, we'll never ask for your password via email.
+
+    <Section className="bg-bg p-6 rounded-lg border border-stroke-strong text-left">
+       <Text className="m-0 font-font-13 text-fg-3">
+         <strong>Why did I receive this?</strong><br />
+         RefactKit uses anti-enumeration security to protect your privacy. If a signup attempt is made with an existing email, we notify you instead of revealing your account status to the visitor.
        </Text>
     </Section>
   </EmailLayout>

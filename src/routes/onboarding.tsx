@@ -13,6 +13,7 @@ import { getServerSession } from '@/server/auth-fns'
 import { createOrganization } from '@/server/org-fns'
 import { Logo } from './_auth/-shared'
 import { ThemeToggle } from '@/components/shared/auth-ui'
+import { DotPattern } from '@/components/ui/dot-pattern'
 
 export const Route = createFileRoute('/onboarding')({
   loader: async () => {
@@ -57,67 +58,69 @@ function OnboardingPage() {
   })
 
   return (
-    <div className="flex min-h-screen overflow-hidden bg-white dark:bg-gray-950">
+    <div className="flex min-h-screen overflow-hidden bg-background text-foreground">
       {/* Left */}
-      <div className="relative hidden w-1/2 flex-col lg:flex">
-        <div className="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/5 blur-[140px]" />
+      <div className="relative hidden w-1/2 flex-col lg:flex border-r border-border/40 bg-muted/5">
+        <DotPattern
+          cr={1.5}
+          className="[mask-image:radial-gradient(500px_circle_at_center,white,transparent)] opacity-40 text-primary/30"
+        />
+        <div className="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[140px]" />
         <div className="relative z-10 flex h-full flex-col justify-between p-12">
           <Logo />
           <div className="max-w-md">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal-500/20 bg-teal-500/8 px-3 py-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
-              <span className="text-xs font-medium text-teal-700 dark:text-teal-400">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-3 py-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="text-xs font-medium text-primary">
                 {l.badge}
               </span>
             </div>
-            <h1 className="text-4xl font-semibold leading-tight text-gray-900 dark:text-white">
+            <h1 className="text-4xl font-semibold leading-tight text-foreground">
               {l.heading}
             </h1>
-            <p className="mt-4 text-lg leading-relaxed text-gray-500 dark:text-gray-400">
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               {l.subheading}
             </p>
             <ul className="mt-8 space-y-3">
               {l.features.map((f) => (
                 <li
                   key={f}
-                  className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex items-center gap-3 text-sm text-muted-foreground"
                 >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-500/20">
-                    <Check className="h-3 w-3 text-teal-600 dark:text-teal-400" strokeWidth={3} />
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                    <Check className="h-3 w-3 text-primary" strokeWidth={3} />
                   </span>
                   {f}
                 </li>
               ))}
             </ul>
           </div>
-          <p className="text-sm text-gray-400 dark:text-gray-600">
-            {t.common.copyright.replace('{{year}}', String(new Date().getFullYear()))}
+          <p className="text-sm text-muted-foreground/60">
+            © {new Date().getFullYear()} RefactKit
           </p>
         </div>
       </div>
 
       {/* Right */}
-      <div className="flex w-full flex-col overflow-y-auto lg:w-1/2">
-        <header className="flex h-14 items-center justify-between border-b border-gray-200 px-5 dark:border-gray-800 lg:hidden">
+      <div className="flex w-full flex-col overflow-y-auto lg:w-1/2 bg-background">
+        <header className="flex h-14 items-center justify-between border-b border-border/40 px-5 lg:hidden">
           <Logo />
           <div className="flex items-center gap-2">
-            <LangSwitcher />
             <ThemeToggle />
           </div>
         </header>
         <div className="absolute right-6 top-5 hidden items-center gap-2 lg:flex">
-          <LangSwitcher />
           <ThemeToggle />
         </div>
         <div className="flex flex-1 items-center justify-center px-5 py-10">
           <div className="w-full max-w-[360px] flex flex-col gap-6">
             <div className="flex flex-col items-center gap-3 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-500/10">
-                <Building2 className="h-7 w-7 text-teal-600 dark:text-teal-400" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+                <Building2 className="h-7 w-7 text-primary" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{l.title}</h2>
-                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{l.subtitle}</p>
+                <h2 className="text-2xl font-semibold text-foreground">{l.title}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">{l.subtitle}</p>
               </div>
             </div>
 

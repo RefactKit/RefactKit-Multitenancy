@@ -62,7 +62,7 @@ const techLogos: TechLogo[] = [
   { name: 'i18n', description: 'Internationalization', src: '/i18.png' },
 ]
 
-export default function LandingPage() {
+function LandingPage() {
   const { t } = useI18n()
   const l = t.landing
 

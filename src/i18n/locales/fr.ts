@@ -119,6 +119,9 @@ export const fr: Translations = {
     workspace: 'Espace de travail',
     administration: 'Administration',
     gallery: 'Galerie',
+    feedback: 'Feedback',
+    support: 'Support',
+    documentation: 'Documentation',
   },
   dashboard: {
     title: 'Tableau de bord',

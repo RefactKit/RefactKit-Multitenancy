@@ -34,35 +34,56 @@ export const EmailLayout = ({
       <Head>
         <EmailFonts />
       </Head>
-      <Body className="bg-bg-2 m-0 font-sans">
+      <Body className="bg-bg-2 m-0 font-sans text-center">
         <Preview>{preview}</Preview>
-        <Container className="mx-auto mt-8 w-full max-w-[600px] bg-bg p-8 rounded-lg shadow-sm border border-gray-100">
-          <Section className="mb-8">
-             <Row>
-                <Column align="left">
-                   <Img
+        <Container className="mx-auto mt-8 w-full max-w-[640px]">
+          <Section className="bg-bg px-6 py-4">
+            {/* Header */}
+            <Section className="mb-3 px-6">
+              <Row>
+                <Column className="py-[7px] w-1/2 align-middle">
+                  <Img
                     src={`${baseUrl}/static/logo.png`}
                     alt="RefactKit"
-                    width={120}
+                    width={100}
                     className="block"
                   />
                 </Column>
-                <Column align="right">
-                   <Text className="text-fg-3 text-xs m-0 uppercase tracking-wider">{companyName}</Text>
+                <Column align="right" className="py-[7px] w-1/2 align-middle">
+                  <Text className="m-0 font-font-13 text-fg-3">
+                    {companyName}
+                  </Text>
                 </Column>
-             </Row>
-          </Section>
-          
-          {children}
+              </Row>
+            </Section>
 
-          <Section className="mt-12 pt-8 border-t border-gray-100 text-center">
-            <Text className="text-fg-3 text-xs leading-relaxed">
-              RefactKit — The High-Performance SaaS Boilerplate.<br />
-              Helping you ship faster with React 19 and TanStack.
-            </Text>
-            <Section className="mt-4">
-               <Link href="https://refactkit.com" className="text-primary text-xs font-semibold mx-2">Website</Link>
-               <Link href="https://github.com/refactkit" className="text-primary text-xs font-semibold mx-2">GitHub</Link>
+            {/* Main Content Boxed */}
+            <Section className="bg-bg-2 rounded-[10px] px-[40px] py-[64px] text-center border border-stroke-strong">
+               {children}
+            </Section>
+
+            {/* Footer */}
+            <Section className="py-10 text-center">
+              <Text className="mx-auto mt-0 mb-8 max-w-[280px] font-font-13 text-fg-3">
+                {companyName} — The high-performance SaaS boilerplate built with React 19 and TanStack.
+              </Text>
+
+              <Section className="mb-8">
+                <Link href="https://twitter.com/refactkit" className="inline-block px-2">
+                   <Text className="text-primary font-font-13 font-bold m-0">Twitter</Text>
+                </Link>
+                <Link href="https://github.com/refactkit" className="inline-block px-2">
+                   <Text className="text-primary font-font-13 font-bold m-0">GitHub</Text>
+                </Link>
+              </Section>
+
+              <Text className="mt-4 mb-5 font-font-11 text-fg-3">
+                123 Tech Avenue, Suite 101<br />
+                San Francisco, CA 94107
+              </Text>
+              <Text className="m-0 font-font-11 text-fg-3">
+                You're receiving this because you signed up for {companyName}.
+              </Text>
             </Section>
           </Section>
         </Container>

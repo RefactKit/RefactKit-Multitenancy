@@ -98,6 +98,9 @@ export const ar: Translations = {
     workspace: 'مساحة العمل',
     administration: 'الإدارة',
     gallery: 'المعرض',
+    feedback: 'تعليقات',
+    support: 'الدعم',
+    documentation: 'التوثيق',
   },
   dashboard: {
     title: 'لوحة التحكم',

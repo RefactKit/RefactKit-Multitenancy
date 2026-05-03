@@ -98,6 +98,9 @@ export const es: Translations = {
     workspace: 'Espacio',
     administration: 'Administración',
     gallery: 'Galería',
+    feedback: 'Feedback',
+    support: 'Soporte',
+    documentation: 'Documentación',
   },
   dashboard: {
     title: 'Panel de control',

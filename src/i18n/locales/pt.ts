@@ -123,6 +123,9 @@ export const pt: Translations = {
     workspace: 'Espaço de Trabalho',
     administration: 'Administração',
     gallery: 'Galeria',
+    feedback: 'Feedback',
+    support: 'Suporte',
+    documentation: 'Documentação',
   },
   dashboard: {
     title: 'Painel',

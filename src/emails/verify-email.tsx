@@ -1,4 +1,4 @@
-import { Button, Heading, Section, Text } from '@react-email/components';
+import { Button, Heading, Section, Text, Img } from '@react-email/components';
 import React from 'react';
 import { EmailLayout } from './layout';
 
@@ -6,24 +6,38 @@ interface VerifyEmailProps {
   url: string;
 }
 
+const baseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+
 export const VerifyEmail = ({ url }: VerifyEmailProps) => (
-  <EmailLayout preview="Verify your email address">
-    <Heading className="text-fg text-2xl font-bold text-center m-0 mb-4">
-      Welcome to RefactKit!
-    </Heading>
-    <Text className="text-fg-2 text-base leading-relaxed text-center mb-8">
-      We're excited to have you on board. To get started, please verify your email address by clicking the button below.
+  <EmailLayout preview="Confirm your email address">
+    <Section className="mb-3">
+      <Img
+        src={`${baseUrl}/static/logo.png`}
+        alt="Logo"
+        width={48}
+        className="mx-auto mb-5 block"
+      />
+      <Heading as="h1" className="font-font-28 text-fg m-0 font-bold">
+        We're almost there!
+      </Heading>
+    </Section>
+
+    <Text className="font-font-16 text-fg-2 mx-auto mt-0 mb-8 max-w-[380px] text-center">
+      Thank you for signing up for RefactKit.
+      To verify your account, we just need to confirm your email address.
     </Text>
-    <Section className="text-center mb-8">
+
+    <Section className="mb-6 text-center">
       <Button
         href={url}
-        className="bg-primary text-white text-base font-bold py-3 px-8 rounded-lg"
+        className="bg-fg font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-bold leading-6"
       >
-        Verify Email Address
+        Confirm Email
       </Button>
     </Section>
-    <Text className="text-fg-3 text-sm text-center">
-      If you didn't create an account, you can safely ignore this email.
+
+    <Text className="font-font-13 text-fg-3 mx-auto mt-8 mb-0 max-w-[400px] text-center">
+      If you didn't request this, please ignore this email.
     </Text>
   </EmailLayout>
 );

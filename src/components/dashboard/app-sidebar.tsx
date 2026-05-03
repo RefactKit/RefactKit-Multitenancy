@@ -1,15 +1,22 @@
 import { Buildings, Gear, Image as PhosphorImage, SquaresFour, Users } from '@phosphor-icons/react'
 import {
+  MessageSquare,
+  LifeBuoy,
+  ArrowUpRight
+} from 'lucide-react'
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  SidebarSeparator,
 } from '@/components/ui/sidebar'
 import { useI18n } from '@/i18n/context'
 import { NavMain } from './nav-main'
 import { NavUser } from './nav-user'
 import { OrgSwitcher } from './org-switcher'
+import { NavSecondary } from './nav-secondary'
 
 interface Org {
   id: string
@@ -74,6 +81,26 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
     },
   ]
 
+  // Group 4: Secondary / Footer items
+  const secondaryItems = [
+    {
+      title: t.sidebar.feedback,
+      url: '#',
+      icon: MessageSquare,
+    },
+    {
+      title: t.sidebar.support,
+      url: '#',
+      icon: LifeBuoy,
+    },
+    {
+      title: t.sidebar.documentation,
+      url: 'https://docs.refactkit.com',
+      icon: ArrowUpRight,
+      isExternal: true,
+    },
+  ]
+
   return (
     <Sidebar collapsible="icon" side={dir === 'rtl' ? 'right' : 'left'}>
       <SidebarHeader className="gap-4 group-data-[collapsible=icon]:p-2 p-4 pb-2">
@@ -83,16 +110,21 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
         {/* Workspace Operations & Personal Account (Merged for consistent spacing) */}
         <NavMain items={[...platformItems, ...accountItems]} label="GENERAL" />
 
-        {/* Administration & Global Organizations */}
+        {/* Administration & Global Organizations (Collapsible) */}
         <NavMain
           items={[
             ...adminItems,
             { title: t.sidebar.workspaces, to: '/organizations', icon: Buildings },
           ]}
           label={t.sidebar.administration.toUpperCase()}
+          collapsible
         />
+
+        {/* Secondary Navigation (Feedback, Support, Documentation) */}
+        <NavSecondary items={secondaryItems} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
+        <SidebarSeparator className="mb-2" />
         <NavUser />
       </SidebarFooter>
       <SidebarRail />

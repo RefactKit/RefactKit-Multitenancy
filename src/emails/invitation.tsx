@@ -1,4 +1,4 @@
-import { Button, Heading, Section, Text, Img } from '@react-email/components';
+import { Button, Heading, Section, Text, Img, Row, Column } from '@react-email/components';
 import React from 'react';
 import { EmailLayout } from './layout';
 
@@ -9,6 +9,8 @@ interface InvitationEmailProps {
   orgLogo?: string;
 }
 
+const baseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+
 export const InvitationEmail = ({
   orgName,
   inviterName,
@@ -16,35 +18,47 @@ export const InvitationEmail = ({
   orgLogo,
 }: InvitationEmailProps) => (
   <EmailLayout preview={`Join ${orgName} on RefactKit`}>
-    <Section className="text-center mb-6">
-      {orgLogo ? (
+    <Section className="mb-8">
+      <Section className="bg-black mx-auto p-3 rounded-xl w-14 text-center">
         <Img
-          src={orgLogo}
-          width={64}
-          height={64}
-          className="mx-auto rounded-lg mb-4"
+          src={orgLogo || `${baseUrl}/static/logo-white.png`}
+          alt={orgName}
+          width={32}
+          className="block mx-auto rounded"
         />
-      ) : (
-        <Section className="w-16 h-16 bg-primary/10 rounded-lg mx-auto mb-4 flex items-center justify-center">
-          <Text className="text-primary text-xl font-bold m-0">{orgName[0]}</Text>
-        </Section>
-      )}
+      </Section>
     </Section>
-    <Heading className="text-fg text-2xl font-bold text-center m-0 mb-4">
+
+    <Heading as="h1" className="font-font-28 text-fg m-0 font-bold mb-6">
       Join the Team
     </Heading>
-    <Text className="text-fg-2 text-base leading-relaxed text-center mb-8">
-      <strong>{inviterName}</strong> has invited you to join <strong>{orgName}</strong> on RefactKit.
+
+    <Text className="font-font-16 text-fg-2 mx-auto mt-0 mb-8 max-w-[420px] text-center">
+      <strong>{inviterName}</strong> has invited you to join <strong>{orgName}</strong> on RefactKit. 
+      Bring your team, tools, and workflows together in one place.
     </Text>
-    <Section className="text-center mb-8">
+
+    <Row className="mb-10">
+       <Column className="w-1/2 pr-2.5 align-top">
+          <Text className="mt-0 mb-1 font-font-16 font-bold text-fg text-left">Team workspaces</Text>
+          <Text className="m-0 font-font-13 text-fg-2 text-left">Roles, guests, and access levels so the right people see the right work.</Text>
+       </Column>
+       <Column className="w-1/2 pl-2.5 align-top">
+          <Text className="mt-0 mb-1 font-font-16 font-bold text-fg text-left">Shared Storage</Text>
+          <Text className="m-0 font-font-13 text-fg-2 text-left">Manage assets and documents in a centralized organization context.</Text>
+       </Column>
+    </Row>
+
+    <Section className="text-center mb-6">
       <Button
         href={url}
-        className="bg-primary text-white text-base font-bold py-3 px-8 rounded-lg"
+        className="bg-primary font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-bold leading-6"
       >
         Accept Invitation
       </Button>
     </Section>
-    <Text className="text-fg-3 text-sm text-center">
+
+    <Text className="font-font-13 text-fg-3 mx-auto mt-8 mb-0 max-w-[400px] text-center">
       If you weren't expecting this invitation, you can safely ignore this email.
     </Text>
   </EmailLayout>

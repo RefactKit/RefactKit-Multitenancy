@@ -117,6 +117,9 @@ export const en = {
     workspace: 'Workspace',
     administration: 'Administration',
     gallery: 'Gallery',
+    feedback: 'Feedback',
+    support: 'Support',
+    documentation: 'Documentation',
   },
   dashboard: {
     title: 'Dashboard',
