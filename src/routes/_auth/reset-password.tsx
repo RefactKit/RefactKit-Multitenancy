@@ -17,7 +17,7 @@ export const Route = createFileRoute('/_auth/reset-password')({
 
 const schema = z
   .object({
-    password: z.string().min(12, 'Password must be at least 12 characters'),
+    password: z.string().min(11, 'Password must be at least 11 characters'),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {

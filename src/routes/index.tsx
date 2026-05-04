@@ -198,9 +198,7 @@ function LandingPage() {
                     <h3 className="text-base font-semibold tracking-tight text-foreground">
                       {tech.name}
                     </h3>
-                    <p className="text-xs font-medium text-muted-foreground">
-                      {tech.description}
-                    </p>
+                    <p className="text-xs font-medium text-muted-foreground">{tech.description}</p>
                   </div>
                 </div>
               ))}

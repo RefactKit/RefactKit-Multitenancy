@@ -1,9 +1,5 @@
 import { Buildings, Gear, Image as PhosphorImage, SquaresFour, Users } from '@phosphor-icons/react'
-import {
-  MessageSquare,
-  LifeBuoy,
-  ArrowUpRight
-} from 'lucide-react'
+import { MessageSquare, LifeBuoy, ArrowUpRight } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,

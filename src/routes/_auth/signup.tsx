@@ -30,7 +30,7 @@ function SignupPage() {
   const schema = z.object({
     name: z.string().min(2, l.nameMin),
     email: z.string().email(l.emailInvalid),
-    password: z.string().min(12, 'Password must be at least 12 characters'),
+    password: z.string().min(11, 'Password must be at least 11 characters'),
   })
 
   const form = useForm({

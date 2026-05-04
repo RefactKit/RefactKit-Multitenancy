@@ -44,28 +44,16 @@ export function AuthShell({
             <div className="max-w-md">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-3 py-1">
                 <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                <span className="text-xs font-medium text-primary">
-                  {badge}
-                </span>
+                <span className="text-xs font-medium text-primary">{badge}</span>
               </div>
-              <h1 className="text-4xl font-semibold leading-tight text-foreground">
-                {heading}
-              </h1>
-              <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-                {subheading}
-              </p>
+              <h1 className="text-4xl font-semibold leading-tight text-foreground">{heading}</h1>
+              <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{subheading}</p>
               {features && (
                 <ul className="mt-8 space-y-3">
                   {features.map((f) => (
-                    <li
-                      key={f}
-                      className="flex items-center gap-3 text-sm text-muted-foreground"
-                    >
+                    <li key={f} className="flex items-center gap-3 text-sm text-muted-foreground">
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                        <Check
-                          className="h-3 w-3 text-primary"
-                          strokeWidth={3}
-                        />
+                        <Check className="h-3 w-3 text-primary" strokeWidth={3} />
                       </span>
                       {f}
                     </li>

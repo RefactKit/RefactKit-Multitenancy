@@ -28,7 +28,7 @@ function LoginPage() {
 
   const schema = z.object({
     email: z.string().email(l.error),
-    password: z.string().min(1, l.error),
+    password: z.string().min(11, 'Password must be at least 11 characters'),
   })
 
   const form = useForm({
