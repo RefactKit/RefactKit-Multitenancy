@@ -1,4 +1,4 @@
-import { useAuth, useSession } from '@better-auth-ui/react'
+import { useAuth } from '@better-auth-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { type SyntheticEvent, useState } from 'react'
@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
 import { updateUser as updateUserFn } from '@/server/auth-fns'
+import { useSession } from '../../../../lib/auth-client'
 
 interface UserProfileProps {
   className?: string

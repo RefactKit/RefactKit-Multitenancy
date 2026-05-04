@@ -1,4 +1,6 @@
-import { useAuth, useRevokeSession, useSession } from '@better-auth-ui/react'
+import { useAuth } from '@better-auth-ui/react'
+import { useState } from 'react'
+import { revokeSession, useSession } from '../../../../lib/auth-client'
 import { useNavigate } from '@tanstack/react-router'
 import type { Session } from 'better-auth'
 import Bowser from 'bowser'
@@ -35,10 +37,19 @@ export function ActiveSession({ activeSession }: ActiveSessionProps) {
   const { data: session } = useSession({ refetchOnMount: false })
   const navigate = useNavigate()
 
-  const { mutate: revokeSession, isPending: isRevoking } = useRevokeSession({
-    onError: (error: any) => toast.error(error.error?.message || error.message),
-    onSuccess: () => toast.success(localization.settings.revokeSessionSuccess),
-  })
+  const [isRevoking, setIsRevoking] = useState(false)
+
+  const handleRevokeSession = async (sessionToRevoke: Session) => {
+    setIsRevoking(true)
+    const { error } = await revokeSession({ token: sessionToRevoke.token })
+    setIsRevoking(false)
+
+    if (error) {
+      toast.error(error.message)
+    } else {
+      toast.success(localization.settings.revokeSessionSuccess)
+    }
+  }
 
   const isCurrentSession = activeSession.token === session?.session.token
   const ua = Bowser.parse(activeSession.userAgent || '')
@@ -75,7 +86,7 @@ export function ActiveSession({ activeSession }: ActiveSessionProps) {
           variant="outline"
           size="sm"
           onClick={() =>
-            isCurrentSession ? navigate({ to: '/logout' }) : revokeSession(activeSession)
+            isCurrentSession ? navigate({ to: '/logout' }) : handleRevokeSession(activeSession)
           }
           disabled={isRevoking}
         >

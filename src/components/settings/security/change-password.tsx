@@ -3,8 +3,8 @@ import {
   useChangePassword,
   useListAccounts,
   useRequestPasswordReset,
-  useSession,
 } from '@better-auth-ui/react'
+import { useSession } from '../../../../lib/auth-client'
 import { Eye, EyeOff } from 'lucide-react'
 import { type SyntheticEvent, useState } from 'react'
 import { toast } from 'sonner'

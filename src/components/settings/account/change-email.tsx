@@ -1,4 +1,5 @@
-import { useAuth, useChangeEmail, useSession } from '@better-auth-ui/react'
+import { useAuth, useChangeEmail } from '@better-auth-ui/react'
+import { useSession } from '../../../../lib/auth-client'
 import { type SyntheticEvent, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'

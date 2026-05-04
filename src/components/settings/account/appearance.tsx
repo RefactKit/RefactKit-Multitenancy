@@ -1,4 +1,4 @@
-import { useAuth, useSession } from '@better-auth-ui/react'
+import { useAuth } from '@better-auth-ui/react'
 import { Monitor, Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { Card, CardContent } from '@/components/ui/card'
@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select'
 import { type Font, useFont } from '@/hooks/use-font'
 import { cn } from '@/lib/utils'
+import { useSession } from '../../../../lib/auth-client'
 
 interface AppearanceProps {
   className?: string

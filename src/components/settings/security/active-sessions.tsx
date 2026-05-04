@@ -1,10 +1,11 @@
-import { useAuth, useListSessions, useSession } from '@better-auth-ui/react'
+import { useAuth } from '@better-auth-ui/react'
 import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { ActiveSession } from './active-session'
+import { useListSessions, useSession } from '../../../../lib/auth-client'
 
 interface ActiveSessionsProps {
   className?: string
