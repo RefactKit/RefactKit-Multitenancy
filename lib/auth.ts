@@ -1,6 +1,6 @@
-import { dash } from '@better-auth/infra'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { sentinel } from '@better-auth/infra'
 import { createAccessControl, multiSession, organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { eq } from 'drizzle-orm'
@@ -249,6 +249,7 @@ export const auth = betterAuth({
       },
     }),
     multiSession(),
+    sentinel(),
     tanstackStartCookies(),
   ], // must be last
 })
