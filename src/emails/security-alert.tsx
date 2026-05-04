@@ -1,25 +1,21 @@
-import { Heading, Section, Text, Button, Img } from '@react-email/components';
-import React from 'react';
-import { EmailLayout } from './layout';
+import { Heading, Section, Text, Button, Img } from '@react-email/components'
+import React from 'react'
+import { EmailLayout } from './layout'
 
 interface SecurityAlertProps {
-  userName: string;
-  email: string;
-  loginUrl: string;
+  userName: string
+  email: string
+  loginUrl: string
 }
 
-import { getBaseURL } from '../../lib/env';
+import { getBaseURL } from '../../lib/env'
 
-const baseUrl = getBaseURL();
+const baseUrl = getBaseURL()
 
-export const SecurityAlert = ({
-  userName,
-  email,
-  loginUrl,
-}: SecurityAlertProps) => (
+export const SecurityAlert = ({ userName, email, loginUrl }: SecurityAlertProps) => (
   <EmailLayout preview="Security Alert: Sign-in attempt on your account">
     <Section className="mb-3">
-       <Img
+      <Img
         src={`${baseUrl}/static/logo.png`}
         alt="Logo"
         width={48}
@@ -35,8 +31,8 @@ export const SecurityAlert = ({
     </Text>
 
     <Text className="font-font-16 text-fg-2 mx-auto mt-0 mb-8 max-w-[380px] text-left">
-      Someone tried to create a new account using your email address (<strong>{email}</strong>).
-      If this was you and you've forgotten your password, you can reset it.
+      Someone tried to create a new account using your email address (<strong>{email}</strong>). If
+      this was you and you've forgotten your password, you can reset it.
     </Text>
 
     <Section className="mb-8 text-center">
@@ -49,12 +45,15 @@ export const SecurityAlert = ({
     </Section>
 
     <Section className="bg-bg p-6 rounded-lg border border-stroke-strong text-left">
-       <Text className="m-0 font-font-13 text-fg-3">
-         <strong>Why did I receive this?</strong><br />
-         RefactKit uses anti-enumeration security to protect your privacy. If a signup attempt is made with an existing email, we notify you instead of revealing your account status to the visitor.
-       </Text>
+      <Text className="m-0 font-font-13 text-fg-3">
+        <strong>Why did I receive this?</strong>
+        <br />
+        RefactKit uses anti-enumeration security to protect your privacy. If a signup attempt is
+        made with an existing email, we notify you instead of revealing your account status to the
+        visitor.
+      </Text>
     </Section>
   </EmailLayout>
-);
+)
 
-export default SecurityAlert;
+export default SecurityAlert

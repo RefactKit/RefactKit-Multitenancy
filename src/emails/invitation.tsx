@@ -1,24 +1,19 @@
-import { Button, Heading, Section, Text, Img, Row, Column } from '@react-email/components';
-import React from 'react';
-import { EmailLayout } from './layout';
+import { Button, Heading, Section, Text, Img, Row, Column } from '@react-email/components'
+import React from 'react'
+import { EmailLayout } from './layout'
 
 interface InvitationEmailProps {
-  orgName: string;
-  inviterName: string;
-  url: string;
-  orgLogo?: string;
+  orgName: string
+  inviterName: string
+  url: string
+  orgLogo?: string
 }
 
-import { getBaseURL } from '../../lib/env';
+import { getBaseURL } from '../../lib/env'
 
-const baseUrl = getBaseURL();
+const baseUrl = getBaseURL()
 
-export const InvitationEmail = ({
-  orgName,
-  inviterName,
-  url,
-  orgLogo,
-}: InvitationEmailProps) => (
+export const InvitationEmail = ({ orgName, inviterName, url, orgLogo }: InvitationEmailProps) => (
   <EmailLayout preview={`Join ${orgName} on RefactKit`}>
     <Section className="mb-8">
       <Section className="bg-black mx-auto p-3 rounded-xl w-14 text-center">
@@ -36,19 +31,23 @@ export const InvitationEmail = ({
     </Heading>
 
     <Text className="font-font-16 text-fg-2 mx-auto mt-0 mb-8 max-w-[420px] text-center">
-      <strong>{inviterName}</strong> has invited you to join <strong>{orgName}</strong> on RefactKit. 
-      Bring your team, tools, and workflows together in one place.
+      <strong>{inviterName}</strong> has invited you to join <strong>{orgName}</strong> on
+      RefactKit. Bring your team, tools, and workflows together in one place.
     </Text>
 
     <Row className="mb-10">
-       <Column className="w-1/2 pr-2.5 align-top">
-          <Text className="mt-0 mb-1 font-font-16 font-bold text-fg text-left">Team workspaces</Text>
-          <Text className="m-0 font-font-13 text-fg-2 text-left">Roles, guests, and access levels so the right people see the right work.</Text>
-       </Column>
-       <Column className="w-1/2 pl-2.5 align-top">
-          <Text className="mt-0 mb-1 font-font-16 font-bold text-fg text-left">Shared Storage</Text>
-          <Text className="m-0 font-font-13 text-fg-2 text-left">Manage assets and documents in a centralized organization context.</Text>
-       </Column>
+      <Column className="w-1/2 pr-2.5 align-top">
+        <Text className="mt-0 mb-1 font-font-16 font-bold text-fg text-left">Team workspaces</Text>
+        <Text className="m-0 font-font-13 text-fg-2 text-left">
+          Roles, guests, and access levels so the right people see the right work.
+        </Text>
+      </Column>
+      <Column className="w-1/2 pl-2.5 align-top">
+        <Text className="mt-0 mb-1 font-font-16 font-bold text-fg text-left">Shared Storage</Text>
+        <Text className="m-0 font-font-13 text-fg-2 text-left">
+          Manage assets and documents in a centralized organization context.
+        </Text>
+      </Column>
     </Row>
 
     <Section className="text-center mb-6">
@@ -64,6 +63,6 @@ export const InvitationEmail = ({
       If you weren't expecting this invitation, you can safely ignore this email.
     </Text>
   </EmailLayout>
-);
+)
 
-export default InvitationEmail;
+export default InvitationEmail

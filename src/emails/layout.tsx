@@ -11,26 +11,22 @@ import {
   Row,
   Column,
   Link,
-} from '@react-email/components';
-import React from 'react';
-import { tailwindConfig } from './theme';
-import { EmailFonts } from './theme-fonts';
+} from '@react-email/components'
+import React from 'react'
+import { tailwindConfig } from './theme'
+import { EmailFonts } from './theme-fonts'
 
 interface EmailLayoutProps {
-  preview: string;
-  children: React.ReactNode;
-  companyName?: string;
+  preview: string
+  children: React.ReactNode
+  companyName?: string
 }
 
-import { getBaseURL } from '../../lib/env';
+import { getBaseURL } from '../../lib/env'
 
-const baseUrl = getBaseURL();
+const baseUrl = getBaseURL()
 
-export const EmailLayout = ({
-  preview,
-  children,
-  companyName = 'RefactKit',
-}: EmailLayoutProps) => (
+export const EmailLayout = ({ preview, children, companyName = 'RefactKit' }: EmailLayoutProps) => (
   <Tailwind config={tailwindConfig}>
     <Html>
       <Head>
@@ -52,9 +48,7 @@ export const EmailLayout = ({
                   />
                 </Column>
                 <Column align="right" className="py-[7px] w-1/2 align-middle">
-                  <Text className="m-0 font-font-13 text-fg-3">
-                    {companyName}
-                  </Text>
+                  <Text className="m-0 font-font-13 text-fg-3">{companyName}</Text>
                 </Column>
               </Row>
             </Section>
@@ -67,7 +61,8 @@ export const EmailLayout = ({
             {/* Footer */}
             <Section className="py-10 text-center">
               <Text className="mx-auto mt-0 mb-8 max-w-[280px] font-font-13 text-fg-3">
-                {companyName} — The high-performance SaaS boilerplate built with React 19 and TanStack.
+                {companyName} — The high-performance SaaS boilerplate built with React 19 and
+                TanStack.
               </Text>
 
               <Section className="mb-8">
@@ -87,4 +82,4 @@ export const EmailLayout = ({
       </Body>
     </Html>
   </Tailwind>
-);
+)

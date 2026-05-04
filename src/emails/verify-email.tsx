@@ -1,14 +1,14 @@
-import { Button, Heading, Section, Text, Img } from '@react-email/components';
-import React from 'react';
-import { EmailLayout } from './layout';
+import { Button, Heading, Section, Text, Img } from '@react-email/components'
+import React from 'react'
+import { EmailLayout } from './layout'
 
 interface VerifyEmailProps {
-  url: string;
+  url: string
 }
 
-import { getBaseURL } from '../../lib/env';
+import { getBaseURL } from '../../lib/env'
 
-const baseUrl = getBaseURL();
+const baseUrl = getBaseURL()
 
 export const VerifyEmail = ({ url }: VerifyEmailProps) => (
   <EmailLayout preview="Confirm your email address">
@@ -25,8 +25,8 @@ export const VerifyEmail = ({ url }: VerifyEmailProps) => (
     </Section>
 
     <Text className="font-font-16 text-fg-2 mx-auto mt-0 mb-8 max-w-[380px] text-center">
-      Thank you for signing up for RefactKit.
-      To verify your account, we just need to confirm your email address.
+      Thank you for signing up for RefactKit. To verify your account, we just need to confirm your
+      email address.
     </Text>
 
     <Section className="mb-6 text-center">
@@ -42,6 +42,6 @@ export const VerifyEmail = ({ url }: VerifyEmailProps) => (
       If you didn't request this, please ignore this email.
     </Text>
   </EmailLayout>
-);
+)
 
-export default VerifyEmail;
+export default VerifyEmail

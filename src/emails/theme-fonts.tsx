@@ -1,5 +1,5 @@
-import { Font } from '@react-email/components';
-import React from 'react';
+import { Font } from '@react-email/components'
+import React from 'react'
 
 export const EmailFonts = () => (
   <>
@@ -14,4 +14,4 @@ export const EmailFonts = () => (
       fontStyle="normal"
     />
   </>
-);
+)
