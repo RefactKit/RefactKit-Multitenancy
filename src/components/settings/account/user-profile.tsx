@@ -21,7 +21,7 @@ interface UserProfileProps {
 
 export function UserProfile({ className }: UserProfileProps) {
   const { localization } = useAuth()
-  const { data: session } = useSession()
+  const { data: session, refetch } = useSession()
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -30,8 +30,9 @@ export function UserProfile({ className }: UserProfileProps) {
   const { mutate: updateProfile, isPending } = useMutation({
     mutationFn: (data: { name?: string; imageUrl?: string }) => updateUserFn({ data } as any),
     onError: (error: any) => toast.error(error.message),
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(localization.settings.profileUpdatedSuccess)
+      await refetch()
       queryClient.invalidateQueries()
       router.invalidate()
     },
