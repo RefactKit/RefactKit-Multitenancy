@@ -83,8 +83,14 @@ body {
   }
   --animate-blink-cursor: blink-cursor 1.2s step-end infinite;
   @keyframes blink-cursor {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
   }
 }
 
@@ -169,7 +175,8 @@ body {
   }
 }
 
-::view-transition-old(root), ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }

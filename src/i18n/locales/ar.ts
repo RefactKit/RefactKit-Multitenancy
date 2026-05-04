@@ -186,11 +186,7 @@ export const ar: Translations = {
     hero: {
       badge: 'وفر أكثر من 100 ساعة من التطوير',
       title: 'ابنِ الـ SaaS الخاص بك،',
-      titleWords: [
-        'باستخدام طقم full-stack حديث',
-        'بسرعة الضوء',
-        'بكود جاهز للإنتاج',
-      ],
+      titleWords: ['باستخدام طقم full-stack حديث', 'بسرعة الضوء', 'بكود جاهز للإنتاج'],
       subheading:
         'نقطة الانطلاق الكاملة (Full-stack) للمؤسسين والمطورين والـ indie hackers. مبني باستخدام React 19 و TanStack، مع API خلفي، ونظام multi-tenancy آمن ولوحة تحكم متميزة.',
       getStarted: 'ابدأ الآن',

@@ -4,19 +4,19 @@
  * In development, it defaults to localhost:3000 if not provided.
  */
 export const getBaseURL = () => {
-  // If we are in the browser, returning undefined or empty string 
+  // If we are in the browser, returning undefined or empty string
   // will force relative URLs, which is ideal for unified apps.
   if (typeof window !== 'undefined') {
-    return undefined;
+    return undefined
   }
 
   // Server-side logic
   if (import.meta.env.PROD) {
-    // On Vercel, if VITE_APP_URL is not set, we can try to use relative paths 
+    // On Vercel, if VITE_APP_URL is not set, we can try to use relative paths
     // or the system VERCEL_URL if it was exposed.
-    return import.meta.env.VITE_APP_URL || undefined;
+    return import.meta.env.VITE_APP_URL || undefined
   }
 
   // Development fallback
-  return import.meta.env.VITE_APP_URL || 'http://localhost:3000';
-};
+  return import.meta.env.VITE_APP_URL || 'http://localhost:3000'
+}

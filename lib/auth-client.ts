@@ -16,4 +16,4 @@ declare module '@better-auth-ui/react' {
   }
 }
 
-export const { signIn, signUp, signOut, useSession } = authClient
+export const { signIn, signUp, signOut, useSession, useListSessions, revokeSession } = authClient

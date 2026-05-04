@@ -14,6 +14,20 @@
 > [!NOTE]
 > **RefactKit Community Edition** — free and open-source under the MIT license. Build with it, learn from it, share what you create. Contributions, bug reports, and showcases are warmly welcome. 🙌
 
+## 🆓 Community (Free)
+[![Open Source](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![RefactKit](https://img.shields.io/badge/RefactKit-Boilerplate-blue)](https://github.com/yourrepo/refactkit)
+
+| Feature | Description |
+|---------|-------------|
+| 🔑 User Management | View, edit & manage all users |
+| 📋 Audit Logs | Full auth event history |
+| 🛡️ Security Monitoring | Real-time threat detection |
+| 🗄️ Database Monitoring | Live DB health dashboard |
+| 🏢 Organizations | Multi-tenant + team management |
+| 🎨 Branding | Custom auth page theming |
+| 🔄 Log Drains | Stream logs to your analytics stack |
+
 ---
 
 **Table of Contents**

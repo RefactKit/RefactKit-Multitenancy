@@ -72,7 +72,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
     revokeSessionsOnPasswordReset: true,
-    minPasswordLength: 12,
+    minPasswordLength: 11,
     maxPasswordLength: 128, // Prevent DoS via bcrypt long-password attacks
     resetPasswordTokenExpiresIn: 60 * 30, // 30 min (default is 1 hour)
     sendResetPassword: async ({ user, url }) => {
@@ -107,10 +107,7 @@ export const auth = betterAuth({
       // If a user successfully resets their password, they have proven ownership of the email.
       // We should mark them as verified to allow immediate sign-in.
       if (!user.emailVerified) {
-        await db
-          .update(schema.user)
-          .set({ emailVerified: true })
-          .where(eq(schema.user.id, user.id))
+        await db.update(schema.user).set({ emailVerified: true }).where(eq(schema.user.id, user.id))
       }
     },
   },
@@ -129,7 +126,6 @@ export const auth = betterAuth({
   // OWASP: Brute force protection — persistent DB storage survives Vercel restarts
   rateLimit: {
     enabled: true,
-    storage: 'database',
     customRules: {
       '/api/auth/sign-in/email': { window: 60, max: 5 },
       '/api/auth/sign-up/email': { window: 60, max: 3 },
@@ -164,14 +160,19 @@ export const auth = betterAuth({
         after: async ({ data }) => {
           // Field Consistency: Sync social 'image' to custom 'imageUrl' on first login
           if (data.image) {
-            await db.update(user).set({ imageUrl: data.image }).where(eq(user.id, data.id))
+            await db
+              .update(schema.user)
+              .set({ imageUrl: data.image })
+              .where(eq(schema.user.id, data.id))
           }
         },
       },
       update: {
         after: async ({ data, oldData }) => {
           if (oldData?.email !== data.email) {
-            console.log(`[AUDIT] Email changed for user ${data.id}: ${oldData?.email} → ${data.email}`)
+            console.log(
+              `[AUDIT] Email changed for user ${data.id}: ${oldData?.email} → ${data.email}`,
+            )
           }
         },
       },
