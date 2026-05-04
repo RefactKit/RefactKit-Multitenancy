@@ -31,30 +31,27 @@ export function NavSecondary({
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
-                asChild
+                render={
+                  item.isExternal ? (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 w-full"
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => navigate({ to: item.url })}
+                      className="flex items-center gap-2 w-full"
+                    />
+                  )
+                }
                 size="sm"
                 className="text-muted-foreground hover:text-foreground"
               >
-                {item.isExternal ? (
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 w-full"
-                  >
-                    <item.icon className="size-4 shrink-0" />
-                    <span>{item.title}</span>
-                  </a>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => navigate({ to: item.url })}
-                    className="flex items-center gap-2 w-full"
-                  >
-                    <item.icon className="size-4 shrink-0" />
-                    <span>{item.title}</span>
-                  </button>
-                )}
+                <item.icon className="size-4 shrink-0" />
+                <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

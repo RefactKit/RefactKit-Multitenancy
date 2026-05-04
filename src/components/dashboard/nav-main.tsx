@@ -1,5 +1,5 @@
 import { CaretRight } from '@phosphor-icons/react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
@@ -102,7 +102,10 @@ export function NavMain({
               tooltip={item.title}
               onClick={() => navigate({ to: item.to, search: item.search })}
             >
-              <item.icon weight={isActive ? 'duotone' : 'regular'} className="size-5 text-primary" />
+              <item.icon
+                weight={isActive ? 'duotone' : 'regular'}
+                className="size-5 text-primary"
+              />
               <span>{item.title}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -113,13 +116,16 @@ export function NavMain({
 
   if (collapsible) {
     return (
-      <Collapsible defaultOpen className="group/collapsible-group">
+      <Collapsible
+        defaultOpen
+        className="group/collapsible-group group-data-[collapsible=icon]:hidden"
+      >
         <SidebarGroup>
           {label && (
-            <SidebarGroupLabel asChild>
+            <SidebarGroupLabel aschild>
               <CollapsibleTrigger className="flex w-full items-center justify-between hover:text-foreground transition-colors group">
                 <span className="text-xs font-semibold uppercase tracking-wider">{label}</span>
-                <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]/collapsible-group:rotate-180" />
+                <ChevronRight className="size-3.5 transition-transform duration-200 group-data-[state=open]/collapsible-group:rotate-90" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
           )}

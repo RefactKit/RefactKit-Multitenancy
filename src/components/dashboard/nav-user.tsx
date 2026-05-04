@@ -1,4 +1,6 @@
-import { useAuth, useSession } from '@better-auth-ui/react'
+import { useAuth } from '@better-auth-ui/react'
+import { useSession } from '../../../lib/auth-client'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Bell, CaretUpDown, CreditCard, SealCheck, SignOut, Sparkle } from '@phosphor-icons/react'
 import { useRouter } from '@tanstack/react-router'
 import {
@@ -6,6 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
@@ -20,10 +23,26 @@ import { UserAvatar } from './user-avatar'
 
 export function NavUser() {
   const { isMobile } = useSidebar()
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
   const { basePaths, viewPaths, Link } = useAuth()
   const { t } = useI18n()
   const router = useRouter()
+
+  if (isPending) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <div className="flex items-center gap-3.5 px-3 h-14 w-full">
+            <Skeleton className="h-9 w-9 rounded-xl" />
+            <div className="grid flex-1 gap-1">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+          </div>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    )
+  }
 
   if (!session) return null
   const user = session.user
@@ -46,7 +65,7 @@ export function NavUser() {
               <span className="truncate font-semibold text-[15px]">{user.name}</span>
               <span className="truncate text-xs text-muted-foreground/70">{user.email}</span>
             </div>
-            <CaretUpDown weight="bold" className="ml-auto size-4 text-muted-foreground/60" />
+            <CaretUpDown weight="bold" className="ml-auto text-muted-foreground/60" />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
@@ -55,17 +74,22 @@ export function NavUser() {
             sideOffset={4}
             className="min-w-56 rounded-lg"
           >
-            <div className="flex items-center gap-2 px-2 py-2 text-left text-sm border-b border-border mb-1">
-              <UserAvatar className="rounded-lg" />
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs text-muted-foreground">{user.email}</span>
-              </div>
-            </div>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="p-0 font-normal">
+                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                  <UserAvatar className="size-8 rounded-lg" />
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">{user.name}</span>
+                    <span className="truncate text-xs text-muted-foreground">{user.email}</span>
+                  </div>
+                </div>
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Sparkle className="size-5 text-muted-foreground" />
+                <Sparkle />
                 {t.sidebar.upgradeToPro}
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -76,15 +100,15 @@ export function NavUser() {
               <DropdownMenuItem
                 render={<Link href={`${basePaths.settings}/${viewPaths.settings.account}`} />}
               >
-                <SealCheck className="size-5 text-muted-foreground" />
+                <SealCheck />
                 {t.sidebar.account}
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard className="size-5 text-muted-foreground" />
+                <CreditCard />
                 {t.sidebar.billing}
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Bell className="size-5 text-muted-foreground" />
+                <Bell />
                 {t.sidebar.notifications}
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -96,7 +120,7 @@ export function NavUser() {
                 onClick={() => router.navigate({ to: '/logout' })}
                 render={<Link href={`${basePaths.auth}/${viewPaths.auth.signOut}`} />}
               >
-                <SignOut className="size-5 text-muted-foreground" />
+                <SignOut />
                 {t.sidebar.logOut}
               </DropdownMenuItem>
             </DropdownMenuGroup>
