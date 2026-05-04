@@ -43,6 +43,7 @@ const ownerRole = ac.newRole({
 export const auth = betterAuth({
   baseURL: getBaseURL(),
   secret: process.env.BETTER_AUTH_SECRET,
+  trustHost: true,
   trustedOrigins: [
     'http://localhost:3000',
     'http://localhost:3001',
@@ -117,13 +118,19 @@ export const auth = betterAuth({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     },
+    linkedin: {
+      clientId: process.env.LINKEDIN_CLIENT_ID || '',
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET || '',
+      // Explicitly define standard OIDC scopes
+      scope: ['openid', 'profile', 'email'],
+    },
   },
 
   account: {
     encryptOAuthTokens: true, // AES-256-GCM encryption for social tokens
     accountLinking: {
       enabled: true,
-      trustedProviders: ['google'],
+      trustedProviders: ['google', 'linkedin'],
     },
   },
 
@@ -190,7 +197,7 @@ export const auth = betterAuth({
         // Platform-specific handler
         // Vercel/Nitro support waitUntil
         if (typeof (globalThis as any).waitUntil === 'function') {
-          ;(globalThis as any).waitUntil(promise)
+          ; (globalThis as any).waitUntil(promise)
         }
       },
     },
