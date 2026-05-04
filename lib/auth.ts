@@ -121,6 +121,10 @@ export const auth = betterAuth({
 
   account: {
     encryptOAuthTokens: true, // AES-256-GCM encryption for social tokens
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ['google'],
+    },
   },
 
   // OWASP: Brute force protection — persistent DB storage survives Vercel restarts
