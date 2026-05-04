@@ -1,7 +1,7 @@
 import { dash } from '@better-auth/infra'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { createAccessControl, organization } from 'better-auth/plugins'
+import { createAccessControl, multiSession, organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { eq } from 'drizzle-orm'
 import React from 'react'
@@ -197,7 +197,7 @@ export const auth = betterAuth({
         // Platform-specific handler
         // Vercel/Nitro support waitUntil
         if (typeof (globalThis as any).waitUntil === 'function') {
-          ; (globalThis as any).waitUntil(promise)
+          ;(globalThis as any).waitUntil(promise)
         }
       },
     },
@@ -227,14 +227,12 @@ export const auth = betterAuth({
       membershipLimit: 100,
       allowUserToCreateOrganization: false, // Enforced via server-side logic in org-fns.ts
       invitationExpiresIn: 60 * 60 * 24 * 7, // 7 days (default is 48h — better UX)
-
       ac,
       roles: {
         member: memberRole,
         admin: adminRole,
         owner: ownerRole,
       },
-
       sendInvitationEmail: async (data) => {
         console.log(`Sending invitation email to: ${data.email} for org: ${data.organization.name}`)
         const acceptUrl = `${getBaseURL()}/accept-invite?id=${data.invitation.id}`
@@ -250,6 +248,7 @@ export const auth = betterAuth({
         })
       },
     }),
+    multiSession(),
     tanstackStartCookies(),
   ], // must be last
 })
