@@ -4,16 +4,16 @@ import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { Building2, Check } from 'lucide-react'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { ThemeToggle } from '@/components/shared/auth-ui'
 import { LangSwitcher } from '@/components/shared/lang-switcher'
 import { Button } from '@/components/ui/button'
+import { DotPattern } from '@/components/ui/dot-pattern'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useI18n } from '@/i18n/context'
 import { getServerSession } from '@/server/auth-fns'
 import { createOrganization } from '@/server/org-fns'
 import { Logo } from './_auth/-shared'
-import { ThemeToggle } from '@/components/shared/auth-ui'
-import { DotPattern } from '@/components/ui/dot-pattern'
 
 export const Route = createFileRoute('/onboarding')({
   loader: async () => {

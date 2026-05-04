@@ -2,6 +2,9 @@ import { Link } from '@tanstack/react-router'
 import { Check, Languages, Monitor, Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import { LanguageToggle, ThemeToggle } from '@/components/shared/auth-ui'
+import { Header } from '@/components/shared/header'
+import { DotPattern } from '@/components/ui/dot-pattern'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,11 +12,8 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Header } from '@/components/shared/header'
-import { LanguageToggle, ThemeToggle } from '@/components/shared/auth-ui'
 import type { Locale } from '@/i18n'
 import { useI18n } from '@/i18n/context'
-import { DotPattern } from '@/components/ui/dot-pattern'
 
 export function AuthShell({
   children,

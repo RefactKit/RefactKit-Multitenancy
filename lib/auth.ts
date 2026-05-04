@@ -1,18 +1,18 @@
 import { dash } from '@better-auth/infra'
-import { eq } from 'drizzle-orm'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { createAccessControl, organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
-import * as schema from '../db/schema'
+import { eq } from 'drizzle-orm'
+import React from 'react'
 import { db } from '../db/index'
+import * as schema from '../db/schema'
+import { InvitationEmail } from '../src/emails/invitation'
+import { ResetPassword } from '../src/emails/reset-password'
+import { SecurityAlert } from '../src/emails/security-alert'
+import { VerifyEmail } from '../src/emails/verify-email'
 import { sendEmail } from './email'
 import { getBaseURL } from './env'
-import { VerifyEmail } from '../src/emails/verify-email'
-import { ResetPassword } from '../src/emails/reset-password'
-import { InvitationEmail } from '../src/emails/invitation'
-import { SecurityAlert } from '../src/emails/security-alert'
-import React from 'react'
 
 const ac = createAccessControl({
   dashboard: ['read'],
@@ -152,22 +152,22 @@ export const auth = betterAuth({
   databaseHooks: {
     session: {
       create: {
-        after: async ({ data }) => {
-          if (data?.userId) {
-            console.log(`[AUDIT] New session created for user: ${data.userId}`)
+        after: async (session) => {
+          if (session?.userId) {
+            console.log(`[AUDIT] New session created for user: ${session.userId}`)
           }
         },
       },
     },
     user: {
       create: {
-        after: async ({ data }) => {
+        after: async (user) => {
           // Field Consistency: Sync social 'image' to custom 'imageUrl' on first login
-          if (data.image) {
+          if (user.image) {
             await db
               .update(schema.user)
-              .set({ imageUrl: data.image })
-              .where(eq(schema.user.id, data.id))
+              .set({ imageUrl: user.image })
+              .where(eq(schema.user.id, user.id))
           }
         },
       },
@@ -238,7 +238,7 @@ export const auth = betterAuth({
             orgName: data.organization.name,
             inviterName: data.inviter.user.name || 'Someone',
             url: acceptUrl,
-            orgLogo: data.organization.logoUrl || undefined,
+            orgLogo: data.organization.logo || undefined,
           }),
         })
       },

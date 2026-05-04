@@ -1,8 +1,8 @@
-import * as React from 'react'
 import { Eye, EyeOff } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 
 export interface PasswordInputProps extends React.ComponentProps<typeof Input> {}
 

@@ -1,18 +1,18 @@
 import {
   Body,
+  Column,
   Container,
   Head,
   Html,
   Img,
+  Link,
   Preview,
+  Row,
   Section,
   Tailwind,
   Text,
-  Row,
-  Column,
-  Link,
 } from '@react-email/components'
-import React from 'react'
+import type React from 'react'
 import { tailwindConfig } from './theme'
 import { EmailFonts } from './theme-fonts'
 

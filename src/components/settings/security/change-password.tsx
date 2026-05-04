@@ -4,7 +4,6 @@ import {
   useListAccounts,
   useRequestPasswordReset,
 } from '@better-auth-ui/react'
-import { useSession } from '../../../../lib/auth-client'
 import { Eye, EyeOff } from 'lucide-react'
 import { type SyntheticEvent, useState } from 'react'
 import { toast } from 'sonner'
@@ -16,6 +15,7 @@ import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
+import { useSession } from '../../../../lib/auth-client'
 
 interface ChangePasswordProps {
   className?: string

@@ -1,4 +1,4 @@
-import { motion, type MotionStyle, type Transition } from 'framer-motion'
+import { type MotionStyle, motion, type Transition } from 'framer-motion'
 
 import { cn } from '#/lib/utils'
 

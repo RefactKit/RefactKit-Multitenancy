@@ -12,19 +12,17 @@ import {
 } from '@phosphor-icons/react'
 import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
+import { Header } from '@/components/shared/header'
 import { Badge } from '@/components/ui/badge'
+import { BorderBeam } from '@/components/ui/border-beam'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-
-import { getServerSession } from '@/server/auth-fns'
-import { userOrgsQuery } from '@/server/query-keys'
-
 import { DotPattern } from '@/components/ui/dot-pattern'
 import { Marquee } from '@/components/ui/marquee'
-import { Header } from '@/components/shared/header'
-import { useI18n } from '@/i18n/context'
 import { TypingAnimation } from '@/components/ui/typing-animation'
-import { BorderBeam } from '@/components/ui/border-beam'
+import { useI18n } from '@/i18n/context'
+import { cn } from '@/lib/utils'
+import { getServerSession } from '@/server/auth-fns'
+import { userOrgsQuery } from '@/server/query-keys'
 
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {

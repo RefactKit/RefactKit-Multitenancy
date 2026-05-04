@@ -1,5 +1,5 @@
 import { Buildings, Gear, Image as PhosphorImage, SquaresFour, Users } from '@phosphor-icons/react'
-import { MessageSquare, LifeBuoy, ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, LifeBuoy, MessageSquare } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -10,9 +10,9 @@ import {
 } from '@/components/ui/sidebar'
 import { useI18n } from '@/i18n/context'
 import { NavMain } from './nav-main'
+import { NavSecondary } from './nav-secondary'
 import { NavUser } from './nav-user'
 import { OrgSwitcher } from './org-switcher'
-import { NavSecondary } from './nav-secondary'
 
 interface Org {
   id: string

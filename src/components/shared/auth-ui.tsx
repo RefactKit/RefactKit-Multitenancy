@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import { useTheme } from 'next-themes'
 import { Languages, Monitor, Moon, Sun } from 'lucide-react'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,8 +8,8 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useI18n } from '@/i18n/context'
 import type { Locale } from '@/i18n'
+import { useI18n } from '@/i18n/context'
 
 const languageMap: Record<Locale, { label: string; flag: string }> = {
   en: { label: 'English', flag: '🇺🇸' },

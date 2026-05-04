@@ -4,6 +4,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Link2, Mail, Plus, UserPlus } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { ForbiddenContent } from '@/components/shared/forbidden-content'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -26,7 +27,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { useI18n } from '@/i18n/context'
-import { ForbiddenContent } from '@/components/shared/forbidden-content'
 import { authClient } from '../../../../../lib/auth-client'
 import { Route as OrgRoute } from './route'
 

@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
 import { LanguageToggle, ThemeToggle } from '@/components/shared/auth-ui'
+import { Button } from '@/components/ui/button'
 import { useI18n } from '@/i18n/context'
 
 export function Header() {

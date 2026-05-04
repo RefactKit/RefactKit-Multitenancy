@@ -1,7 +1,7 @@
-import { useCallback, useRef } from 'react'
 import { Moon, Sun } from 'lucide-react'
-import { flushSync } from 'react-dom'
 import { useTheme } from 'next-themes'
+import { useCallback, useRef } from 'react'
+import { flushSync } from 'react-dom'
 
 import { cn } from '#/lib/utils'
 

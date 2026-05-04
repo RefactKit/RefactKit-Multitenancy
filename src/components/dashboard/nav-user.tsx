@@ -1,6 +1,4 @@
 import { useAuth } from '@better-auth-ui/react'
-import { useSession } from '../../../lib/auth-client'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Bell, CaretUpDown, CreditCard, SealCheck, SignOut, Sparkle } from '@phosphor-icons/react'
 import { useRouter } from '@tanstack/react-router'
 import {
@@ -18,7 +16,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useI18n } from '@/i18n/context'
+import { useSession } from '../../../lib/auth-client'
 import { UserAvatar } from './user-avatar'
 
 export function NavUser() {

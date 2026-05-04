@@ -1,4 +1,6 @@
-import React from 'react'
+import { useNavigate } from '@tanstack/react-router'
+import type { LucideIcon } from 'lucide-react'
+import type React from 'react'
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -6,8 +8,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import type { LucideIcon } from 'lucide-react'
-import { useNavigate } from '@tanstack/react-router'
 
 interface NavSecondaryItem {
   title: string

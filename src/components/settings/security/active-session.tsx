@@ -1,14 +1,14 @@
 import { useAuth } from '@better-auth-ui/react'
-import { useState } from 'react'
-import { revokeSession, useSession } from '../../../../lib/auth-client'
 import { useNavigate } from '@tanstack/react-router'
 import type { Session } from 'better-auth'
 import Bowser from 'bowser'
 import { LogOut, Monitor, Smartphone, X } from 'lucide-react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
+import { revokeSession, useSession } from '../../../../lib/auth-client'
 
 function timeAgo(date: Date) {
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000)

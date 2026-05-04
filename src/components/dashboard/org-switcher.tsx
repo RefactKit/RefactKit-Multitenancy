@@ -1,6 +1,7 @@
-import { Buildings, CaretUpDown, Plus, Crown, Shield, User } from '@phosphor-icons/react'
+import { Buildings, CaretUpDown, Crown, Plus, Shield, User } from '@phosphor-icons/react'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
+import { Badge } from '@/components/ui/badge'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Badge } from '@/components/ui/badge'
 import {
   SidebarMenu,
   SidebarMenuButton,

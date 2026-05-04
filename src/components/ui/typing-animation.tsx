@@ -1,13 +1,13 @@
+import { type HTMLMotionProps, type MotionProps, motion, useInView } from 'framer-motion'
 import {
+  type ComponentType,
+  type RefAttributes,
+  type RefObject,
   useEffect,
   useMemo,
   useRef,
   useState,
-  type ComponentType,
-  type RefAttributes,
-  type RefObject,
 } from 'react'
-import { motion, useInView, type HTMLMotionProps, type MotionProps } from 'framer-motion'
 
 import { cn } from '#/lib/utils'
 

@@ -1,6 +1,6 @@
 import { CaretRight } from '@phosphor-icons/react'
-import { ChevronRight } from 'lucide-react'
 import { useMatchRoute, useNavigate } from '@tanstack/react-router'
+import { ChevronRight } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
   SidebarGroup,
