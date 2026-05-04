@@ -195,6 +195,10 @@ export const fr: Translations = {
     font: 'Police',
     fontDescription: 'Définissez la police que vous souhaitez utiliser dans le tableau de bord.',
     fontDefault: 'Par défaut (Auto)',
+    activeSessions: 'Sessions Actives',
+    currentSession: 'Session Actuelle',
+    revoke: 'Révoquer',
+    revokeSessionSuccess: 'Session révoquée avec succès',
   },
   gallery: {
     title: 'Galerie',

@@ -193,6 +193,10 @@ export const en = {
     font: 'Font',
     fontDescription: 'Set the font you want to use in the dashboard.',
     fontDefault: 'Default (Auto)',
+    activeSessions: 'Active Sessions',
+    currentSession: 'Current Session',
+    revoke: 'Revoke',
+    revokeSessionSuccess: 'Session revoked successfully',
   },
   gallery: {
     title: 'Gallery',

@@ -4,7 +4,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { useListSessions, useSession } from '../../../../lib/auth-client'
+import { useQuery } from '@tanstack/react-query'
+import { authClient, useSession } from '../../../../lib/auth-client'
 import { ActiveSession } from './active-session'
 
 interface ActiveSessionsProps {
@@ -15,14 +16,18 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
   const { localization } = useAuth()
   const { data: session } = useSession()
 
-  const { data: sessions, isPending } = useListSessions({
-    throwOnError: (error: any) => {
-      if (error.error) toast.error(error.error.message)
-      return false
+  const { data: sessions, isPending } = useQuery({
+    queryKey: ['active-sessions'],
+    queryFn: async () => {
+      const { data, error } = await authClient.multiSession.listDeviceSessions()
+      if (error) throw error
+      return data
     },
   })
 
-  const activeSessions = [...(sessions ?? [])].sort((s) => (s.id === session?.session.id ? -1 : 1))
+  const activeSessions = (sessions ?? [])
+    .map((d: any) => d.session)
+    .sort((s) => (s.id === session?.session.id ? -1 : 1))
 
   return (
     <div>

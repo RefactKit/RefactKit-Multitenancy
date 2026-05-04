@@ -173,6 +173,10 @@ export const ar: Translations = {
     font: 'الخط',
     fontDescription: 'اختر الخط الذي تريد استخدامه في لوحة التحكم.',
     fontDefault: 'تلقائي',
+    activeSessions: 'الجلسات النشطة',
+    currentSession: 'الجلسة الحالية',
+    revoke: 'إلغاء',
+    revokeSessionSuccess: 'تم إلغاء الجلسة بنجاح',
   },
   gallery: {
     title: 'المعرض',

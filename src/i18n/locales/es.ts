@@ -173,6 +173,10 @@ export const es: Translations = {
     font: 'Fuente',
     fontDescription: 'Establece la fuente que quieres usar en el panel.',
     fontDefault: 'Predeterminado (Auto)',
+    activeSessions: 'Sesiones Activas',
+    currentSession: 'Sesión Actual',
+    revoke: 'Revocar',
+    revokeSessionSuccess: 'Sesión revocada con éxito',
   },
   gallery: {
     title: 'Galería',

@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
-import { revokeSession, useSession } from '../../../../lib/auth-client'
+import { authClient, useSession } from '../../../../lib/auth-client'
 
 function timeAgo(date: Date) {
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000)
@@ -34,14 +34,16 @@ interface ActiveSessionProps {
 
 export function ActiveSession({ activeSession }: ActiveSessionProps) {
   const { localization } = useAuth()
-  const { data: session } = useSession({ refetchOnMount: false })
+  const { data: session } = useSession()
   const navigate = useNavigate()
 
   const [isRevoking, setIsRevoking] = useState(false)
 
   const handleRevokeSession = async (sessionToRevoke: Session) => {
     setIsRevoking(true)
-    const { error } = await revokeSession({ token: sessionToRevoke.token })
+    const { error } = await authClient.multiSession.revoke({
+      sessionToken: sessionToRevoke.token,
+    })
     setIsRevoking(false)
 
     if (error) {
