@@ -1,5 +1,4 @@
-import { useNavigate } from '@tanstack/react-router'
-import type { LucideIcon } from 'lucide-react'
+import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 import type React from 'react'
 import {
   SidebarGroup,
@@ -12,7 +11,7 @@ import {
 interface NavSecondaryItem {
   title: string
   url: string
-  icon: LucideIcon
+  icon: any // Changed to any to support both Lucide and Phosphor
   isExternal?: boolean
 }
 
@@ -23,38 +22,47 @@ export function NavSecondary({
   items: NavSecondaryItem[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   const navigate = useNavigate()
+  const matchRoute = useMatchRoute()
 
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                render={
-                  item.isExternal ? (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-2 w-full"
-                    />
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => navigate({ to: item.url })}
-                      className="flex items-center gap-2 w-full"
-                    />
-                  )
-                }
-                size="sm"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <item.icon className="size-4 shrink-0" />
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const isActive = !!matchRoute({ to: item.url, fuzzy: true })
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  isActive={isActive}
+                  render={
+                    item.isExternal ? (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 w-full"
+                      />
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => navigate({ to: item.url })}
+                        className="flex items-center gap-2 w-full"
+                      />
+                    )
+                  }
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <item.icon
+                    weight={isActive ? 'duotone' : 'regular'}
+                    className="size-4 shrink-0"
+                  />
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

@@ -126,6 +126,7 @@ export const fr: Translations = {
     feedback: 'Feedback',
     support: 'Support',
     documentation: 'Documentation',
+    apiReference: 'Référence API',
   },
   dashboard: {
     title: 'Tableau de bord',

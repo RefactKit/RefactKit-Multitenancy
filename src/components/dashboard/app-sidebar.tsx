@@ -1,5 +1,13 @@
-import { Buildings, Gear, Image as PhosphorImage, SquaresFour, Users } from '@phosphor-icons/react'
-import { ArrowUpRight, LifeBuoy, MessageSquare } from 'lucide-react'
+import {
+  ArrowSquareOut,
+  Buildings,
+  ChatCenteredText,
+  Gear,
+  Image as PhosphorImage,
+  Lifebuoy,
+  SquaresFour,
+  Users,
+} from '@phosphor-icons/react'
 import {
   Sidebar,
   SidebarContent,
@@ -82,19 +90,27 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
     {
       title: t.sidebar.feedback,
       url: '#',
-      icon: MessageSquare,
+      icon: ChatCenteredText,
     },
     {
       title: t.sidebar.support,
       url: '#',
-      icon: LifeBuoy,
+      icon: Lifebuoy,
     },
     {
       title: t.sidebar.documentation,
       url: 'https://docs.refactkit.com',
-      icon: ArrowUpRight,
+      icon: ArrowSquareOut,
       isExternal: true,
     },
+    /*
+    {
+      title: t.sidebar.apiReference,
+      url: '/api-reference',
+      icon: ArrowSquareOut,
+      isExternal: true,
+    },
+    */
   ]
 
   return (

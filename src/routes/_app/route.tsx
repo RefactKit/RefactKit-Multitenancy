@@ -5,6 +5,7 @@ import { AppSidebar } from '@/components/dashboard/app-sidebar'
 import { HeaderBreadcrumb } from '@/components/dashboard/header-breadcrumb'
 import { SearchCommand } from '@/components/dashboard/search-command'
 import { UserAvatar } from '@/components/dashboard/user-avatar'
+import { UserDropdown } from '@/components/dashboard/user-dropdown'
 import { LangSwitcher } from '@/components/shared/lang-switcher'
 import { ThemeToggle } from '@/components/shared/theme-toggle'
 import { Separator } from '@/components/ui/separator'
@@ -76,9 +77,11 @@ function AppLayout() {
             <SearchCommand orgs={orgs} />
             <LangSwitcher />
             <ThemeToggle />
-            <Link to="/settings" className="ml-1 transition-opacity hover:opacity-80">
-              <UserAvatar className="size-8 cursor-pointer ring-1 ring-border" />
-            </Link>
+            <UserDropdown side="bottom" align="end">
+              <div className="ml-1 transition-opacity hover:opacity-80 cursor-pointer">
+                <UserAvatar className="size-8 ring-1 ring-border" />
+              </div>
+            </UserDropdown>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-6">

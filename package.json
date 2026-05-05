@@ -32,6 +32,8 @@
     "@phosphor-icons/react": "^2.1.10",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.8",
+    "@scalar/api-reference": "^1.55.2",
+    "@scalar/api-reference-react": "^0.9.33",
     "@supabase/supabase-js": "^2.104.0",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-form": "^1.29.0",

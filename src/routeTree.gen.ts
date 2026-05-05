@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LogoutRouteImport } from './routes/logout'
+import { Route as ApiReferenceRouteImport } from './routes/api-reference'
 import { Route as AcceptInviteRouteImport } from './routes/accept-invite'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
@@ -39,6 +40,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const LogoutRoute = LogoutRouteImport.update({
   id: '/logout',
   path: '/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiReferenceRoute = ApiReferenceRouteImport.update({
+  id: '/api-reference',
+  path: '/api-reference',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcceptInviteRoute = AcceptInviteRouteImport.update({
@@ -143,6 +149,7 @@ const AppOrganizationsSlugDashboardRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accept-invite': typeof AcceptInviteRoute
+  '/api-reference': typeof ApiReferenceRoute
   '/logout': typeof LogoutRoute
   '/onboarding': typeof OnboardingRoute
   '/dashboard': typeof AppDashboardRoute
@@ -164,6 +171,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accept-invite': typeof AcceptInviteRoute
+  '/api-reference': typeof ApiReferenceRoute
   '/logout': typeof LogoutRoute
   '/onboarding': typeof OnboardingRoute
   '/dashboard': typeof AppDashboardRoute
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteRouteWithChildren
   '/_auth': typeof AuthRouteRouteWithChildren
   '/accept-invite': typeof AcceptInviteRoute
+  '/api-reference': typeof ApiReferenceRoute
   '/logout': typeof LogoutRoute
   '/onboarding': typeof OnboardingRoute
   '/_app/dashboard': typeof AppDashboardRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accept-invite'
+    | '/api-reference'
     | '/logout'
     | '/onboarding'
     | '/dashboard'
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/accept-invite'
+    | '/api-reference'
     | '/logout'
     | '/onboarding'
     | '/dashboard'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/_auth'
     | '/accept-invite'
+    | '/api-reference'
     | '/logout'
     | '/onboarding'
     | '/_app/dashboard'
@@ -279,6 +291,7 @@ export interface RootRouteChildren {
   AppRouteRoute: typeof AppRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AcceptInviteRoute: typeof AcceptInviteRoute
+  ApiReferenceRoute: typeof ApiReferenceRoute
   LogoutRoute: typeof LogoutRoute
   OnboardingRoute: typeof OnboardingRoute
   ApiTestRoute: typeof ApiTestRoute
@@ -299,6 +312,13 @@ declare module '@tanstack/react-router' {
       path: '/logout'
       fullPath: '/logout'
       preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api-reference': {
+      id: '/api-reference'
+      path: '/api-reference'
+      fullPath: '/api-reference'
+      preLoaderRoute: typeof ApiReferenceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/accept-invite': {
@@ -500,6 +520,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRouteRoute: AppRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AcceptInviteRoute: AcceptInviteRoute,
+  ApiReferenceRoute: ApiReferenceRoute,
   LogoutRoute: LogoutRoute,
   OnboardingRoute: OnboardingRoute,
   ApiTestRoute: ApiTestRoute,

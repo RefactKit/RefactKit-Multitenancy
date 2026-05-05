@@ -124,6 +124,7 @@ export const en = {
     feedback: 'Feedback',
     support: 'Support',
     documentation: 'Documentation',
+    apiReference: 'API Reference',
   },
   dashboard: {
     title: 'Dashboard',
