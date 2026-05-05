@@ -124,13 +124,17 @@ export const auth = betterAuth({
       // Explicitly define standard OIDC scopes
       scope: ['openid', 'profile', 'email'],
     },
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID || '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
+    },
   },
 
   account: {
     encryptOAuthTokens: true, // AES-256-GCM encryption for social tokens
     accountLinking: {
       enabled: true,
-      trustedProviders: ['google', 'linkedin'],
+      trustedProviders: ['google', 'linkedin', 'github'],
     },
   },
 

@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label'
 import { PasswordInput } from '@/components/ui/password-input'
 import { useI18n } from '@/i18n/context'
 import { authClient } from '../../../lib/auth-client'
-import { AuthShell, Divider, GoogleIcon, LinkedinIcon } from './-shared'
+import { AuthShell, Divider, GithubIcon, GoogleIcon, LinkedinIcon } from './-shared'
 
 export const Route = createFileRoute('/_auth/signup')({
   validateSearch: (search: Record<string, unknown>): { callbackURL?: string } => {
@@ -179,26 +179,35 @@ function SignupPage() {
           <Button
             type="button"
             variant="outline"
-            className="h-10 w-full gap-2 rounded-full border-gray-200 shadow-sm hover:bg-gray-50 dark:border-gray-800"
+            className="h-12 w-full gap-3 rounded-full border-gray-200 shadow-sm hover:bg-gray-50 dark:border-gray-800 flex items-center justify-center"
             onClick={() =>
               authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' })
             }
           >
             <GoogleIcon />
-            <span className="flex-1 text-center pr-4 font-medium text-gray-700 dark:text-gray-300">
-              {l.google}
-            </span>
+            <span className="font-medium text-gray-700 dark:text-gray-300">{l.google}</span>
           </Button>
 
           <Button
             type="button"
-            className="h-10 w-full gap-2 rounded-full bg-[#0077b5] text-white hover:bg-[#006699] border-none shadow-sm"
+            className="h-12 w-full gap-3 rounded-full bg-[#0077b5] text-white hover:bg-[#006699] border-none shadow-sm flex items-center justify-center"
             onClick={() =>
               authClient.signIn.social({ provider: 'linkedin', callbackURL: '/dashboard' })
             }
           >
             <LinkedinIcon className="text-white" />
-            <span className="flex-1 text-center pr-4 font-medium">{l.linkedin}</span>
+            <span className="font-medium">{l.linkedin}</span>
+          </Button>
+
+          <Button
+            type="button"
+            className="h-12 w-full gap-3 rounded-full bg-[#24292e] text-white hover:bg-[#1b1f23] border-none shadow-sm flex items-center justify-center"
+            onClick={() =>
+              authClient.signIn.social({ provider: 'github', callbackURL: '/dashboard' })
+            }
+          >
+            <GithubIcon className="text-white" />
+            <span className="font-medium">{l.github}</span>
           </Button>
         </div>
 
