@@ -96,7 +96,7 @@ function RootComponent() {
             }}
           >
             <Outlet />
-            <Toaster richColors position="top-right" />
+            <Toaster richColors position="top-center" />
           </AuthProvider>
         </ThemeProvider>
       </QueryClientProvider>

@@ -18,7 +18,7 @@ export const fr: Translations = {
     previous: 'Précédent',
     next: 'Suivant',
   },
-  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES' },
+  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES', zh: 'ZH' },
   auth: {
     login: {
       badge: 'Connexion sécurisée',
@@ -35,6 +35,7 @@ export const fr: Translations = {
       google: 'Continuer avec Google',
       linkedin: 'Continuer avec LinkedIn',
       github: 'Continuer avec GitHub',
+      twitter: 'Continuer avec Twitter (X)',
       noAccount: "Vous n'avez pas de compte ?",
       signUpLink: "S'inscrire",
       error: 'Échec de la connexion',
@@ -80,6 +81,7 @@ export const fr: Translations = {
       google: 'Continuer avec Google',
       linkedin: 'Continuer avec LinkedIn',
       github: 'Continuer avec GitHub',
+      twitter: 'Continuer avec Twitter (X)',
       hasAccount: 'Vous avez déjà un compte ?',
       signInLink: 'Se connecter',
       error: "Échec de l'inscription",

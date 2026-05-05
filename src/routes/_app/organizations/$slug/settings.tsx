@@ -79,7 +79,15 @@ function OrgSettingsPage() {
     onSuccess: (data: { org: { slug: string } }) => {
       queryClient.invalidateQueries({ queryKey: ['user-orgs'] })
       queryClient.invalidateQueries({ queryKey: ['org', org.slug] })
-      toast.success(t.orgSettings.saved)
+      toast.success(t.orgSettings.saved, {
+        action: {
+          label: 'Undo',
+          onClick: () => {
+            // Revert changes logic
+            updateMutation.mutate({ name: org.name, slug: org.slug, logo: org.logo || undefined })
+          },
+        },
+      })
       if (data.org.slug !== org.slug) {
         navigate({
           to: '/organizations/$slug/settings',
@@ -98,7 +106,14 @@ function OrgSettingsPage() {
     mutationFn: () => deleteOrganization({ data: { organizationId: org.id } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-orgs'] })
-      toast.success(t.orgsPage.deleteSuccess)
+      toast.success(t.orgsPage.deleteSuccess, {
+        action: {
+          label: 'Undo',
+          onClick: () => {
+            toast.info('Critical data deletion cannot be reversed via this action.')
+          },
+        },
+      })
       navigate({ to: '/organizations', replace: true })
     },
     onError: (err: unknown) => {

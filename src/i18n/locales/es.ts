@@ -18,7 +18,7 @@ export const es: Translations = {
     previous: 'Anterior',
     next: 'Siguiente',
   },
-  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES' },
+  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES', zh: 'ZH' },
   auth: {
     login: {
       badge: 'Inicio de sesión seguro',
@@ -34,6 +34,8 @@ export const es: Translations = {
       submitting: 'Iniciando sesión...',
       google: 'Continuar con Google',
       linkedin: 'Continuar con LinkedIn',
+      github: 'Continuar con GitHub',
+      twitter: 'Continuar con Twitter (X)',
       noAccount: '¿No tienes una cuenta?',
       signUpLink: 'Regístrate',
       error: 'Error al iniciar sesión',
@@ -57,6 +59,8 @@ export const es: Translations = {
       submitting: 'Creando cuenta...',
       google: 'Continuar con Google',
       linkedin: 'Continuar con LinkedIn',
+      github: 'Continuar con GitHub',
+      twitter: 'Continuar con Twitter (X)',
       hasAccount: '¿Ya tienes una cuenta?',
       signInLink: 'Inicia sesión',
       error: 'Error al crear la cuenta',

@@ -16,7 +16,7 @@ export const en = {
     previous: 'Previous',
     next: 'Next',
   },
-  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES' },
+  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES', zh: 'ZH' },
   auth: {
     login: {
       badge: 'Secure sign in',
@@ -33,6 +33,7 @@ export const en = {
       google: 'Continue with Google',
       linkedin: 'Continue with LinkedIn',
       github: 'Continue with GitHub',
+      twitter: 'Continue with Twitter (X)',
       noAccount: "Don't have an account?",
       signUpLink: 'Sign up',
       error: 'Sign in failed',
@@ -78,6 +79,7 @@ export const en = {
       google: 'Continue with Google',
       linkedin: 'Continue with LinkedIn',
       github: 'Continue with GitHub',
+      twitter: 'Continue with Twitter (X)',
       hasAccount: 'Already have an account?',
       signInLink: 'Sign in',
       error: 'Sign up failed',

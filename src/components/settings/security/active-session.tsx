@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
 import { authClient, useSession } from '../../../../lib/auth-client'
-import { GithubIcon, GoogleIcon, LinkedinIcon } from '@/routes/_auth/-shared'
+import { GithubIcon, GoogleIcon, LinkedinIcon, TwitterIcon } from '@/routes/_auth/-shared'
 
 function formatRelativeTime(date: Date) {
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000)
@@ -54,7 +54,14 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
     if (error) {
       toast.error(error.message)
     } else {
-      toast.success(localization.settings.revokeSessionSuccess)
+      toast.success(localization.settings.revokeSessionSuccess, {
+        action: {
+          label: 'Undo',
+          onClick: () => {
+            toast.info('Session restoration is not possible without re-authentication.')
+          },
+        },
+      })
     }
   }
 
@@ -83,6 +90,13 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
           <div className="flex items-center gap-1.5 rounded-full bg-[#0077b5]/5 px-2 py-0.5 text-[10px] font-medium text-[#0077b5] border border-[#0077b5]/10">
             <LinkedinIcon className="size-3" />
             <span>LinkedIn</span>
+          </div>
+        )
+      case 'twitter':
+        return (
+          <div className="flex items-center gap-1.5 rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-medium text-black border border-black/10 dark:bg-white/5 dark:text-white dark:border-white/10">
+            <TwitterIcon className="size-3" />
+            <span>Twitter (X)</span>
           </div>
         )
       default:
@@ -123,13 +137,11 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
                 </span>
               )}
               <div className="mt-0.5 flex flex-wrap gap-1">
-                {activeSession.provider ? (
-                  getProviderBadge(activeSession.provider)
-                ) : providers && providers.length > 0 ? (
-                  providers.map((p) => <div key={p}>{getProviderBadge(p)}</div>)
-                ) : (
-                  getProviderBadge('password')
-                )}
+                {activeSession.provider
+                  ? getProviderBadge(activeSession.provider)
+                  : providers && providers.length > 0
+                    ? providers.map((p) => <div key={p}>{getProviderBadge(p)}</div>)
+                    : getProviderBadge('password')}
               </div>
             </div>
           </div>
@@ -168,7 +180,9 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
               Last seen
             </span>
             <span className="text-xs text-foreground">
-              {activeSession.updatedAt ? formatRelativeTime(new Date(activeSession.updatedAt)) : '—'}
+              {activeSession.updatedAt
+                ? formatRelativeTime(new Date(activeSession.updatedAt))
+                : '—'}
             </span>
           </div>
 
@@ -177,7 +191,9 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
               Created
             </span>
             <span className="text-xs text-foreground">
-              {activeSession.createdAt ? formatRelativeTime(new Date(activeSession.createdAt)) : '—'}
+              {activeSession.createdAt
+                ? formatRelativeTime(new Date(activeSession.createdAt))
+                : '—'}
             </span>
           </div>
 
@@ -186,7 +202,9 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
               Expires
             </span>
             <span className="text-xs text-foreground/80 italic">
-              {activeSession.expiresAt ? formatRelativeTime(new Date(activeSession.expiresAt)) : '—'}
+              {activeSession.expiresAt
+                ? formatRelativeTime(new Date(activeSession.expiresAt))
+                : '—'}
             </span>
           </div>
 

@@ -18,7 +18,7 @@ export const ar: Translations = {
     previous: 'السابق',
     next: 'التالي',
   },
-  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES' },
+  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES', zh: 'ZH' },
   auth: {
     login: {
       badge: 'تسجيل دخول آمن',
@@ -34,6 +34,8 @@ export const ar: Translations = {
       submitting: 'جاري تسجيل الدخول...',
       google: 'المتابعة باستخدام Google',
       linkedin: 'المتابعة باستخدام LinkedIn',
+      github: 'المتابعة باستخدام GitHub',
+      twitter: 'المتابعة باستخدام Twitter (X)',
       noAccount: 'ليس لديك حساب؟',
       signUpLink: 'إنشاء حساب',
       error: 'فشل تسجيل الدخول',
@@ -57,6 +59,8 @@ export const ar: Translations = {
       submitting: 'جاري الإنشاء...',
       google: 'المتابعة باستخدام Google',
       linkedin: 'المتابعة باستخدام LinkedIn',
+      github: 'المتابعة باستخدام GitHub',
+      twitter: 'المتابعة باستخدام Twitter (X)',
       hasAccount: 'لديك حساب بالفعل؟',
       signInLink: 'تسجيل الدخول',
       error: 'فشل إنشاء الحساب',

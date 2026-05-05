@@ -9,7 +9,7 @@ import { PasswordInput } from '@/components/ui/password-input'
 import { useI18n } from '@/i18n/context'
 import { getUserOrgs } from '@/server/org-fns'
 import { authClient } from '../../../lib/auth-client'
-import { AuthShell, Divider, GithubIcon, GoogleIcon, LinkedinIcon } from './-shared'
+import { AuthShell, Divider, GithubIcon, GoogleIcon, LinkedinIcon, TwitterIcon } from './-shared'
 
 export const Route = createFileRoute('/_auth/login')({
   validateSearch: (search: Record<string, unknown>): { callbackURL?: string } => {
@@ -186,6 +186,17 @@ function LoginPage() {
           >
             <GithubIcon className="text-white" />
             <span className="font-medium">{l.github}</span>
+          </Button>
+
+          <Button
+            type="button"
+            className="h-12 w-full gap-3 rounded-full bg-black text-white hover:bg-slate-900 border border-white/10 shadow-sm flex items-center justify-center"
+            onClick={() =>
+              authClient.signIn.social({ provider: 'twitter', callbackURL: '/dashboard' })
+            }
+          >
+            <TwitterIcon className="text-white" />
+            <span className="font-medium">{l.twitter}</span>
           </Button>
         </div>
 
