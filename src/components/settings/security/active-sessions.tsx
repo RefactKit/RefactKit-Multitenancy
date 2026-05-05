@@ -1,5 +1,6 @@
 import { useAuth } from '@better-auth-ui/react'
 import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -19,19 +20,49 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
   const { data: sessions, isPending } = useQuery({
     queryKey: ['active-sessions'],
     queryFn: async () => {
-      const { data, error } = await authClient.multiSession.listDeviceSessions()
+      const { data, error } = await authClient.listSessions()
       if (error) throw error
       return data
     },
   })
 
-  const activeSessions = (sessions ?? [])
-    .map((d: any) => d.session)
-    .sort((s) => (s.id === session?.session.id ? -1 : 1))
+  const activeSessions = (sessions ?? []).sort((s) => (s.id === session?.session.id ? -1 : 1))
+
+  const handleRevokeOthers = async () => {
+    const { error } = await authClient.revokeOtherSessions()
+    if (error) toast.error(error.message)
+    else toast.success(localization.settings.revokeSessionSuccess)
+  }
+
+  const handleRevokeAll = async () => {
+    const { error } = await authClient.revokeSessions()
+    if (error) toast.error(error.message)
+    else toast.success(localization.settings.revokeSessionSuccess)
+  }
 
   return (
-    <div>
-      <h2 className="text-sm font-semibold mb-3">{localization.settings.activeSessions}</h2>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold">{localization.settings.activeSessions}</h2>
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 text-[10px] uppercase font-bold"
+            onClick={handleRevokeOthers}
+          >
+            Revoke Others
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 text-[10px] uppercase font-bold text-destructive hover:text-destructive"
+            onClick={handleRevokeAll}
+          >
+            Revoke All
+          </Button>
+        </div>
+      </div>
 
       <Card className={cn('p-0', className)}>
         <CardContent className="p-0">
