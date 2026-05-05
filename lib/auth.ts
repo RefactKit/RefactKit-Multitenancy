@@ -1,6 +1,6 @@
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { sentinel } from '@better-auth/infra'
+import { dash, sentinel } from '@better-auth/infra'
 import { createAccessControl, multiSession, organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { eq } from 'drizzle-orm'
@@ -197,7 +197,7 @@ export const auth = betterAuth({
         // Platform-specific handler
         // Vercel/Nitro support waitUntil
         if (typeof (globalThis as any).waitUntil === 'function') {
-          ;(globalThis as any).waitUntil(promise)
+          ; (globalThis as any).waitUntil(promise)
         }
       },
     },
