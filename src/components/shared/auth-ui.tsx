@@ -16,7 +16,8 @@ const languageMap: Record<Locale, { label: string; flag: string }> = {
   fr: { label: 'Français', flag: '🇫🇷' },
   es: { label: 'Español', flag: '🇪🇸' },
   ar: { label: 'العربية', flag: '🇦🇪' },
-  pt: { label: 'Português', flag: '🇧🇷' },
+  pt: { label: 'Português', flag: '🇵🇹' },
+  zh: { label: '简体中文', flag: '🇨🇳' },
 }
 
 export function LanguageToggle() {

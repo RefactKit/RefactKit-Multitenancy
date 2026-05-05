@@ -15,7 +15,8 @@ const languages: { code: Locale; name: string; flag: string }[] = [
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'pt', name: 'Português', flag: '🇵🇹' },
-  { code: 'ar', name: 'العربية', flag: '🇲🇦' },
+  { code: 'ar', name: 'العربية', flag: '🇦🇪' },
+  { code: 'zh', name: '简体中文', flag: '🇨🇳' },
 ]
 
 export function LangSwitcher({ className }: { className?: string }) {
