@@ -17,7 +17,7 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
   const { localization } = useAuth()
   const { data: session } = useSession()
 
-  const { data: sessions, isPending } = useQuery({
+  const { data: sessions, isPending: isSessionsPending } = useQuery({
     queryKey: ['active-sessions'],
     queryFn: async () => {
       const { data, error } = await authClient.listSessions()
@@ -26,7 +26,18 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
     },
   })
 
+  const { data: accounts, isPending: isAccountsPending } = useQuery({
+    queryKey: ['user-accounts'],
+    queryFn: async () => {
+      const { data, error } = await authClient.listAccounts()
+      if (error) throw error
+      return data
+    },
+  })
+
+  const isPending = isSessionsPending || isAccountsPending
   const activeSessions = (sessions ?? []).sort((s) => (s.id === session?.session.id ? -1 : 1))
+  const providers = accounts?.map((a) => a.providerId) || []
 
   const handleRevokeOthers = async () => {
     const { error } = await authClient.revokeOtherSessions()
@@ -64,20 +75,19 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
         </div>
       </div>
 
-      <Card className={cn('p-0', className)}>
-        <CardContent className="p-0">
-          {isPending ? (
-            <SessionRowSkeleton />
-          ) : (
-            activeSessions.map((activeSession, index) => (
-              <div key={activeSession.id}>
-                {index > 0 && <Separator />}
-                <ActiveSession activeSession={activeSession} />
-              </div>
-            ))
-          )}
-        </CardContent>
-      </Card>
+      <div className="grid gap-3">
+        {isPending ? (
+          <SessionRowSkeleton />
+        ) : (
+          activeSessions.map((activeSession) => (
+            <ActiveSession
+              key={activeSession.id}
+              activeSession={activeSession}
+              providers={providers}
+            />
+          ))
+        )}
+      </div>
     </div>
   )
 }

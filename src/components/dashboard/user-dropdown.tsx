@@ -31,7 +31,7 @@ export function UserDropdown({ children, side = 'bottom', align = 'end' }: UserD
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger render={children} />
       <DropdownMenuContent side={side} align={align} sideOffset={4} className="min-w-56 rounded-lg">
         <DropdownMenuGroup>
           <DropdownMenuLabel className="p-0 font-normal">

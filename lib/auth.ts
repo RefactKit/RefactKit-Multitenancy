@@ -148,6 +148,21 @@ export const auth = betterAuth({
     },
   },
 
+  databaseHooks: {
+    session: {
+      create: {
+        before: async (session) => {
+          return {
+            data: {
+              ...session,
+              provider: session.provider || 'password',
+            },
+          }
+        },
+      },
+    },
+  },
+
   // Session with encrypted cookie cache — reduces DB queries, JWE = encrypted
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
@@ -156,6 +171,12 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 60 * 5, // 5 min client-side cache
       strategy: 'jwe', // AES-256-GCM encrypted — safest for SaaS
+    },
+    additionalFields: {
+      provider: {
+        type: 'string',
+        required: false,
+      },
     },
   },
 
