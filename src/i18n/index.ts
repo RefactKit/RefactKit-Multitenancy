@@ -6,15 +6,16 @@ import { en, type Translations } from './locales/en'
 import { es } from './locales/es'
 import { fr } from './locales/fr'
 import { pt } from './locales/pt'
+import { zh } from './locales/zh'
 
 // Re-export so context.tsx can import Translations from '.'
 export type { Translations } from './locales/en'
 
-export type Locale = 'en' | 'fr' | 'ar' | 'es' | 'pt'
+export type Locale = 'en' | 'fr' | 'ar' | 'es' | 'pt' | 'zh'
 
 export const LOCALE_COOKIE = 'lk_locale'
 
-const locales: Record<Locale, Translations> = { en, fr, ar, es, pt }
+const locales: Record<Locale, Translations> = { en, fr, ar, es, pt, zh }
 
 export function getTranslations(locale: Locale): Translations {
   return locales[locale] ?? en
@@ -27,6 +28,7 @@ export function detectLocale(): Locale {
     if (val === 'ar') return 'ar'
     if (val === 'es') return 'es'
     if (val === 'pt') return 'pt'
+    if (val === 'zh') return 'zh'
     if (val === 'en') return 'en'
     return 'fr'
   }
@@ -42,6 +44,7 @@ export const getServerLocale = createServerFn({ method: 'GET' }).handler(async (
   if (val === 'ar') return 'ar'
   if (val === 'es') return 'es'
   if (val === 'pt') return 'pt'
+  if (val === 'zh') return 'zh'
   if (val === 'en') return 'en'
   return 'fr'
 })
@@ -50,4 +53,4 @@ export function setLocaleCookie(locale: Locale) {
   Cookies.set(LOCALE_COOKIE, locale, { expires: 365, sameSite: 'lax' })
 }
 
-export { ar, en, es, fr, pt }
+export { ar, en, es, fr, pt, zh }
