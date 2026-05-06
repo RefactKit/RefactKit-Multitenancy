@@ -29,6 +29,8 @@ export const zh: Translations = {
     es: 'ES',
     pt: 'PT',
     zh: '中文',
+    it: 'IT',
+    ru: 'RU'
   },
   auth: {
     login: {

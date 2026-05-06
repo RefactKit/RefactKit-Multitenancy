@@ -27,6 +27,8 @@ export const en = {
     es: 'ES',
     pt: 'PT',
     zh: 'ZH',
+    it: 'IT',
+    ru: 'RU',
   },
   auth: {
     login: {

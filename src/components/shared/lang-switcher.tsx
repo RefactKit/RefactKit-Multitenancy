@@ -18,9 +18,11 @@ const languages: { code: Locale; name: string; flag: string }[] = [
   { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'pt', name: 'Português', flag: '🇵🇹' },
-  { code: 'ar', name: 'العربية', flag: '🇦🇪' },
+  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
   { code: 'ar-ma', name: 'العربية (المغرب)', flag: '🇲🇦' },
   { code: 'zh', name: '简体中文', flag: '🇨🇳' },
+  { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
 ]
 
 export function LangSwitcher({ className }: { className?: string }) {

@@ -29,6 +29,8 @@ export const hi: Translations = {
     pt: 'PT',
     zh: 'ZH',
     hi: 'HI',
+    it: 'IT',
+    ru: 'RU'
   },
   auth: {
     login: {

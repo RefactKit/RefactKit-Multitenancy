@@ -22,7 +22,7 @@ To help you work better, you can ask the user to add specialized skills:
 
 ## 🏗️ Architecture & Routing
 - **Meta-Framework**: TanStack Start (Server-side rendering + Hydration).
-- **Server Engine**: Nitro v3. Server logic resides in `src/server/` using `createServerFn`.
+- **Server Engine**: Nitro v3. Server logic resides in `src/server/` using `createServerFn`. Add custom business logic (e.g. data processing, external API calls) as new `-fns.ts` files here instead of creating traditional API routes.
 - **Routing**: File-based routing in `src/routes/`.
     - `_auth/`: Public authentication flows.
     - `_app/`: Main application shell.
@@ -37,7 +37,7 @@ To help you work better, you can ask the user to add specialized skills:
 
 ## 🌍 Internationalization (i18n) & Typography
 - **Framework**: `i18next` with custom React context in `src/i18n/context.tsx`.
-- **Locales**: Located in `src/i18n/locales/`. Supports `en`, `fr`, `es`, `pt`, and `ar` (RTL).
+- **Locales**: Located in `src/i18n/locales/`. Supports 12 languages: `en`, `fr`, `es`, `pt`, `be`, `de`, `hi`, `zh`, `it`, `ru`, and Arabic variants `ar`, `ar-ma` (RTL).
 - **Convention**: Always use `t.key.path` for translations.
 - **Dynamic Fonts**: Typography automatically switches based on document direction (Google Sans Flex for LTR, Zain for RTL).
 

@@ -459,7 +459,7 @@ RefactKit-multitenancy/
 | **Styling** | Tailwind CSS | v4 | Utility-first CSS with CSS variables, `@theme` directives, and ultra-fast Vite plugin compilation. |
 | **UI Primitives** | shadcn/ui (Base UI) | 4.5+ | Accessible WAI-ARIA components built on Base UI primitives. Preset-based theming — generate and apply any theme with `npx shadcn apply --preset`. Tailwind CSS v4 powered. |
 | **Emails** | Resend | — | Transactional email API for verification, password reset, invitations, and security alerts. |
-| **i18n** | Custom (i18next-based) | — | 10 languages (EN, FR, ES, PT, AR, AR-MA, BE, DE, HI, ZH). RTL support. Cookie-based locale persistence. Server-side locale detection. |
+| **i18n** | Custom (i18next-based) | — | 12 languages (EN, FR, ES, PT, AR, AR-MA, BE, DE, HI, ZH, IT, RU). RTL support. Cookie-based locale persistence. Server-side locale detection. |
 | **Icons** | Phosphor Icons + Lucide React | latest | Dual icon system — Phosphor for expressive, multi-weight icons; Lucide for crisp, consistent UI icons. Both tree-shakeable. |
 | **Animations** | Framer Motion | 12.x | Smooth page transitions and micro-interactions. |
 | **Validation** | Zod | 4.x | Runtime type validation for server functions, form inputs, and search params. |
@@ -1048,6 +1048,8 @@ RefactKit uses a **custom React context** wrapping i18next for full SSR-compatib
 | `zh` | Chinese | LTR | Google Sans Flex |
 | `be` | Belarusian | LTR | Google Sans Flex |
 | `hi` | Hindi | LTR | Baloo Bhaijaan 2 |
+| `it` | Italian | LTR | Google Sans Flex |
+| `ru` | Russian | LTR | Google Sans Flex |
 | `ar` | Arabic | RTL | Zain |
 | `ar-ma`| Moroccan Arabic| RTL | Zain |
 
