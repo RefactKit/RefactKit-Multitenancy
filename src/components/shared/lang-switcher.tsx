@@ -13,9 +13,13 @@ import { cn } from '@/lib/utils'
 const languages: { code: Locale; name: string; flag: string }[] = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'be', name: 'Belgique-Fr', flag: '🇧🇪' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'pt', name: 'Português', flag: '🇵🇹' },
   { code: 'ar', name: 'العربية', flag: '🇦🇪' },
+  { code: 'ar-ma', name: 'العربية (المغرب)', flag: '🇲🇦' },
   { code: 'zh', name: '简体中文', flag: '🇨🇳' },
 ]
 

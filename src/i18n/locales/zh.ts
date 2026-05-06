@@ -18,7 +18,18 @@ export const zh: Translations = {
     previous: '上一步',
     next: '下一步',
   },
-  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES', pt: 'PT', zh: '中文' },
+  lang: {
+    en: 'EN',
+    fr: 'FR',
+    be: 'BE',
+    de: 'DE',
+    hi: 'HI',
+    ar: 'AR',
+    'ar-ma': 'AR-MA',
+    es: 'ES',
+    pt: 'PT',
+    zh: '中文',
+  },
   auth: {
     login: {
       badge: '安全登录',
@@ -244,13 +255,13 @@ export const zh: Translations = {
       },
     },
     techStack: {
-      title: '使用最佳技术构建',
-      subtitle: 'RefactKit 基于现代且经过实战测试的工具构建，确保您的 SaaS 快速、安全且可扩展。',
+      title: '生态系统中最好的工具',
+      subtitle:
+        'RefactKit 构建在现代化、经过实战检验的工具之上，确保您的 SaaS 快速、安全且可扩展。',
     },
     dashboard: {
-      title: '强大的仪表板界面',
-      subtitle:
-        '使用基于 React 19 和 TanStack Start 构建的高级、高性能仪表板管理您的组织、成员和资源。',
+      title: '企业级仪表板',
+      subtitle: '在一处管理组织和用户所需的一切。',
     },
     detailedFeatures: {
       title: '发布所需的一切',

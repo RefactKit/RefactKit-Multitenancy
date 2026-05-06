@@ -1,6 +1,6 @@
 import type { Translations } from './en'
 
-export const ar: Translations = {
+export const arMa: Translations = {
   common: {
     RefactKit: 'RefactKit',
     launch: 'Refact',
@@ -120,7 +120,6 @@ export const ar: Translations = {
     feedback: 'تعليقات',
     support: 'الدعم',
     documentation: 'التوثيق',
-    apiReference: '',
   },
   dashboard: {
     title: 'لوحة التحكم',

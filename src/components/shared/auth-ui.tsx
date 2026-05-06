@@ -14,8 +14,12 @@ import { useI18n } from '@/i18n/context'
 const languageMap: Record<Locale, { label: string; flag: string }> = {
   en: { label: 'English', flag: '🇺🇸' },
   fr: { label: 'Français', flag: '🇫🇷' },
+  be: { label: 'Belgique-Fr', flag: '🇧🇪' },
+  de: { label: 'Deutsch', flag: '🇩🇪' },
+  hi: { label: 'हिन्दी', flag: '🇮🇳' },
   es: { label: 'Español', flag: '🇪🇸' },
   ar: { label: 'العربية', flag: '🇦🇪' },
+  'ar-ma': { label: 'العربية (المغرب)', flag: '🇲🇦' },
   pt: { label: 'Português', flag: '🇵🇹' },
   zh: { label: '简体中文', flag: '🇨🇳' },
 }

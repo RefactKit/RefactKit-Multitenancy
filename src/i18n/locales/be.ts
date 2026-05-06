@@ -1,6 +1,6 @@
 import type { Translations } from './en'
 
-export const fr: Translations = {
+export const be: Translations = {
   common: {
     RefactKit: 'RefactKit',
     launch: 'Refact',

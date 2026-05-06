@@ -18,7 +18,18 @@ export const es: Translations = {
     previous: 'Anterior',
     next: 'Siguiente',
   },
-  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES', zh: 'ZH' },
+  lang: {
+    en: 'EN',
+    fr: 'FR',
+    be: 'BE',
+    de: 'DE',
+    hi: 'HI',
+    ar: 'AR',
+    'ar-ma': 'AR-MA',
+    es: 'ES',
+    pt: 'PT',
+    zh: 'ZH',
+  },
   auth: {
     login: {
       badge: 'Inicio de sesión seguro',
@@ -226,14 +237,14 @@ export const es: Translations = {
       },
     },
     techStack: {
-      title: 'Construido con las mejores tecnologías',
+      title: 'Las mejores herramientas del ecosistema',
       subtitle:
         'RefactKit está construido sobre herramientas modernas y probadas para asegurar que tu SaaS sea rápido, seguro y escalable.',
     },
     dashboard: {
-      title: 'Interfaz de Panel de Control Potente',
+      title: 'Panel de control de nivel empresarial',
       subtitle:
-        'Gestiona tus organizaciones, miembros y recursos con un panel premium de alto rendimiento construido con React 19 y TanStack Start.',
+        'Todo lo que necesitas para gestionar tus organizaciones y usuarios en un solo lugar.',
     },
     detailedFeatures: {
       title: 'Todo lo que necesitas pour lanzar',

@@ -169,7 +169,7 @@ function LandingPage() {
                 Built with
               </span>
               <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                The Best Tools in the Ecosystem
+                {l.techStack.title}
               </h2>
             </div>
 
@@ -208,10 +208,10 @@ function LandingPage() {
         <section className="w-full py-32 px-6 lg:px-24 bg-muted/5">
           <div className="container mx-auto text-center mb-16">
             <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl mb-4">
-              Enterprise-grade Dashboard
+              {l.dashboard.title}
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to manage your organizations and users in one place.
+              {l.dashboard.subtitle}
             </p>
           </div>
           <div className="container mx-auto">
@@ -273,10 +273,16 @@ function LandingPage() {
               <a href="#" className="hover:text-primary transition-colors">
                 Terms
               </a>
-              <a href="https://twitter.com" className="hover:text-primary transition-colors">
+              <a
+                href="https://twitter.com/refactkit"
+                className="hover:text-primary transition-colors"
+              >
                 Twitter
               </a>
-              <a href="https://github.com" className="hover:text-primary transition-colors">
+              <a
+                href="https://github.com/refactkit"
+                className="hover:text-primary transition-colors"
+              >
                 GitHub
               </a>
             </div>

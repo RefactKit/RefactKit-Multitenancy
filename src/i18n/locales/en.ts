@@ -16,7 +16,18 @@ export const en = {
     previous: 'Previous',
     next: 'Next',
   },
-  lang: { en: 'EN', fr: 'FR', ar: 'AR', es: 'ES', zh: 'ZH' },
+  lang: {
+    en: 'EN',
+    fr: 'FR',
+    be: 'BE',
+    de: 'DE',
+    hi: 'HI',
+    ar: 'AR',
+    'ar-ma': 'AR-MA',
+    es: 'ES',
+    pt: 'PT',
+    zh: 'ZH',
+  },
   auth: {
     login: {
       badge: 'Secure sign in',
@@ -247,14 +258,13 @@ export const en = {
       },
     },
     techStack: {
-      title: 'Built with the best technologies',
+      title: 'The Best Tools in the Ecosystem',
       subtitle:
         'RefactKit is built on top of modern, battle-tested tools to ensure your SaaS is fast, secure, and scalable.',
     },
     dashboard: {
-      title: 'Powerful Dashboard Interface',
-      subtitle:
-        'Manage your organizations, members, and resources with a premium, high-performance dashboard built with React 19 and TanStack Start.',
+      title: 'Enterprise-grade Dashboard',
+      subtitle: 'Everything you need to manage your organizations and users in one place.',
     },
     detailedFeatures: {
       title: 'Everything you need to launch',

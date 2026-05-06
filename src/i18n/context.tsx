@@ -30,7 +30,7 @@ export function I18nProvider({
     setLocaleCookie(next)
   }
 
-  const dir = locale === 'ar' ? 'rtl' : 'ltr'
+  const dir = locale === 'ar' || locale === 'ar-ma' ? 'rtl' : 'ltr'
 
   useEffect(() => {
     document.documentElement.dir = dir

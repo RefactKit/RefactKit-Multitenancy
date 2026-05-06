@@ -2,20 +2,35 @@ import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import Cookies from 'js-cookie'
 import { ar } from './locales/ar'
+import { arMa } from './locales/ar-ma'
+import { be } from './locales/be'
+import { de } from './locales/de'
 import { en, type Translations } from './locales/en'
 import { es } from './locales/es'
 import { fr } from './locales/fr'
+import { hi } from './locales/hi'
 import { pt } from './locales/pt'
 import { zh } from './locales/zh'
 
 // Re-export so context.tsx can import Translations from '.'
 export type { Translations } from './locales/en'
 
-export type Locale = 'en' | 'fr' | 'ar' | 'es' | 'pt' | 'zh'
+export type Locale = 'en' | 'fr' | 'be' | 'de' | 'hi' | 'ar' | 'ar-ma' | 'es' | 'pt' | 'zh'
 
 export const LOCALE_COOKIE = 'lk_locale'
 
-const locales: Record<Locale, Translations> = { en, fr, ar, es, pt, zh }
+const locales: Record<Locale, Translations> = {
+  en,
+  fr,
+  be,
+  de,
+  hi,
+  ar,
+  'ar-ma': arMa,
+  es,
+  pt,
+  zh,
+}
 
 export function getTranslations(locale: Locale): Translations {
   return locales[locale] ?? en
@@ -26,7 +41,11 @@ export function detectLocale(): Locale {
   if (typeof document !== 'undefined') {
     const val = Cookies.get(LOCALE_COOKIE)
     if (val === 'ar') return 'ar'
+    if (val === 'ar-ma') return 'ar-ma'
     if (val === 'es') return 'es'
+    if (val === 'be') return 'be'
+    if (val === 'de') return 'de'
+    if (val === 'hi') return 'hi'
     if (val === 'pt') return 'pt'
     if (val === 'zh') return 'zh'
     if (val === 'en') return 'en'
@@ -42,7 +61,11 @@ export const getServerLocale = createServerFn({ method: 'GET' }).handler(async (
   const match = cookieHeader.match(new RegExp(`(^|; ) ?${LOCALE_COOKIE}=([^;]+)`))
   const val = match ? match[2] : null
   if (val === 'ar') return 'ar'
+  if (val === 'ar-ma') return 'ar-ma'
   if (val === 'es') return 'es'
+  if (val === 'be') return 'be'
+  if (val === 'de') return 'de'
+  if (val === 'hi') return 'hi'
   if (val === 'pt') return 'pt'
   if (val === 'zh') return 'zh'
   if (val === 'en') return 'en'
@@ -53,4 +76,4 @@ export function setLocaleCookie(locale: Locale) {
   Cookies.set(LOCALE_COOKIE, locale, { expires: 365, sameSite: 'lax' })
 }
 
-export { ar, en, es, fr, pt, zh }
+export { ar, arMa, be, de, en, es, fr, hi, pt, zh }
