@@ -132,13 +132,20 @@ export const auth = betterAuth({
       clientId: process.env.TWITTER_CLIENT_ID || '',
       clientSecret: process.env.TWITTER_CLIENT_SECRET || '',
     },
+    microsoft: {
+      clientId: process.env.MICROSOFT_CLIENT_ID || '',
+      clientSecret: process.env.MICROSOFT_CLIENT_SECRET || '',
+      tenantId: 'common',
+      scope: ['openid', 'profile', 'email', 'User.Read'],
+      prompt: 'select_account',
+    },
   },
 
   account: {
     encryptOAuthTokens: true, // AES-256-GCM encryption for social tokens
     accountLinking: {
       enabled: true,
-      trustedProviders: ['google', 'linkedin', 'github', 'twitter'],
+      trustedProviders: ['google', 'linkedin', 'github', 'twitter', 'microsoft'],
     },
   },
 

@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label'
 import { PasswordInput } from '@/components/ui/password-input'
 import { useI18n } from '@/i18n/context'
 import { authClient } from '../../../lib/auth-client'
-import { AuthShell, Divider, GithubIcon, GoogleIcon, LinkedinIcon, TwitterIcon } from './-shared'
+import { AuthShell, Divider, GithubIcon, GoogleIcon, LinkedinIcon, MicrosoftIcon, TwitterIcon } from './-shared'
 
 export const Route = createFileRoute('/_auth/signup')({
   validateSearch: (search: Record<string, unknown>): { callbackURL?: string } => {
@@ -208,6 +208,18 @@ function SignupPage() {
           >
             <GithubIcon className="text-white" />
             <span className="font-medium">{l.github}</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="h-12 w-full gap-3 rounded-full border-gray-200 shadow-sm hover:bg-gray-50 dark:border-gray-800 flex items-center justify-center"
+            onClick={() =>
+              authClient.signIn.social({ provider: 'microsoft', callbackURL: '/dashboard' })
+            }
+          >
+            <MicrosoftIcon />
+            <span className="font-medium text-gray-700 dark:text-gray-300">{l.microsoft}</span>
           </Button>
 
           <Button

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
 import { authClient, useSession } from '../../../../lib/auth-client'
-import { GithubIcon, GoogleIcon, LinkedinIcon, TwitterIcon } from '@/routes/_auth/-shared'
+import { GithubIcon, GoogleIcon, LinkedinIcon, MicrosoftIcon, TwitterIcon } from '@/routes/_auth/-shared'
 
 function formatRelativeTime(date: Date) {
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000)
@@ -97,6 +97,13 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
           <div className="flex items-center gap-1.5 rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-medium text-black border border-black/10 dark:bg-white/5 dark:text-white dark:border-white/10">
             <TwitterIcon className="size-3" />
             <span>Twitter (X)</span>
+          </div>
+        )
+      case 'microsoft':
+        return (
+          <div className="flex items-center gap-1.5 rounded-full bg-gray-500/5 px-2 py-0.5 text-[10px] font-medium text-gray-600 border border-gray-500/10 dark:bg-white/5 dark:text-white dark:border-white/10">
+            <MicrosoftIcon className="size-3" />
+            <span>Microsoft</span>
           </div>
         )
       default:
