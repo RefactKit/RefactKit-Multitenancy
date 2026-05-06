@@ -452,14 +452,14 @@ RefactKit-multitenancy/
 | **Data Fetching** | TanStack Query | 5.x | Server-state synchronization. `queryOptions` factory pattern, `ensureQueryData` for SSR cache seeding, automatic background refetching. |
 | **Forms** | TanStack Form | 1.x | Type-safe form state management with Zod validators, field-level error tracking, and submit state. |
 | **Tables** | TanStack Table | 8.x | Headless table engine for members list, gallery grid, and data tables. |
-| **Authentication** | Better Auth | 1.6+ | Full auth system: email/password, OAuth (Google), organizations, RBAC, rate limiting, session management, OWASP compliance. |
+| **Authentication** | Better Auth | 1.6+ | Full auth system: email/password, OAuth (Google, Microsoft, GitHub, LinkedIn, Twitter), organizations, RBAC, rate limiting, session management, OWASP compliance. |
 | **ORM** | Drizzle ORM | 0.45+ | Type-safe SQL query builder. Schema-as-code with `pgTable`, relational queries, zero-overhead. |
 | **Database** | Supabase (PostgreSQL) | — | Managed PostgreSQL with connection pooling (port 6543), Row Level Security, and dashboard for visual data management. |
 | **Storage** | Supabase Storage | — | S3-compatible object storage for avatars, logos, gallery images. Server-only uploads via service role key. |
 | **Styling** | Tailwind CSS | v4 | Utility-first CSS with CSS variables, `@theme` directives, and ultra-fast Vite plugin compilation. |
 | **UI Primitives** | shadcn/ui (Base UI) | 4.5+ | Accessible WAI-ARIA components built on Base UI primitives. Preset-based theming — generate and apply any theme with `npx shadcn apply --preset`. Tailwind CSS v4 powered. |
 | **Emails** | Resend | — | Transactional email API for verification, password reset, invitations, and security alerts. |
-| **i18n** | Custom (i18next-based) | — | 5 languages (EN, FR, ES, PT, AR). RTL support. Cookie-based locale persistence. Server-side locale detection. |
+| **i18n** | Custom (i18next-based) | — | 10 languages (EN, FR, ES, PT, AR, AR-MA, BE, DE, HI, ZH). RTL support. Cookie-based locale persistence. Server-side locale detection. |
 | **Icons** | Phosphor Icons + Lucide React | latest | Dual icon system — Phosphor for expressive, multi-weight icons; Lucide for crisp, consistent UI icons. Both tree-shakeable. |
 | **Animations** | Framer Motion | 12.x | Smooth page transitions and micro-interactions. |
 | **Validation** | Zod | 4.x | Runtime type validation for server functions, form inputs, and search params. |
@@ -561,9 +561,9 @@ The authentication implementation in RefactKit strictly follows the official **B
 
 | `src/routes/_auth/forgot-password.tsx` | Always shows "check inbox" regardless of email existence |
 
-### 🔑 Google OAuth Flow & Security
+### 🔑 Social OAuth Flow & Security
 
-RefactKit implements the Google OAuth flow with maximum security (PKCE + AES Encryption).
+RefactKit implements Social OAuth flows (Google, Microsoft, GitHub, LinkedIn, Twitter) with maximum security (PKCE + AES Encryption).
 
 #### Sequence Diagram
 
@@ -914,6 +914,7 @@ erDiagram
         text user_agent
         text user_id FK
         text active_organization_id
+        text provider
     }
 
     ACCOUNT {
@@ -923,6 +924,10 @@ erDiagram
         text user_id FK
         text access_token
         text refresh_token
+        text id_token
+        timestamp access_token_expires_at
+        timestamp refresh_token_expires_at
+        text scope
         text password
     }
 
@@ -931,6 +936,8 @@ erDiagram
         text identifier
         text value
         timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
     }
 
     ORGANIZATION {
@@ -958,6 +965,7 @@ erDiagram
         text role
         text status
         timestamp expires_at
+        timestamp created_at
         text inviter_id FK
     }
 
@@ -1036,7 +1044,12 @@ RefactKit uses a **custom React context** wrapping i18next for full SSR-compatib
 | `fr` | French | LTR | Google Sans Flex |
 | `es` | Spanish | LTR | Google Sans Flex |
 | `pt` | Portuguese | LTR | Google Sans Flex |
+| `de` | German | LTR | Google Sans Flex |
+| `zh` | Chinese | LTR | Google Sans Flex |
+| `be` | Belarusian | LTR | Google Sans Flex |
+| `hi` | Hindi | LTR | Baloo Bhaijaan 2 |
 | `ar` | Arabic | RTL | Zain |
+| `ar-ma`| Moroccan Arabic| RTL | Zain |
 
 ### How It Works
 
