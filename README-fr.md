@@ -182,6 +182,7 @@ BETTER_AUTH_API_KEY="ba_xxxxxxxxxxxxxxxxxxxxxxxx"
 | `VITE_SUPABASE_URL` | ✅ | Supabase → Project Settings → API → Project URL |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase → Project Settings → API → Clé `service_role` |
 | `BETTER_AUTH_API_KEY` | ⚪ Optionnel | Tableau de bord Better Auth → API Keys (seulement pour le panneau d'admin) |
+| `OPENAPI_NONCE` | ⚪ Optionnel | Nonce statique pour le CSP de l'OpenAPI |
 | `VITE_APP_URL` | ⚪ Optionnel | Surcharge l'URL de base pour le client d'auth (par défaut relatif) |
 
 ---
@@ -1171,6 +1172,7 @@ Préconfiguré dans `package.json` :
 | `VITE_SUPABASE_URL` | `https://xxx.supabase.co` | ✅ |
 | `SUPABASE_SERVICE_ROLE_KEY` | Depuis le tableau de bord Supabase | ✅ |
 | `VITE_APP_URL` | `https://votre-domaine.com` | Optionnel |
+| `OPENAPI_NONCE` | `refactkit-openapi-nonce` | Optionnel |
 
 #### Autres Cibles (Cloudflare, Node.js)
 

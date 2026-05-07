@@ -8,7 +8,7 @@ export function Header({ hideAuthButtons = false }: { hideAuthButtons?: boolean 
   const l = t.landing
 
   return (
-    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-border/40 bg-background/95 px-6 backdrop-blur supports-[backdrop-filter]:bg-background/60 lg:px-12">
+    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-border/40 bg-background/95 dark:bg-black px-6 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:supports-[backdrop-filter]:bg-black lg:px-12">
       <div className="flex items-center gap-2">
         <Link to="/">
           <img

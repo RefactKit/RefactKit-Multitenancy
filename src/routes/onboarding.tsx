@@ -92,7 +92,7 @@ function OnboardingPage() {
 
       {/* Right */}
       <div className="flex w-full flex-col overflow-y-auto lg:w-1/2 bg-background">
-        <header className="flex h-14 items-center justify-between border-b border-border/40 px-5 lg:hidden">
+        <header className="flex h-14 items-center justify-between border-b border-border/40 px-5 dark:bg-black lg:hidden">
           <Logo />
           <div className="flex items-center gap-2">
             <ThemeToggle />
