@@ -561,6 +561,11 @@ The authentication implementation in RefactKit strictly follows the official **B
 
 | `src/routes/_auth/forgot-password.tsx` | Always shows "check inbox" regardless of email existence |
 
+### ⚡ Performance & Configuration Best Practices
+
+- **Optimized Database Queries**: `experimental.joins` is enabled in Better Auth. This allows fetching related data (User, Session, Organization) in a single optimized SQL query instead of sequential queries, improving latency by 2-3x. This works out-of-the-box because RefactKit includes complete Drizzle ORM `relations()` definitions.
+- **Dynamic Application Identity**: The `appName` is configured dynamically via the `APP_NAME` environment variable (e.g., in `.env`). This ensures your branding is automatically applied to all Better Auth systems, including email templates and the internal Better Auth Dashboard plugin.
+
 ### 🔑 Social OAuth Flow & Security
 
 RefactKit implements Social OAuth flows (Google, Microsoft, GitHub, LinkedIn, Twitter) with maximum security (PKCE + AES Encryption).

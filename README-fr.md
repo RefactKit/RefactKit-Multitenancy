@@ -559,6 +559,11 @@ L'implémentation de l'authentification dans RefactKit suit strictement les **Bo
 
 | `src/routes/_auth/forgot-password.tsx` | Affiche toujours "vérifiez votre boîte mail" indépendamment de l'existence de l'email |
 
+### ⚡ Bonnes pratiques de Performance & Configuration
+
+- **Requêtes Base de Données Optimisées** : `experimental.joins` est activé dans Better Auth. Cela permet de récupérer les données liées (Utilisateur, Session, Organisation) en une seule requête SQL optimisée plutôt que par des requêtes séquentielles, améliorant la latence de 2 à 3 fois. Cela fonctionne par défaut car RefactKit inclut les définitions complètes `relations()` de Drizzle ORM.
+- **Identité d'Application Dynamique** : Le nom de l'application (`appName`) est configuré dynamiquement via la variable d'environnement `APP_NAME` (par ex. dans `.env`). Cela garantit que ton image de marque est automatiquement appliquée à tous les systèmes Better Auth, y compris les modèles d'emails et le plugin interne Better Auth Dashboard.
+
 ### 🔑 Flux OAuth Social & Sécurité
 
 RefactKit implémente les flux sociaux OAuth (Google, Microsoft, GitHub, LinkedIn, Twitter) avec une sécurité maximale (PKCE + Chiffrement AES).
