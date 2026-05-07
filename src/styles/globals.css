@@ -170,3 +170,83 @@ html:not([data-font]) {
 [data-font="baloo"] {
   --font-family: "Baloo Bhaijaan 2", sans-serif;
 }
+
+/* Preset: Vega (Bleu) */
+[data-theme="vega"] {
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+.dark[data-theme="vega"] {
+  --primary: oklch(0.705 0.17 264.376);
+  --primary-foreground: oklch(0.145 0 0);
+  --ring: oklch(0.705 0.17 264.376);
+  --sidebar-primary: oklch(0.705 0.17 264.376);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+}
+
+/* Preset: Maia (Vert) */
+[data-theme="maia"] {
+  --primary: oklch(0.52 0.17 150);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.52 0.17 150);
+  --sidebar-primary: oklch(0.52 0.17 150);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+.dark[data-theme="maia"] {
+  --primary: oklch(0.75 0.15 150);
+  --primary-foreground: oklch(0.145 0 0);
+  --ring: oklch(0.75 0.15 150);
+  --sidebar-primary: oklch(0.75 0.15 150);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+}
+
+/* Preset: Lyra (Violet) */
+[data-theme="lyra"] {
+  --primary: oklch(0.6 0.2 300);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.6 0.2 300);
+  --sidebar-primary: oklch(0.6 0.2 300);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+.dark[data-theme="lyra"] {
+  --primary: oklch(0.7 0.18 300);
+  --primary-foreground: oklch(0.145 0 0);
+  --ring: oklch(0.7 0.18 300);
+  --sidebar-primary: oklch(0.7 0.18 300);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+}
+
+/* Preset: Mira (Orange) */
+[data-theme="mira"] {
+  --primary: oklch(0.65 0.2 45);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.65 0.2 45);
+  --sidebar-primary: oklch(0.65 0.2 45);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+.dark[data-theme="mira"] {
+  --primary: oklch(0.75 0.18 45);
+  --primary-foreground: oklch(0.145 0 0);
+  --ring: oklch(0.75 0.18 45);
+  --sidebar-primary: oklch(0.75 0.18 45);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+}
+
+/* Preset: Luma (Rose) */
+[data-theme="luma"] {
+  --primary: oklch(0.65 0.2 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.65 0.2 0);
+  --sidebar-primary: oklch(0.65 0.2 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+.dark[data-theme="luma"] {
+  --primary: oklch(0.75 0.18 0);
+  --primary-foreground: oklch(0.145 0 0);
+  --ring: oklch(0.75 0.18 0);
+  --sidebar-primary: oklch(0.75 0.18 0);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+}
