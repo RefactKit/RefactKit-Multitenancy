@@ -60,7 +60,7 @@ export function NavMain({
                 {item.icon && (
                   <item.icon
                     weight={isActive ? 'duotone' : 'regular'}
-                    className="size-5 text-primary"
+                    className={cn('size-5', isActive && 'text-primary')}
                   />
                 )}
                 <span>{item.title}</span>
@@ -104,7 +104,7 @@ export function NavMain({
             >
               <item.icon
                 weight={isActive ? 'duotone' : 'regular'}
-                className="size-5 text-primary"
+                className={cn('size-5', isActive && 'text-primary')}
               />
               <span>{item.title}</span>
             </SidebarMenuButton>

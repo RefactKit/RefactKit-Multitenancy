@@ -1,6 +1,8 @@
-import { Languages, Monitor, Moon, Sun } from 'lucide-react'
+import { Languages, Monitor, Moon, Paintbrush, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import { type ColorTheme, useColorTheme } from '@/hooks/use-color-theme'
+import { cn } from '@/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -85,5 +87,39 @@ export function ThemeToggle({ className }: { className?: string }) {
         </button>
       ))}
     </div>
+  )
+}
+
+const COLOR_PRESETS = [
+  { value: 'default', label: 'Nova', color: 'bg-zinc-900 dark:bg-zinc-100' },
+  { value: 'vega', label: 'Vega', color: 'bg-blue-600' },
+  { value: 'maia', label: 'Maia', color: 'bg-emerald-600' },
+  { value: 'lyra', label: 'Lyra', color: 'bg-purple-600' },
+  { value: 'mira', label: 'Mira', color: 'bg-orange-500' },
+  { value: 'luma', label: 'Luma', color: 'bg-rose-500' },
+] as const
+
+export function ColorThemeToggle() {
+  const { colorTheme, setColorTheme } = useColorTheme()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-full bg-muted/50 text-muted-foreground hover:text-foreground transition-all hover:bg-muted dark:bg-muted/10 dark:hover:bg-muted/20">
+        <Paintbrush className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-40">
+        <DropdownMenuRadioGroup
+          value={colorTheme}
+          onValueChange={(v) => setColorTheme(v as ColorTheme)}
+        >
+          {COLOR_PRESETS.map((preset) => (
+            <DropdownMenuRadioItem key={preset.value} value={preset.value} className="gap-2">
+              <div className={cn('size-3 rounded-full shadow-sm', preset.color)} />
+              <span>{preset.label}</span>
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

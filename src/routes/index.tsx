@@ -259,7 +259,12 @@ function LandingPage() {
       <footer className="w-full border-t border-border/40 py-16 text-center text-sm text-muted-foreground bg-background">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10 max-w-6xl">
           <div className="flex flex-col items-center md:items-start gap-4">
-            <img src="/logo.png" alt="RefactKit" className="h-8 w-auto opacity-80" />
+            <img src="/logo.png" alt="RefactKit" className="h-8 w-auto opacity-80 dark:hidden" />
+            <img
+              src="/logo-dark.png"
+              alt="RefactKit"
+              className="h-8 w-auto opacity-80 hidden dark:block"
+            />
             <p className="max-w-xs text-muted-foreground/60 text-center md:text-left">
               The high-performance SaaS boilerplate for modern developers.
             </p>

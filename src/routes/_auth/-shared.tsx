@@ -30,7 +30,7 @@ export function AuthShell({
 }) {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <Header />
+      <Header hideAuthButtons />
       <div className="flex flex-1 overflow-hidden">
         {/* Left panel */}
         <div className="relative hidden w-1/2 flex-col lg:flex border-r border-border/40 bg-muted/5">
@@ -83,7 +83,16 @@ export function AuthShell({
 export function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2">
-      <img src="/logo.png" alt="RefactKit" className="h-8 w-auto object-contain sm:h-12" />
+      <img
+        src="/logo.png"
+        alt="RefactKit"
+        className="h-8 w-auto object-contain sm:h-12 dark:hidden"
+      />
+      <img
+        src="/logo-dark.png"
+        alt="RefactKit"
+        className="h-8 w-auto object-contain sm:h-12 hidden dark:block"
+      />
     </Link>
   )
 }

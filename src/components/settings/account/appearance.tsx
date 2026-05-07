@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { type Font, useFont } from '@/hooks/use-font'
+import { type ColorTheme, useColorTheme } from '@/hooks/use-color-theme'
 import { cn } from '@/lib/utils'
 import { useSession } from '../../../../lib/auth-client'
 
@@ -23,11 +24,21 @@ const THEMES = [
   { value: 'dark', label: 'Dark', Icon: Moon },
 ] as const
 
+const COLOR_PRESETS = [
+  { value: 'default', label: 'Nova', color: 'bg-zinc-900 dark:bg-zinc-100' },
+  { value: 'vega', label: 'Vega', color: 'bg-blue-600' },
+  { value: 'maia', label: 'Maia', color: 'bg-emerald-600' },
+  { value: 'lyra', label: 'Lyra', color: 'bg-purple-600' },
+  { value: 'mira', label: 'Mira', color: 'bg-orange-500' },
+  { value: 'luma', label: 'Luma', color: 'bg-rose-500' },
+] as const
+
 export function Appearance({ className }: AppearanceProps) {
   const { localization } = useAuth()
   const { data: session } = useSession()
   const { theme, setTheme } = useTheme()
   const { font, setFont } = useFont()
+  const { colorTheme, setColorTheme } = useColorTheme()
 
   return (
     <div className="flex flex-col gap-8">
@@ -85,7 +96,7 @@ export function Appearance({ className }: AppearanceProps) {
       </div>
 
       <div>
-        <h2 className="text-sm font-semibold mb-3">{localization.settings.font}</h2>
+        <h2 className="text-sm font-semibold mb-3">{localization.settings.font || 'Font'}</h2>
         <Card className={cn(className)}>
           <CardContent className="flex flex-col gap-3">
             <div className="flex flex-col gap-1.5">
@@ -107,6 +118,38 @@ export function Appearance({ className }: AppearanceProps) {
               </Select>
               <p className="text-xs text-muted-foreground">
                 {localization.settings.fontDescription}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div>
+        <h2 className="text-sm font-semibold mb-3">Color Theme</h2>
+        <Card className={cn(className)}>
+          <CardContent className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1.5">
+              <Select
+                value={colorTheme}
+                onValueChange={(value) => setColorTheme(value as ColorTheme)}
+                disabled={!session}
+              >
+                <SelectTrigger className="w-full sm:w-[240px]">
+                  <SelectValue placeholder="Select a preset" />
+                </SelectTrigger>
+                <SelectContent align="start">
+                  {COLOR_PRESETS.map((preset) => (
+                    <SelectItem key={preset.value} value={preset.value}>
+                      <div className="flex items-center gap-2">
+                        <div className={cn('size-3 rounded-full shadow-sm', preset.color)} />
+                        <span>{preset.label}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Choose the primary color palette of the application.
               </p>
             </div>
           </CardContent>

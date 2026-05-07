@@ -114,7 +114,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
         <script
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: Initial font settings from localStorage to prevent shift
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Initial font and theme settings from localStorage to prevent shift
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
@@ -122,6 +122,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                   const font = localStorage.getItem('RefactKit-font');
                   if (font && font !== 'default') {
                     document.documentElement.setAttribute('data-font', font);
+                  }
+                  
+                  const colorTheme = localStorage.getItem('RefactKit-color-theme');
+                  if (colorTheme && colorTheme !== 'default') {
+                    document.documentElement.setAttribute('data-theme', colorTheme);
                   }
                 } catch (e) {}
               })();

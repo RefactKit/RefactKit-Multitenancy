@@ -1110,7 +1110,37 @@ const form = useForm({
 | **Icônes** | `data-icon="inline-start"` | SVG Brut en ligne |
 | **Thèmes** | Variables CSS via `@theme` | Valeurs de couleur en dur |
 
-### Appliquer un Nouveau Thème
+### 🎨 Ajouter des Thèmes de Couleur Sélectionnables
+
+RefactKit prend en charge plusieurs thèmes de couleurs à l'exécution via des attributs de données CSS (`[data-theme="..."]`), permettant aux utilisateurs de changer de couleur instantanément sans recompiler l'application.
+
+Pour ajouter un nouveau preset de couleur (ex: "Neon") :
+
+1. **Ajouter les Variables CSS** : Ajoutez votre palette dans `src/styles/globals.css`. Assurez-vous de cibler votre nouvel attribut `data-theme` pour les modes clair et `.dark`.
+   ```css
+   /* Preset: Neon */
+   [data-theme="neon"] {
+     --primary: oklch(0.6 0.2 320);
+     --primary-foreground: oklch(0.985 0 0);
+     /* ... autres variables ... */
+   }
+   .dark[data-theme="neon"] {
+     --primary: oklch(0.7 0.18 320);
+     /* ... autres variables ... */
+   }
+   ```
+
+2. **Mettre à jour les Définitions TypeScript** : Ajoutez l'identifiant du nouveau thème au type d'union `ColorTheme` dans `src/hooks/use-color-theme.ts`.
+   ```ts
+   export type ColorTheme = 'default' | 'vega' | 'maia' | 'lyra' | 'mira' | 'luma' | 'neon'
+   ```
+
+3. **Ajouter au Sélecteur UI** : Ajoutez la configuration de votre preset au tableau `COLOR_PRESETS` dans `src/components/shared/auth-ui.tsx` et `src/components/settings/account/appearance.tsx`.
+   ```tsx
+   { value: 'neon', label: 'Neon', color: 'bg-pink-500' }
+   ```
+
+### Appliquer un Thème de Base Shadcn
 
 Générez un preset sur [ui.shadcn.com](https://ui.shadcn.com) et appliquez-le :
 ```bash
