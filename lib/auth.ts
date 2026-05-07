@@ -290,6 +290,7 @@ export const auth = betterAuth({
     }),
     openAPI({
       path: '/openapi.json',
+      nonce: process.env.OPENAPI_NONCE || 'refactkit-openapi-nonce',
     }),
     multiSession(),
     sentinel(),
