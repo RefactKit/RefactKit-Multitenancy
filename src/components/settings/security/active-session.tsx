@@ -9,7 +9,13 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
 import { authClient, useSession } from '../../../../lib/auth-client'
-import { GithubIcon, GoogleIcon, LinkedinIcon, MicrosoftIcon, TwitterIcon } from '@/routes/_auth/-shared'
+import {
+  GithubIcon,
+  GoogleIcon,
+  LinkedinIcon,
+  MicrosoftIcon,
+  TwitterIcon,
+} from '@/routes/_auth/-shared'
 
 function formatRelativeTime(date: Date) {
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000)

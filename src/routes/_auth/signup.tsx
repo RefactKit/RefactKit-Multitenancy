@@ -10,7 +10,15 @@ import { Label } from '@/components/ui/label'
 import { PasswordInput } from '@/components/ui/password-input'
 import { useI18n } from '@/i18n/context'
 import { authClient } from '../../../lib/auth-client'
-import { AuthShell, Divider, GithubIcon, GoogleIcon, LinkedinIcon, MicrosoftIcon, TwitterIcon } from './-shared'
+import {
+  AuthShell,
+  Divider,
+  GithubIcon,
+  GoogleIcon,
+  LinkedinIcon,
+  MicrosoftIcon,
+  TwitterIcon,
+} from './-shared'
 
 export const Route = createFileRoute('/_auth/signup')({
   validateSearch: (search: Record<string, unknown>): { callbackURL?: string } => {

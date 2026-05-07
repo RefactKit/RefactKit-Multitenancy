@@ -17,7 +17,19 @@ import { zh } from './locales/zh'
 // Re-export so context.tsx can import Translations from '.'
 export type { Translations } from './locales/en'
 
-export type Locale = 'en' | 'fr' | 'be' | 'de' | 'hi' | 'ar' | 'ar-ma' | 'es' | 'pt' | 'zh' | 'it' | 'ru'
+export type Locale =
+  | 'en'
+  | 'fr'
+  | 'be'
+  | 'de'
+  | 'hi'
+  | 'ar'
+  | 'ar-ma'
+  | 'es'
+  | 'pt'
+  | 'zh'
+  | 'it'
+  | 'ru'
 
 export const LOCALE_COOKIE = 'lk_locale'
 

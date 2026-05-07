@@ -21,7 +21,7 @@
   "dependencies": {
     "@base-ui/react": "^1.4.1",
     "@better-auth-ui/react": "^1.6.3",
-    "@better-auth/infra": "^0.2.5",
+    "@better-auth/infra": "^0.2.6",
     "@fontsource-variable/geist": "^5.2.8",
     "@fontsource-variable/google-sans-flex": "^5.2.3",
     "@fontsource-variable/outfit": "^5.2.8",

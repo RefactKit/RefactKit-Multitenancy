@@ -41,7 +41,11 @@ const ownerRole = ac.newRole({
 })
 
 export const auth = betterAuth({
+  appName: process.env.APP_NAME || 'RefactKit',
   baseURL: getBaseURL(),
+  experimental: {
+    joins: true,
+  },
   secret: process.env.BETTER_AUTH_SECRET,
   trustHost: true,
   trustedOrigins: [

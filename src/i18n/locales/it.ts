@@ -28,7 +28,7 @@ export const it = {
     pt: 'PT',
     zh: 'ZH',
     it: 'IT',
-    ru: 'RU'
+    ru: 'RU',
   },
   auth: {
     login: {
@@ -61,7 +61,7 @@ export const it = {
       submit: 'Invia link di ripristino',
       submitting: 'Invio...',
       success: 'Controlla la tua email per il link di ripristino',
-      backToSignIn: 'Torna all\'accesso',
+      backToSignIn: "Torna all'accesso",
     },
     resetPassword: {
       title: 'Reimposta password',
@@ -106,14 +106,14 @@ export const it = {
     badge: 'Quasi fatto',
     heading: 'Un ultimo passo',
     subheading: 'Crea la tua organizzazione per iniziare a collaborare con il tuo team.',
-    nameLabel: 'Nome dell\'organizzazione',
+    nameLabel: "Nome dell'organizzazione",
     namePlaceholder: 'Acme Inc.',
     nameMin: 'Il nome deve avere almeno 2 caratteri',
     nameMax: 'Il nome non può superare i 64 caratteri',
-    nameTaken: 'Il nome dell\'organizzazione è già in uso',
+    nameTaken: "Il nome dell'organizzazione è già in uso",
     submit: 'Crea organizzazione',
     submitting: 'Creazione in corso...',
-    error: 'Impossibile creare l\'organizzazione',
+    error: "Impossibile creare l'organizzazione",
     features: ['Invita i membri del team', 'Gestisci ruoli e permessi', 'Collabora in tempo reale'],
   },
   sidebar: {
@@ -145,7 +145,8 @@ export const it = {
   },
   dashboard: {
     title: 'Dashboard',
-    subtitle: 'Stiamo sviluppando approfondimenti per aiutarti a gestire la tua organizzazione in modo efficiente.',
+    subtitle:
+      'Stiamo sviluppando approfondimenti per aiutarti a gestire la tua organizzazione in modo efficiente.',
     welcome: 'Benvenuto in {{org}}',
     inactiveMembers: 'Membri inattivi',
     activeMembers: 'Membri attivi',
@@ -161,21 +162,22 @@ export const it = {
     viewDashboard: 'Visualizza dashboard',
     createNew: 'Crea nuova organizzazione',
     createNewDesc: 'Imposta un nuovo spazio di lavoro per il tuo team.',
-    deleteConfirm: 'Eliminare l\'Organizzazione?',
-    deleteConfirmDesc: 'Questa azione è permanente e cancellerà tutti i dati associati a questa organizzazione.',
+    deleteConfirm: "Eliminare l'Organizzazione?",
+    deleteConfirmDesc:
+      'Questa azione è permanente e cancellerà tutti i dati associati a questa organizzazione.',
     deleteSuccess: 'Organizzazione eliminata con successo',
   },
   newOrg: {
     title: 'Crea organizzazione',
     subtitle: 'Imposta un nuovo spazio di lavoro per collaborare con il tuo team.',
-    nameLabel: 'Nome dell\'organizzazione',
+    nameLabel: "Nome dell'organizzazione",
     namePlaceholder: 'Acme Inc.',
     nameMin: 'Il nome deve avere almeno 2 caratteri',
     nameMax: 'Il nome non può superare i 64 caratteri',
-    nameTaken: 'Il nome dell\'organizzazione è già in uso',
+    nameTaken: "Il nome dell'organizzazione è già in uso",
     submit: 'Crea organizzazione',
     submitting: 'Creazione in corso...',
-    error: 'Impossibile creare l\'organizzazione',
+    error: "Impossibile creare l'organizzazione",
     success: 'Organizzazione creata con successo',
   },
   members: {
@@ -189,18 +191,19 @@ export const it = {
     noMembers: 'Nessun membro trovato.',
   },
   orgSettings: {
-    title: 'Impostazioni dell\'organizzazione',
+    title: "Impostazioni dell'organizzazione",
     subtitle: 'Gestisci i dettagli della tua organizzazione.',
-    nameLabel: 'Nome dell\'organizzazione',
+    nameLabel: "Nome dell'organizzazione",
     nameHelp: 'Questo è il nome pubblico della tua organizzazione.',
     saveChanges: 'Salva modifiche',
     saving: 'Salvataggio...',
     danger: 'Zona pericolosa',
     deleteTitle: 'Elimina organizzazione',
-    deleteDesc: 'Elimina definitivamente questa organizzazione e tutti i suoi dati. Questa azione non può essere annullata.',
+    deleteDesc:
+      'Elimina definitivamente questa organizzazione e tutti i suoi dati. Questa azione non può essere annullata.',
     deleteButton: 'Elimina organizzazione',
     saved: 'Organizzazione aggiornata.',
-    error: 'Impossibile aggiornare l\'organizzazione.',
+    error: "Impossibile aggiornare l'organizzazione.",
   },
   settings: {
     title: 'Impostazioni',
@@ -236,7 +239,8 @@ export const it = {
         'alla velocità della luce',
         'con codice pronto per la produzione',
       ],
-      subheading: 'Lo starter full-stack definitivo per fondatori, sviluppatori e indie hacker. Costruito con React 19 e TanStack, con un\'API backend pronta per la produzione, multi-tenancy sicura e una dashboard di livello enterprise.',
+      subheading:
+        "Lo starter full-stack definitivo per fondatori, sviluppatori e indie hacker. Costruito con React 19 e TanStack, con un'API backend pronta per la produzione, multi-tenancy sicura e una dashboard di livello enterprise.",
       getStarted: 'Inizia',
       viewDocs: 'Visualizza Documentazione',
       security: {
@@ -248,7 +252,7 @@ export const it = {
     features: {
       multiTenant: {
         title: 'Multi-Tenant',
-        description: 'Gestione delle organizzazioni sicura e scalabile fin dall\'inizio.',
+        description: "Gestione delle organizzazioni sicura e scalabile fin dall'inizio.",
       },
       tanstack: {
         title: 'Alimentato da TanStack',
@@ -256,24 +260,28 @@ export const it = {
       },
       modernUI: {
         title: 'UI Moderna',
-        description: 'Realizzato con Base UI e Tailwind CSS per un\'esperienza premium.',
+        description: "Realizzato con Base UI e Tailwind CSS per un'esperienza premium.",
       },
     },
     techStack: {
-      title: 'I migliori strumenti nell\'ecosistema',
-      subtitle: 'RefactKit è costruito sui moderni strumenti consolidati per garantire che il tuo SaaS sia veloce, sicuro e scalabile.',
+      title: "I migliori strumenti nell'ecosistema",
+      subtitle:
+        'RefactKit è costruito sui moderni strumenti consolidati per garantire che il tuo SaaS sia veloce, sicuro e scalabile.',
     },
     dashboard: {
       title: 'Dashboard di livello enterprise',
-      subtitle: 'Tutto ciò di cui hai bisogno per gestire le tue organizzazioni e gli utenti in un unico posto.',
+      subtitle:
+        'Tutto ciò di cui hai bisogno per gestire le tue organizzazioni e gli utenti in un unico posto.',
     },
     detailedFeatures: {
       title: 'Tutto ciò che ti serve per il lancio',
-      subtitle: 'Concentrati sulle tue funzionalità principali mentre noi gestiamo le complessità della multi-tenancy, dell\'autenticazione e delle prestazioni.',
+      subtitle:
+        "Concentrati sulle tue funzionalità principali mentre noi gestiamo le complessità della multi-tenancy, dell'autenticazione e delle prestazioni.",
     },
     cta: {
       title: 'Pronto per costruire la tua prossima grande idea?',
-      subtitle: 'Unisciti ad altri sviluppatori che costruiscono applicazioni SaaS ad alte prestazioni con RefactKit.',
+      subtitle:
+        'Unisciti ad altri sviluppatori che costruiscono applicazioni SaaS ad alte prestazioni con RefactKit.',
       button: 'Inizia Ora',
     },
     footer: {
@@ -283,7 +291,8 @@ export const it = {
   forbidden: {
     title: 'Accesso Negato',
     subtitle: 'Permessi Insufficienti',
-    description: 'Come membro, non hai il permesso di accedere a questa sezione. Contatta un amministratore o il proprietario per gestire le impostazioni dell\'organizzazione o i membri del team.',
+    description:
+      "Come membro, non hai il permesso di accedere a questa sezione. Contatta un amministratore o il proprietario per gestire le impostazioni dell'organizzazione o i membri del team.",
     backToDashboard: 'Torna alla Dashboard',
   },
 }

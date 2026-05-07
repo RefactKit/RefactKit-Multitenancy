@@ -30,7 +30,7 @@ export const zh: Translations = {
     pt: 'PT',
     zh: '中文',
     it: 'IT',
-    ru: 'RU'
+    ru: 'RU',
   },
   auth: {
     login: {

@@ -30,7 +30,7 @@ export const pt: Translations = {
     pt: 'PT',
     zh: 'ZH',
     it: 'IT',
-    ru: 'RU'
+    ru: 'RU',
   },
   auth: {
     login: {
