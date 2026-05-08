@@ -110,7 +110,7 @@ export function Appearance({ className }: AppearanceProps) {
                   <SelectValue placeholder="Select a font" />
                 </SelectTrigger>
                 <SelectContent align="start">
-                  <SelectItem value="default">{localization.settings.fontDefault}</SelectItem>
+                  <SelectItem value="default">Auto (Smart Switching)</SelectItem>
                   <SelectItem value="google-sans">Google Sans Flex</SelectItem>
                   <SelectItem value="zain">Zain</SelectItem>
                   <SelectItem value="geist">Geist</SelectItem>

@@ -60,12 +60,13 @@ export function NavMain({
                   <item.icon
                     className={cn(
                       'size-5 transition-all duration-200',
-                      isActive && 'text-[var(--sidebar-icon-active,var(--primary))] scale-[var(--sidebar-icon-scale-active,1)] [stroke-width:var(--sidebar-icon-stroke-active,2)]',
+                      isActive &&
+                        'text-[var(--sidebar-icon-active,var(--primary))] scale-[var(--sidebar-icon-scale-active,1)] [stroke-width:var(--sidebar-icon-stroke-active,2)]',
                     )}
                   />
                 )}
                 <span>{item.title}</span>
-                <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                <ChevronRight className="ms-auto size-4 transition-transform duration-200 rtl:rotate-180 group-data-[state=open]/collapsible:rotate-90" />
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
@@ -103,7 +104,8 @@ export function NavMain({
               <item.icon
                 className={cn(
                   'size-5 transition-all duration-200',
-                  isActive && 'text-[var(--sidebar-icon-active,var(--primary))] scale-[var(--sidebar-icon-scale-active,1)] [stroke-width:var(--sidebar-icon-stroke-active,2)]',
+                  isActive &&
+                    'text-[var(--sidebar-icon-active,var(--primary))] scale-[var(--sidebar-icon-scale-active,1)] [stroke-width:var(--sidebar-icon-stroke-active,2)]',
                 )}
               />
               <span>{item.title}</span>

@@ -77,7 +77,6 @@
 }
 
 :root {
-  --font-family: "Google Sans Flex Variable", sans-serif;
   --background: oklch(0.985 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -148,31 +147,29 @@
   }
 }
 
-/* Direction-aware font switching for 'Default (Auto)' mode */
-html:not([data-font]) {
-  &[dir="ltr"] {
-    --font-family: "Google Sans Flex Variable", "Geist Variable", sans-serif;
-  }
-
-  &[dir="rtl"] {
-    --font-family: "Zain", sans-serif;
-  }
+/* Default font settings based on direction */
+html {
+  --font-family: "Google Sans Flex Variable", "Geist Variable", sans-serif;
 }
 
-/* Manual font overrides */
-[data-font="google-sans"] {
-  --font-family: "Google Sans Flex Variable", sans-serif;
-}
-
-[data-font="zain"] {
+html[dir="rtl"] {
   --font-family: "Zain", sans-serif;
 }
 
-[data-font="geist"] {
+/* Override font ONLY if data-font is manually set */
+html[data-font="google-sans"] {
+  --font-family: "Google Sans Flex Variable", sans-serif;
+}
+
+html[data-font="zain"] {
+  --font-family: "Zain", sans-serif;
+}
+
+html[data-font="geist"] {
   --font-family: "Geist Variable", sans-serif;
 }
 
-[data-font="baloo"] {
+html[data-font="baloo"] {
   --font-family: "Baloo Bhaijaan 2", sans-serif;
 }
 
@@ -297,10 +294,8 @@ html:not([data-font]) {
   --sidebar-ring: oklch(0.737 0.021 106.9);
   --sidebar-icon-active: oklch(0.2869 0.0839 135.05);
   --sidebar-icon-stroke-active: 2.5;
-  --sidebar-icon-scale-active: 1.10;
+  --sidebar-icon-scale-active: 1.1;
 }
-
-
 
 .dark[data-theme="refactkit"] {
   --background: oklch(0.153 0.006 107.1);

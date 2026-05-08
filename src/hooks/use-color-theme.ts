@@ -2,14 +2,7 @@ import { useEffect, useState } from 'react'
 
 const COLOR_THEME_KEY = 'RefactKit-color-theme'
 
-export type ColorTheme =
-  | 'default'
-  | 'vega'
-  | 'maia'
-  | 'lyra'
-  | 'mira'
-  | 'luma'
-  | 'refactkit'
+export type ColorTheme = 'default' | 'vega' | 'maia' | 'lyra' | 'mira' | 'luma' | 'refactkit'
 
 export function useColorTheme() {
   const [colorTheme, setColorThemeState] = useState<ColorTheme>(() => {
