@@ -32,7 +32,6 @@ const COLOR_PRESETS = [
   { value: 'mira', label: 'Mira', color: 'bg-orange-500' },
   { value: 'luma', label: 'Luma', color: 'bg-rose-500' },
   { value: 'refactkit', label: 'RefactKit', color: 'bg-lime-400' },
-  { value: 'wise', label: 'Wise', color: 'bg-[#9FE870]' },
 ] as const
 
 export function Appearance({ className }: AppearanceProps) {

@@ -56,7 +56,14 @@ export function NavMain({
               className="group/collapsible"
             >
               <CollapsibleTrigger render={<SidebarMenuButton tooltip={item.title} />}>
-                {item.icon && <item.icon className={cn('size-5', isActive && 'text-primary')} />}
+                {item.icon && (
+                  <item.icon
+                    className={cn(
+                      'size-5 transition-all duration-200',
+                      isActive && 'text-[var(--sidebar-icon-active,var(--primary))] scale-[var(--sidebar-icon-scale-active,1)] [stroke-width:var(--sidebar-icon-stroke-active,2)]',
+                    )}
+                  />
+                )}
                 <span>{item.title}</span>
                 <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </CollapsibleTrigger>
@@ -93,7 +100,12 @@ export function NavMain({
               tooltip={item.title}
               onClick={() => navigate({ to: item.to, search: item.search })}
             >
-              <item.icon className={cn('size-5', isActive && 'text-primary')} />
+              <item.icon
+                className={cn(
+                  'size-5 transition-all duration-200',
+                  isActive && 'text-[var(--sidebar-icon-active,var(--primary))] scale-[var(--sidebar-icon-scale-active,1)] [stroke-width:var(--sidebar-icon-stroke-active,2)]',
+                )}
+              />
               <span>{item.title}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -104,10 +116,7 @@ export function NavMain({
 
   if (collapsible) {
     return (
-      <Collapsible
-        defaultOpen
-        className="group group-data-[collapsible=icon]:hidden"
-      >
+      <Collapsible defaultOpen className="group group-data-[collapsible=icon]:hidden">
         <SidebarGroup>
           {label && (
             <CollapsibleTrigger

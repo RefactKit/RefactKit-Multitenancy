@@ -10,7 +10,6 @@ export type ColorTheme =
   | 'mira'
   | 'luma'
   | 'refactkit'
-  | 'wise'
 
 export function useColorTheme() {
   const [colorTheme, setColorThemeState] = useState<ColorTheme>(() => {
