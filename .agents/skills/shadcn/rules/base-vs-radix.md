@@ -4,7 +4,7 @@ API differences between `base` and `radix`. Check the `base` field from `npx sha
 
 ## Contents
 
-- Composition: aschild vs render
+- Composition: asChild vs render
 - Button / trigger as non-button element
 - Select (items prop, placeholder, positioning, multiple, object values)
 - ToggleGroup (type vs multiple)
@@ -13,9 +13,9 @@ API differences between `base` and `radix`. Check the `base` field from `npx sha
 
 ---
 
-## Composition: aschild (radix) vs render (base)
+## Composition: asChild (radix) vs render (base)
 
-Radix uses `aschild` to replace the default element. Base uses `render`. Don't wrap triggers in extra elements.
+Radix uses `asChild` to replace the default element. Base uses `render`. Don't wrap triggers in extra elements.
 
 **Incorrect:**
 
@@ -30,7 +30,7 @@ Radix uses `aschild` to replace the default element. Base uses `render`. Don't w
 **Correct (radix):**
 
 ```tsx
-<DialogTrigger aschild>
+<DialogTrigger asChild>
   <Button>Open</Button>
 </DialogTrigger>
 ```
@@ -66,7 +66,7 @@ When `render` changes an element to a non-button (`<a>`, `<span>`), add `nativeB
 **Correct (radix):**
 
 ```tsx
-<Button aschild>
+<Button asChild>
   <a href="/docs">Read the docs</a>
 </Button>
 ```

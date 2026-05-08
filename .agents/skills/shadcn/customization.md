@@ -175,7 +175,7 @@ Compose shadcn/ui primitives into higher-level components:
 export function ConfirmDialog({ title, description, onConfirm, children }) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger aschild>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
