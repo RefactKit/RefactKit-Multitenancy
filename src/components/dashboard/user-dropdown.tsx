@@ -1,5 +1,5 @@
 import { useAuth } from '@better-auth-ui/react'
-import { Bell, CreditCard, SealCheck, SignOut, Sparkle } from '@phosphor-icons/react'
+import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from 'lucide-react'
 import { useRouter } from '@tanstack/react-router'
 import {
   DropdownMenu,
@@ -48,7 +48,7 @@ export function UserDropdown({ children, side = 'bottom', align = 'end' }: UserD
 
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <Sparkle />
+            <Sparkles className="size-4" />
             {t.sidebar.upgradeToPro}
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -59,15 +59,15 @@ export function UserDropdown({ children, side = 'bottom', align = 'end' }: UserD
           <DropdownMenuItem
             render={<Link href={`${basePaths.settings}/${viewPaths.settings.account}`} />}
           >
-            <SealCheck />
+            <BadgeCheck className="size-4" />
             {t.sidebar.account}
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <CreditCard />
+            <CreditCard className="size-4" />
             {t.sidebar.billing}
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Bell />
+            <Bell className="size-4" />
             {t.sidebar.notifications}
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -79,7 +79,7 @@ export function UserDropdown({ children, side = 'bottom', align = 'end' }: UserD
             onClick={() => router.navigate({ to: '/logout' })}
             render={<Link href={`${basePaths.auth}/${viewPaths.auth.signOut}`} />}
           >
-            <SignOut />
+            <LogOut className="size-4" />
             {t.sidebar.logOut}
           </DropdownMenuItem>
         </DropdownMenuGroup>

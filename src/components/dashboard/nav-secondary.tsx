@@ -54,10 +54,7 @@ export function NavSecondary({
                   size="sm"
                   className="text-muted-foreground hover:text-foreground"
                 >
-                  <item.icon
-                    weight={isActive ? 'duotone' : 'regular'}
-                    className="size-4 shrink-0"
-                  />
+                  <item.icon className="size-4 shrink-0" />
                   <span>{item.title}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>

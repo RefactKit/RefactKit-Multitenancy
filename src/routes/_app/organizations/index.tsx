@@ -166,10 +166,10 @@ function OrganizationsPage() {
                     <div className="flex items-center gap-5 pr-10 rtl:pr-0 rtl:pl-10">
                       <Avatar
                         shape="square"
-                        className="size-14 sm:size-16 border-2 border-border/40 after:hidden shrink-0 transition-colors group-hover:opacity-90"
+                        className="size-14 sm:size-16 after:hidden shrink-0 transition-colors group-hover:opacity-90 rounded-2xl"
                       >
                         {org.logo && <AvatarImage src={org.logo} className="object-cover" />}
-                        <AvatarFallback className="bg-primary/10 text-primary font-semibold text-2xl">
+                        <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-2xl">
                           {getInitials(org.name)}
                         </AvatarFallback>
                         {index === 0 && (

@@ -1,4 +1,3 @@
-import { CaretRight } from '@phosphor-icons/react'
 import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { ChevronRight } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -57,17 +56,9 @@ export function NavMain({
               className="group/collapsible"
             >
               <CollapsibleTrigger render={<SidebarMenuButton tooltip={item.title} />}>
-                {item.icon && (
-                  <item.icon
-                    weight={isActive ? 'duotone' : 'regular'}
-                    className={cn('size-5', isActive && 'text-primary')}
-                  />
-                )}
+                {item.icon && <item.icon className={cn('size-5', isActive && 'text-primary')} />}
                 <span>{item.title}</span>
-                <CaretRight
-                  weight="bold"
-                  className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
-                />
+                <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
@@ -102,10 +93,7 @@ export function NavMain({
               tooltip={item.title}
               onClick={() => navigate({ to: item.to, search: item.search })}
             >
-              <item.icon
-                weight={isActive ? 'duotone' : 'regular'}
-                className={cn('size-5', isActive && 'text-primary')}
-              />
+              <item.icon className={cn('size-5', isActive && 'text-primary')} />
               <span>{item.title}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -122,15 +110,17 @@ export function NavMain({
       >
         <SidebarGroup>
           {label && (
-            <SidebarGroupLabel aschild>
-              <CollapsibleTrigger className="flex w-full items-center justify-between hover:text-foreground transition-colors group">
-                <span className="text-xs font-semibold uppercase tracking-wider">{label}</span>
-                <ChevronRight className="size-3.5 transition-transform duration-200 group-data-[state=open]/collapsible-group:rotate-90" />
-              </CollapsibleTrigger>
+            <SidebarGroupLabel
+              render={
+                <CollapsibleTrigger className="flex w-full items-center justify-between hover:text-foreground transition-colors group" />
+              }
+            >
+              <span className="text-xs font-semibold uppercase tracking-wider">{label}</span>
+              <ChevronRight className="size-3.5 transition-transform duration-200 group-data-[state=open]/collapsible-group:rotate-90" />
             </SidebarGroupLabel>
           )}
           <CollapsibleContent>
-            <div className="ml-3 mt-1 flex flex-col gap-1 border-l border-border/60 pl-2">
+            <div className="ml-3 mt-1 flex flex-col gap-1 border-l-2 border-border pl-2">
               {groupContent}
             </div>
           </CollapsibleContent>

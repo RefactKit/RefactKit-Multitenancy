@@ -1,4 +1,4 @@
-import { Buildings, CaretUpDown, Crown, Plus, Shield, User } from '@phosphor-icons/react'
+import { Building2, ChevronsUpDown, Crown, Plus, Shield, User } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
@@ -83,24 +83,15 @@ export function OrgSwitcher({ orgs, currentSlug }: OrgSwitcherProps) {
                             : 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-500/15 dark:text-slate-400 dark:border-slate-500/20'
                       }`}
                   >
-                    {activeOrg.role === 'owner' && (
-                      <Crown weight="duotone" className="size-2.5 shrink-0" />
-                    )}
-                    {activeOrg.role === 'admin' && (
-                      <Shield weight="duotone" className="size-2.5 shrink-0" />
-                    )}
-                    {activeOrg.role === 'member' && (
-                      <User weight="duotone" className="size-2.5 shrink-0" />
-                    )}
+                    {activeOrg.role === 'owner' && <Crown className="size-2.5 shrink-0" />}
+                    {activeOrg.role === 'admin' && <Shield className="size-2.5 shrink-0" />}
+                    {activeOrg.role === 'member' && <User className="size-2.5 shrink-0" />}
                     {/* Fallback translation or capitalized role */}
                     {(t.members?.roles as any)?.[activeOrg.role] || activeOrg.role}
                   </Badge>
                 </div>
               </div>
-              <CaretUpDown
-                weight="bold"
-                className="ml-auto size-5 text-muted-foreground/60 shrink-0 group-data-[collapsible=icon]:hidden"
-              />
+              <ChevronsUpDown className="ml-auto size-4 text-muted-foreground/60 shrink-0 group-data-[collapsible=icon]:hidden" />
             </DropdownMenuTrigger>
             <DropdownMenuContent
               className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
@@ -139,8 +130,7 @@ export function OrgSwitcher({ orgs, currentSlug }: OrgSwitcherProps) {
                       {org.logo ? (
                         <img src={org.logo} alt={org.name} className="size-full object-cover" />
                       ) : (
-                        <Buildings
-                          weight={org.slug === activeOrg.slug ? 'duotone' : 'regular'}
+                        <Building2
                           className={`size-4 shrink-0 ${org.slug === activeOrg.slug ? 'text-primary' : 'text-muted-foreground'}`}
                         />
                       )}
@@ -160,15 +150,9 @@ export function OrgSwitcher({ orgs, currentSlug }: OrgSwitcherProps) {
                                 : 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-500/15 dark:text-slate-400 dark:border-slate-500/20'
                           }`}
                       >
-                        {org.role === 'owner' && (
-                          <Crown weight="duotone" className="size-2.5 shrink-0" />
-                        )}
-                        {org.role === 'admin' && (
-                          <Shield weight="duotone" className="size-2.5 shrink-0" />
-                        )}
-                        {org.role === 'member' && (
-                          <User weight="duotone" className="size-2.5 shrink-0" />
-                        )}
+                        {org.role === 'owner' && <Crown className="size-2.5 shrink-0" />}
+                        {org.role === 'admin' && <Shield className="size-2.5 shrink-0" />}
+                        {org.role === 'member' && <User className="size-2.5 shrink-0" />}
                         {(t.members?.roles as any)?.[org.role] || org.role}
                       </Badge>
                       {org.slug === activeOrg.slug && (
@@ -183,7 +167,7 @@ export function OrgSwitcher({ orgs, currentSlug }: OrgSwitcherProps) {
                 orgs.some((o) => o.role === 'owner' || o.role === 'admin')) && (
                 <DropdownMenuItem className="gap-2 p-2" onClick={() => setIsModalOpen(true)}>
                   <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                    <Plus weight="bold" className="size-4" />
+                    <Plus className="size-4" />
                   </div>
                   <div className="font-medium text-muted-foreground">
                     {t.sidebar.createOrganization}

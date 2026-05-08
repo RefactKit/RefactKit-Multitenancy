@@ -1,13 +1,13 @@
 import {
-  ArrowSquareOut,
-  Buildings,
-  ChatCenteredText,
-  Gear,
-  Image as PhosphorImage,
-  Lifebuoy,
-  SquaresFour,
+  Building2,
+  ExternalLink,
+  Image,
+  LayoutGrid,
+  LifeBuoy,
+  MessageSquareText,
+  Settings,
   Users,
-} from '@phosphor-icons/react'
+} from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -49,12 +49,12 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
         {
           title: t.sidebar.dashboard,
           to: `/organizations/${slug}/dashboard`,
-          icon: SquaresFour,
+          icon: LayoutGrid,
         },
         {
           title: t.sidebar.gallery,
           to: `/organizations/${slug}/gallery`,
-          icon: PhosphorImage,
+          icon: Image,
         },
       ]
     : []
@@ -71,7 +71,7 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
           {
             title: t.sidebar.workspaceSettings,
             to: `/organizations/${slug}/settings`,
-            icon: Gear,
+            icon: Settings,
           },
         ]
       : []
@@ -81,7 +81,7 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
     {
       title: t.sidebar.accountSettings,
       to: '/settings',
-      icon: Gear,
+      icon: Settings,
     },
   ]
 
@@ -90,17 +90,17 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
     {
       title: t.sidebar.feedback,
       url: '#',
-      icon: ChatCenteredText,
+      icon: MessageSquareText,
     },
     {
       title: t.sidebar.support,
       url: '#',
-      icon: Lifebuoy,
+      icon: LifeBuoy,
     },
     {
       title: t.sidebar.documentation,
       url: 'https://docs.refactkit.com',
-      icon: ArrowSquareOut,
+      icon: ExternalLink,
       isExternal: true,
     },
     /*
@@ -126,7 +126,7 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
         <NavMain
           items={[
             ...adminItems,
-            { title: t.sidebar.workspaces, to: '/organizations', icon: Buildings },
+            { title: t.sidebar.workspaces, to: '/organizations', icon: Building2 },
           ]}
           label={t.sidebar.administration.toUpperCase()}
           collapsible

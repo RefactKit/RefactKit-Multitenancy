@@ -1,4 +1,4 @@
-import { CaretUpDown } from '@phosphor-icons/react'
+import { ChevronsUpDown } from 'lucide-react'
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -46,7 +46,7 @@ export function NavUser() {
               <span className="truncate font-semibold text-[15px]">{user.name}</span>
               <span className="truncate text-xs text-muted-foreground/70">{user.email}</span>
             </div>
-            <CaretUpDown weight="bold" className="ml-auto text-muted-foreground/60" />
+            <ChevronsUpDown className="ml-auto text-muted-foreground/60 size-4" />
           </SidebarMenuButton>
         </UserDropdown>
       </SidebarMenuItem>

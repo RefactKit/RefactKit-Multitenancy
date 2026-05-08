@@ -144,8 +144,8 @@ importers:
         specifier: ^17.0.4
         version: 17.0.6(i18next@26.0.8(typescript@5.9.3))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@5.9.3)
       shadcn:
-        specifier: ^4.5.0
-        version: 4.6.0(@types/node@22.19.17)(typescript@5.9.3)
+        specifier: ^4.7.0
+        version: 4.7.0(@types/node@22.19.17)(typescript@5.9.3)
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -5621,8 +5621,8 @@ packages:
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
-  shadcn@4.6.0:
-    resolution: {integrity: sha512-4XeMwFf8ZZxmqQQp+U+Nsq2M+cY4Da8Joo/EaMdHVc4uVuWSTJoeidlZ3gDjyxXCjYB1FLcxYwR4lYQAH8emOg==}
+  shadcn@4.7.0:
+    resolution: {integrity: sha512-70fwnesNrY1GgeD7Kdzn+3SsYeyfibm8immsA5L68+OusoPTvYF01oWExl8/latKpMpvVXcbgdbbE6VFBJQ38w==}
     hasBin: true
 
   shebang-command@2.0.0:
@@ -12056,7 +12056,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  shadcn@4.6.0(@types/node@22.19.17)(typescript@5.9.3):
+  shadcn@4.7.0(@types/node@22.19.17)(typescript@5.9.3):
     dependencies:
       '@babel/core': 7.29.0
       '@babel/parser': 7.29.3
