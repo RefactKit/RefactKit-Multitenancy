@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, redirect, useParams } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
+import { Bell } from 'lucide-react'
 import { AppSidebar } from '@/components/dashboard/app-sidebar'
 import { HeaderBreadcrumb } from '@/components/dashboard/header-breadcrumb'
 import { SearchCommand } from '@/components/dashboard/search-command'
@@ -32,6 +33,7 @@ export const Route = createFileRoute('/_app')({
 
 function AppLayout() {
   const { orgs: initialOrgs } = Route.useLoaderData()
+  const hasUnreadMessages = true
   const params = useParams({ strict: false }) as { slug?: string }
 
   // Use useQuery with initialData from loader to be perfectly reactive
@@ -75,6 +77,12 @@ function AppLayout() {
 
           <div className="flex items-center gap-2">
             <SearchCommand orgs={orgs} />
+            <div className="relative flex items-center justify-center rounded-md p-2 hover:bg-accent cursor-pointer transition-colors">
+              <Bell className="size-5" />
+              {hasUnreadMessages && (
+                <span className="absolute top-2 right-2.5 flex h-2 w-2 rounded-full bg-red-500 ring-2 ring-background" />
+              )}
+            </div>
             <LangSwitcher />
             <ThemeToggle />
             <UserDropdown side="bottom" align="end">
