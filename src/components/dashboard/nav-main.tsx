@@ -106,18 +106,18 @@ export function NavMain({
     return (
       <Collapsible
         defaultOpen
-        className="group/collapsible-group group-data-[collapsible=icon]:hidden"
+        className="group group-data-[collapsible=icon]:hidden"
       >
         <SidebarGroup>
           {label && (
-            <SidebarGroupLabel
+            <CollapsibleTrigger
               render={
-                <CollapsibleTrigger className="flex w-full items-center justify-between hover:text-foreground transition-colors group" />
+                <SidebarGroupLabel className="flex w-full items-center justify-between hover:text-foreground transition-colors" />
               }
             >
               <span className="text-xs font-semibold uppercase tracking-wider">{label}</span>
-              <ChevronRight className="size-3.5 transition-transform duration-200 group-data-[state=open]/collapsible-group:rotate-90" />
-            </SidebarGroupLabel>
+              <ChevronRight className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-90" />
+            </CollapsibleTrigger>
           )}
           <CollapsibleContent>
             <div className="ml-3 mt-1 flex flex-col gap-1 border-l-2 border-border pl-2">
