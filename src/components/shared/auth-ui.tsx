@@ -26,15 +26,17 @@ const languageMap: Record<Locale, { label: string; flag: string }> = {
   zh: { label: '简体中文', flag: '🇨🇳' },
   it: { label: 'Italiano', flag: '🇮🇹' },
   ru: { label: 'Русский', flag: '🇷🇺' },
+  tr: { label: 'Türkçe', flag: '🇹🇷' },
 }
 
 export function LanguageToggle() {
   const { locale, setLocale } = useI18n()
+  const current = languageMap[locale]
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-full bg-muted/50 text-muted-foreground hover:text-foreground transition-all hover:bg-muted dark:bg-muted/10 dark:hover:bg-muted/20">
-        <Languages className="h-4 w-4" />
+        <span className="text-base">{current?.flag}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
         <DropdownMenuRadioGroup value={locale} onValueChange={(v) => setLocale(v as Locale)}>

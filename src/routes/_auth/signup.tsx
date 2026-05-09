@@ -79,15 +79,12 @@ function SignupPage() {
           </div>
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-              Verify your email
+              {l.verifyEmailTitle}
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              We've sent a verification link to your email. Please check your inbox and click the
-              link to activate your account.
-            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{l.verifyEmailSubtitle}</p>
           </div>
           <Button variant="outline" className="w-full mt-4" onClick={() => setIsSignedUp(false)}>
-            Back to sign up
+            {l.backToSignUp}
           </Button>
         </div>
       </AuthShell>

@@ -80,7 +80,7 @@ function AppLayout() {
             <div className="relative flex items-center justify-center rounded-md p-2 hover:bg-accent cursor-pointer transition-colors">
               <Bell className="size-5" />
               {hasUnreadMessages && (
-                <span className="absolute top-2 right-2.5 flex h-2 w-2 rounded-full bg-red-500 ring-2 ring-background" />
+                <span className="absolute top-2 right-2.5 flex h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
               )}
             </div>
             <LangSwitcher />

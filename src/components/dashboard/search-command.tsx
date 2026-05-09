@@ -68,6 +68,7 @@ export function SearchCommand({ orgs }: SearchCommandProps) {
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading={t.orgsPage.title}>
               <CommandItem
+                value="organizations-list"
                 onSelect={() =>
                   runCommand(() =>
                     navigate({
@@ -86,6 +87,7 @@ export function SearchCommand({ orgs }: SearchCommandProps) {
                 <CommandSeparator />
                 <CommandGroup heading={t.sidebar.workspace}>
                   <CommandItem
+                    value="dashboard"
                     onSelect={() =>
                       runCommand(() =>
                         navigate({
@@ -100,6 +102,7 @@ export function SearchCommand({ orgs }: SearchCommandProps) {
                     <span>{t.sidebar.dashboard}</span>
                   </CommandItem>
                   <CommandItem
+                    value="members"
                     onSelect={() =>
                       runCommand(() =>
                         navigate({
@@ -113,6 +116,7 @@ export function SearchCommand({ orgs }: SearchCommandProps) {
                     <span>{t.sidebar.team}</span>
                   </CommandItem>
                   <CommandItem
+                    value="settings"
                     onSelect={() =>
                       runCommand(() =>
                         navigate({
@@ -134,6 +138,7 @@ export function SearchCommand({ orgs }: SearchCommandProps) {
               {orgs.map((org) => (
                 <CommandItem
                   key={org.id}
+                  value={`org-${org.slug}`}
                   onSelect={() =>
                     runCommand(() =>
                       navigate({

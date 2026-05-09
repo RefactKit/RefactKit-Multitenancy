@@ -29,6 +29,7 @@ export const en = {
     zh: 'ZH',
     it: 'IT',
     ru: 'RU',
+    tr: 'TR',
   },
   auth: {
     login: {
@@ -98,6 +99,10 @@ export const en = {
       hasAccount: 'Already have an account?',
       signInLink: 'Sign in',
       error: 'Sign up failed',
+      verifyEmailTitle: 'Verify your email',
+      verifyEmailSubtitle:
+        "We've sent a verification link to your email. Please check your inbox and click the link to activate your account.",
+      backToSignUp: 'Back to sign up',
     },
   },
   onboarding: {

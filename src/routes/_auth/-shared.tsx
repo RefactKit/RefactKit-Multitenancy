@@ -98,11 +98,12 @@ export function Logo() {
 }
 
 export function Divider() {
+  const { t } = useI18n()
   return (
     <div className="flex items-center gap-3">
       <div className="flex-1 border-t border-gray-200 dark:border-gray-800" />
       <span className="text-xs font-medium uppercase tracking-wider text-gray-400 dark:text-gray-600">
-        or
+        {t.common.or}
       </span>
       <div className="flex-1 border-t border-gray-200 dark:border-gray-800" />
     </div>

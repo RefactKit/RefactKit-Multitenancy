@@ -23,6 +23,7 @@ const languages: { code: Locale; name: string; flag: string }[] = [
   { code: 'zh', name: '简体中文', flag: '🇨🇳' },
   { code: 'it', name: 'Italiano', flag: '🇮🇹' },
   { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+  { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
 ]
 
 export function LangSwitcher({ className }: { className?: string }) {
@@ -41,7 +42,7 @@ export function LangSwitcher({ className }: { className?: string }) {
           />
         }
       >
-        <GlobeIcon className="size-[18px] opacity-70" />
+        <span className="text-base">{_currentLang?.flag}</span>
         <span className="sr-only">Switch language</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent

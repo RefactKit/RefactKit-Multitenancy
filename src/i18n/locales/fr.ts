@@ -31,6 +31,7 @@ export const fr: Translations = {
     zh: 'ZH',
     it: 'IT',
     ru: 'RU',
+    tr: 'TR',
   },
   auth: {
     login: {
@@ -100,6 +101,10 @@ export const fr: Translations = {
       hasAccount: 'Vous avez déjà un compte ?',
       signInLink: 'Se connecter',
       error: "Échec de l'inscription",
+      verifyEmailTitle: 'Vérifiez votre e-mail',
+      verifyEmailSubtitle:
+        'Nous avons envoyé un lien de vérification à votre adresse e-mail. Veuillez consulter votre boîte de réception et cliquer sur le lien pour activer votre compte.',
+      backToSignUp: "Retour à l'inscription",
     },
   },
   onboarding: {

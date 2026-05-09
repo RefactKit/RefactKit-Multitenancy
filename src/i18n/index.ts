@@ -12,6 +12,7 @@ import { hi } from './locales/hi'
 import { it } from './locales/it'
 import { pt } from './locales/pt'
 import { ru } from './locales/ru'
+import { tr } from './locales/tr'
 import { zh } from './locales/zh'
 
 // Re-export so context.tsx can import Translations from '.'
@@ -30,6 +31,7 @@ export type Locale =
   | 'zh'
   | 'it'
   | 'ru'
+  | 'tr'
 
 export const LOCALE_COOKIE = 'lk_locale'
 
@@ -46,6 +48,7 @@ const locales: Record<Locale, Translations> = {
   zh,
   it,
   ru,
+  tr,
 }
 
 export function getTranslations(locale: Locale): Translations {
@@ -67,6 +70,7 @@ export function detectLocale(): Locale {
     if (val === 'en') return 'en'
     if (val === 'it') return 'it'
     if (val === 'ru') return 'ru'
+    if (val === 'tr') return 'tr'
     return 'fr'
   }
   return 'fr'
@@ -89,6 +93,7 @@ export const getServerLocale = createServerFn({ method: 'GET' }).handler(async (
   if (val === 'en') return 'en'
   if (val === 'it') return 'it'
   if (val === 'ru') return 'ru'
+  if (val === 'tr') return 'tr'
   return 'fr'
 })
 
@@ -96,4 +101,4 @@ export function setLocaleCookie(locale: Locale) {
   Cookies.set(LOCALE_COOKIE, locale, { expires: 365, sameSite: 'lax' })
 }
 
-export { ar, arMa, be, de, en, es, fr, hi, it, pt, ru, zh }
+export { ar, arMa, be, de, en, es, fr, hi, it, pt, ru, tr, zh }
