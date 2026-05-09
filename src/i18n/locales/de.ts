@@ -232,6 +232,16 @@ export const de: Translations = {
     subtitle: 'Verwalten und betrachten Sie Ihre Organisationsbilder.',
     noImages: 'Keine Bilder gefunden.',
   },
+  notifications: {
+    memberJoined: 'ist der Organisation beigetreten',
+    invitationPending: 'wurde eingeladen beizutreten',
+    invitationAccepted: 'hat die Einladung zu angenommen',
+    invitedYou: 'hat Sie eingeladen beizutreten',
+    newLabel: 'neu',
+    empty: 'Keine neuen Aktivitäten',
+    viewAll: 'Alle Benachrichtigungen anzeigen',
+    markAllRead: 'Alle als gelesen markieren',
+  },
   notFound: '404 — Seite nicht gefunden',
   landing: {
     header: {

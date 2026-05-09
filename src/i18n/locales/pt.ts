@@ -226,6 +226,16 @@ export const pt: Translations = {
     subtitle: 'Gerencie e visualize as imagens da sua organização.',
     noImages: 'Nenhuma imagem encontrada.',
   },
+  notifications: {
+    memberJoined: 'entrou na organização',
+    invitationPending: 'foi convidado(a) a juntar-se a',
+    invitationAccepted: 'aceitou o convite para',
+    invitedYou: 'convidou você para juntar-se a',
+    newLabel: 'novo',
+    empty: 'Nenhuma atividade recente',
+    viewAll: 'Ver todas as notificações',
+    markAllRead: 'Marcar tudo como lido',
+  },
   notFound: '404 — Página não encontrada',
   landing: {
     header: {

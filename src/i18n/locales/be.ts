@@ -225,6 +225,16 @@ export const be: Translations = {
     subtitle: 'Gérez et visualisez les images de votre organisation.',
     noImages: 'Aucune image trouvée.',
   },
+  notifications: {
+    memberJoined: "a rejoint l'organisation",
+    invitationPending: 'a été invité(e) à rejoindre',
+    invitationAccepted: "a accepté l'invitation à",
+    invitedYou: 'vous a invité à rejoindre',
+    newLabel: 'nouveau',
+    empty: 'Aucune activité récente',
+    viewAll: 'Voir toutes les notifications',
+    markAllRead: 'Tout marquer comme lu',
+  },
   notFound: '404 — Page introuvable',
   landing: {
     header: {

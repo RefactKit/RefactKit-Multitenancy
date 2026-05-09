@@ -78,11 +78,15 @@ export function UserDropdown({
         {slug && isAdminOrOwner && (
           <>
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => router.navigate({ to: `/organizations/${slug}/members` })}>
+              <DropdownMenuItem
+                onClick={() => router.navigate({ to: `/organizations/${slug}/members` })}
+              >
                 <Users className="size-4" />
                 {t.sidebar.team}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.navigate({ to: `/organizations/${slug}/members` })}>
+              <DropdownMenuItem
+                onClick={() => router.navigate({ to: `/organizations/${slug}/members` })}
+              >
                 <Plus className="size-4" />
                 {t.sidebar.inviteMembers}
               </DropdownMenuItem>

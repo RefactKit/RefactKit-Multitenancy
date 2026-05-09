@@ -225,6 +225,16 @@ export const it = {
     subtitle: 'Gestisci e visualizza le immagini della tua organizzazione.',
     noImages: 'Nessuna immagine trovata.',
   },
+  notifications: {
+    memberJoined: "si è unito all'organizzazione",
+    invitationPending: 'è stato invitato a unirsi a',
+    invitationAccepted: "ha accettato l'invito a",
+    invitedYou: 'ti ha invitato a unirti a',
+    newLabel: 'nuovo',
+    empty: 'Nessuna attività recente',
+    viewAll: 'Vedi tutte le notifiche',
+    markAllRead: 'Segna tutto come letto',
+  },
   notFound: '404 — Pagina non trovata',
   landing: {
     header: {

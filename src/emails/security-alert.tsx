@@ -21,7 +21,7 @@ export const SecurityAlert = ({ userName, email, loginUrl }: SecurityAlertProps)
         width={48}
         className="mx-auto mb-5 block"
       />
-      <Heading as="h1" className="font-font-28 text-fg m-0 font-bold">
+      <Heading as="h1" className="font-font-28 text-fg m-0 font-semibold">
         Security Alert
       </Heading>
     </Section>
@@ -38,7 +38,7 @@ export const SecurityAlert = ({ userName, email, loginUrl }: SecurityAlertProps)
     <Section className="mb-8 text-center">
       <Button
         href={loginUrl}
-        className="bg-fg font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-bold leading-6"
+        className="bg-fg font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-semibold leading-6"
       >
         Go to Login
       </Button>

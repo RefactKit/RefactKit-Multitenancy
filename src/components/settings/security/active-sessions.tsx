@@ -59,7 +59,7 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 text-[10px] uppercase font-bold"
+            className="h-8 text-[10px] uppercase font-semibold"
             onClick={handleRevokeOthers}
           >
             Revoke Others
@@ -67,7 +67,7 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 text-[10px] uppercase font-bold text-destructive hover:text-destructive"
+            className="h-8 text-[10px] uppercase font-semibold text-destructive hover:text-destructive"
             onClick={handleRevokeAll}
           >
             Revoke All

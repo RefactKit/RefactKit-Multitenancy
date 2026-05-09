@@ -145,7 +145,7 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
 
             <div className="flex items-center gap-3 mt-1">
               {isCurrentSession && (
-                <span className="rounded-full bg-teal-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-teal-600">
+                <span className="rounded-full bg-teal-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-teal-600">
                   {localization.settings.currentSession}
                 </span>
               )}

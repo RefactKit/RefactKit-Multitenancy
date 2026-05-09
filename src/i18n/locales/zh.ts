@@ -224,6 +224,16 @@ export const zh: Translations = {
     subtitle: '管理和查看您的组织图片。',
     noImages: '未找到图片。',
   },
+  notifications: {
+    memberJoined: '加入了组织',
+    invitationPending: '被邀请加入',
+    invitationAccepted: '接受了加入的邀请',
+    invitedYou: '邀请你加入',
+    newLabel: '新',
+    empty: '暂无最近活动',
+    viewAll: '查看所有通知',
+    markAllRead: '全部标记为已读',
+  },
   notFound: '404 — 页面未找到',
   landing: {
     header: {

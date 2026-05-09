@@ -230,6 +230,16 @@ export const ru = {
     subtitle: 'Управляйте и просматривайте изображения вашей организации.',
     noImages: 'Изображения не найдены.',
   },
+  notifications: {
+    memberJoined: 'присоединился к организации',
+    invitationPending: 'приглашён присоединиться к',
+    invitationAccepted: 'принял приглашение в',
+    invitedYou: 'пригласил вас присоединиться к',
+    newLabel: 'новое',
+    empty: 'Нет недавней активности',
+    viewAll: 'Посмотреть все уведомления',
+    markAllRead: 'Отметить всё как прочитанное',
+  },
   notFound: '404 — Страница не найдена',
   landing: {
     header: {

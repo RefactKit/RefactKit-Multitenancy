@@ -225,6 +225,16 @@ export const hi: Translations = {
     subtitle: 'अपने संगठन की छवियों को प्रबंधित करें और देखें।',
     noImages: 'कोई छवि नहीं मिली।',
   },
+  notifications: {
+    memberJoined: 'संगठन में शामिल हुए',
+    invitationPending: 'को शामिल होने का निमंत्रण दिया गया',
+    invitationAccepted: 'ने निमंत्रण स्वीकार किया',
+    invitedYou: 'ने आपको शामिल होने का निमंत्रण दिया',
+    newLabel: 'नया',
+    empty: 'कोई हालिया गतिविधि नहीं',
+    viewAll: 'सभी सूचनाएं देखें',
+    markAllRead: 'सभी को पढ़ा हुआ चिह्नित करें',
+  },
   notFound: '404 — पेज नहीं मिला',
   landing: {
     header: {

@@ -202,6 +202,16 @@ export const es: Translations = {
     subtitle: 'Gestiona las imágenes de tu organización.',
     noImages: 'No hay imágenes.',
   },
+  notifications: {
+    memberJoined: 'se unió a la organización',
+    invitationPending: 'fue invitado(a) a unirse a',
+    invitationAccepted: 'aceptó la invitación a',
+    invitedYou: 'te invitó a unirte a',
+    newLabel: 'nuevo',
+    empty: 'Sin actividad reciente',
+    viewAll: 'Ver todas las notificaciones',
+    markAllRead: 'Marcar todo como leído',
+  },
   notFound: '404 - Página no encontrada',
   landing: {
     header: {

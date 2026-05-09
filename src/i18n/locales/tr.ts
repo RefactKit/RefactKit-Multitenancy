@@ -234,6 +234,16 @@ export const tr = {
     subtitle: 'Organizasyon görsellerinizi yönetin ve görüntüleyin.',
     noImages: 'Görsel bulunamadı.',
   },
+  notifications: {
+    memberJoined: 'organizasyona katıldı',
+    invitationPending: 'katılmaya davet edildi',
+    invitationAccepted: 'davetiyeyi kabul etti',
+    invitedYou: 'sizi katılmaya davet etti',
+    newLabel: 'yeni',
+    empty: 'Son aktivite yok',
+    viewAll: 'Tüm bildirimleri görüntüle',
+    markAllRead: 'Tümünü okundu işaretle',
+  },
   notFound: '404 — Sayfa bulunamadı',
   landing: {
     header: {

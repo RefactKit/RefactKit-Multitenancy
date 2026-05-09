@@ -202,6 +202,16 @@ export const arMa: Translations = {
     subtitle: 'إدارة وعرض صور منظمتك.',
     noImages: 'لم يتم العثور على صور.',
   },
+  notifications: {
+    memberJoined: 'دخل للمنظمة',
+    invitationPending: 'تعرض عليه الإنضمام ل',
+    invitationAccepted: 'قبل الدعوة ديال',
+    invitedYou: 'عرض عليك تدخل ل',
+    newLabel: 'جديد',
+    empty: 'ما كاين حتى نشاط جديد',
+    viewAll: 'شوف كاع الإشعارات',
+    markAllRead: 'عَلّم الكل مقري',
+  },
   notFound: '404 — الصفحة غير موجودة',
   landing: {
     header: {

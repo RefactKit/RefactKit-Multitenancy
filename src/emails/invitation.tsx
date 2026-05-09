@@ -26,7 +26,7 @@ export const InvitationEmail = ({ orgName, inviterName, url, orgLogo }: Invitati
       </Section>
     </Section>
 
-    <Heading as="h1" className="font-font-28 text-fg m-0 font-bold mb-6">
+    <Heading as="h1" className="font-font-28 text-fg m-0 font-semibold mb-6">
       Join the Team
     </Heading>
 
@@ -37,13 +37,13 @@ export const InvitationEmail = ({ orgName, inviterName, url, orgLogo }: Invitati
 
     <Row className="mb-10">
       <Column className="w-1/2 pr-2.5 align-top">
-        <Text className="mt-0 mb-1 font-font-16 font-bold text-fg text-left">Team workspaces</Text>
+        <Text className="mt-0 mb-1 font-font-16 font-semibold text-fg text-left">Team workspaces</Text>
         <Text className="m-0 font-font-13 text-fg-2 text-left">
           Roles, guests, and access levels so the right people see the right work.
         </Text>
       </Column>
       <Column className="w-1/2 pl-2.5 align-top">
-        <Text className="mt-0 mb-1 font-font-16 font-bold text-fg text-left">Shared Storage</Text>
+        <Text className="mt-0 mb-1 font-font-16 font-semibold text-fg text-left">Shared Storage</Text>
         <Text className="m-0 font-font-13 text-fg-2 text-left">
           Manage assets and documents in a centralized organization context.
         </Text>
@@ -53,7 +53,7 @@ export const InvitationEmail = ({ orgName, inviterName, url, orgLogo }: Invitati
     <Section className="text-center mb-6">
       <Button
         href={url}
-        className="bg-primary font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-bold leading-6"
+        className="bg-primary font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-semibold leading-6"
       >
         Accept Invitation
       </Button>

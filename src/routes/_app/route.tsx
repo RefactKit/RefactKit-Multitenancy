@@ -33,7 +33,6 @@ export const Route = createFileRoute('/_app')({
 
 function AppLayout() {
   const { orgs: initialOrgs } = Route.useLoaderData()
-  const hasUnreadMessages = true
   const params = useParams({ strict: false }) as { slug?: string }
 
   // Use useQuery with initialData from loader to be perfectly reactive
@@ -77,10 +76,15 @@ function AppLayout() {
 
           <div className="flex items-center gap-2">
             <SearchCommand orgs={orgs} />
-            <NotificationsDropdown />
+            <NotificationsDropdown organizationId={currentOrg?.id} />
             <LangSwitcher />
             <ThemeToggle />
-            <UserDropdown side="bottom" align="end" slug={effectiveSlug} userRole={currentOrg?.role}>
+            <UserDropdown
+              side="bottom"
+              align="end"
+              slug={effectiveSlug}
+              userRole={currentOrg?.role}
+            >
               <div className="ml-1 transition-opacity hover:opacity-80 cursor-pointer">
                 <UserAvatar className="size-8 ring-1 ring-border" />
               </div>

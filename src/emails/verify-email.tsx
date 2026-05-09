@@ -19,7 +19,7 @@ export const VerifyEmail = ({ url }: VerifyEmailProps) => (
         width={48}
         className="mx-auto mb-5 block"
       />
-      <Heading as="h1" className="font-font-28 text-fg m-0 font-bold">
+      <Heading as="h1" className="font-font-28 text-fg m-0 font-semibold">
         We're almost there!
       </Heading>
     </Section>
@@ -32,7 +32,7 @@ export const VerifyEmail = ({ url }: VerifyEmailProps) => (
     <Section className="mb-6 text-center">
       <Button
         href={url}
-        className="bg-fg font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-bold leading-6"
+        className="bg-fg font-font-16 text-white inline-block rounded-lg px-7 py-4 text-center font-semibold leading-6"
       >
         Confirm Email
       </Button>

@@ -67,10 +67,10 @@ export const EmailLayout = ({ preview, children, companyName = 'RefactKit' }: Em
 
               <Section className="mb-8">
                 <Link href="https://twitter.com/refactkit" className="inline-block px-2">
-                  <Text className="text-primary font-font-13 font-bold m-0">Twitter</Text>
+                  <Text className="text-primary font-font-13 font-semibold m-0">Twitter</Text>
                 </Link>
                 <Link href="https://github.com/refactkit" className="inline-block px-2">
-                  <Text className="text-primary font-font-13 font-bold m-0">GitHub</Text>
+                  <Text className="text-primary font-font-13 font-semibold m-0">GitHub</Text>
                 </Link>
               </Section>
               <Text className="m-0 font-font-11 text-fg-3">

@@ -12,7 +12,7 @@ export function ForbiddenContent() {
       <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-destructive/10 text-destructive">
         <ShieldAlert className="h-10 w-10" />
       </div>
-      <h1 className="mb-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+      <h1 className="mb-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
         {t.forbidden.title}
       </h1>
       <p className="mb-6 max-w-md text-muted-foreground">{t.forbidden.description}</p>

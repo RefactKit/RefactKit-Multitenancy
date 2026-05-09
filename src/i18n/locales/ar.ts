@@ -205,6 +205,16 @@ export const ar: Translations = {
     subtitle: 'إدارة وعرض صور منظمتك.',
     noImages: 'لم يتم العثور على صور.',
   },
+  notifications: {
+    memberJoined: 'انضم إلى المنظمة',
+    invitationPending: 'تمت دعوته للانضمام إلى',
+    invitationAccepted: 'قبل الدعوة إلى',
+    invitedYou: 'دعاك للانضمام إلى',
+    newLabel: 'جديد',
+    empty: 'لا يوجد نشاط حديث',
+    viewAll: 'عرض جميع الإشعارات',
+    markAllRead: 'تعيين الكل كمقروء',
+  },
   notFound: '404 — الصفحة غير موجودة',
   landing: {
     header: {

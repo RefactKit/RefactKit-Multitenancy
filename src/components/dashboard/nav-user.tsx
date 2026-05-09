@@ -36,7 +36,12 @@ export function NavUser({ slug, userRole }: { slug?: string; userRole?: string }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <UserDropdown side={isMobile ? 'bottom' : 'right'} align="end" slug={slug} userRole={userRole}>
+        <UserDropdown
+          side={isMobile ? 'bottom' : 'right'}
+          align="end"
+          slug={slug}
+          userRole={userRole}
+        >
           <SidebarMenuButton
             size="lg"
             className="h-14 gap-3.5 data-[popup-open]:bg-sidebar-accent data-[popup-open]:text-sidebar-accent-foreground px-3"

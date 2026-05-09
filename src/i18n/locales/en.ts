@@ -229,6 +229,16 @@ export const en = {
     subtitle: 'Manage and view your organization images.',
     noImages: 'No images found.',
   },
+  notifications: {
+    memberJoined: 'joined the organization',
+    invitationPending: 'was invited to join',
+    invitationAccepted: 'accepted the invitation to',
+    invitedYou: 'invited you to join',
+    newLabel: 'new',
+    empty: 'No recent activity',
+    viewAll: 'View all notifications',
+    markAllRead: 'Mark all as read',
+  },
   notFound: '404 — Page not found',
   landing: {
     header: {
