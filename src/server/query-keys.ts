@@ -1,6 +1,7 @@
 import { queryOptions } from '@tanstack/react-query'
 import { getOrgStats } from './dashboard-fns'
 import { getGalleryImages } from './gallery-fns'
+import { getUserNotifications } from './notification-fns'
 import { getOrgBySlug, getUserOrgs } from './org-fns'
 
 export const userOrgsQuery = () =>
@@ -25,4 +26,10 @@ export const orgStatsQuery = (organizationId: string) =>
   queryOptions({
     queryKey: ['org-stats', organizationId] as const,
     queryFn: () => getOrgStats({ data: { organizationId } }),
+  })
+
+export const userNotificationsQuery = () =>
+  queryOptions({
+    queryKey: ['user-notifications'] as const,
+    queryFn: () => getUserNotifications(),
   })

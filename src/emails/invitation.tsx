@@ -37,13 +37,17 @@ export const InvitationEmail = ({ orgName, inviterName, url, orgLogo }: Invitati
 
     <Row className="mb-10">
       <Column className="w-1/2 pr-2.5 align-top">
-        <Text className="mt-0 mb-1 font-font-16 font-semibold text-fg text-left">Team workspaces</Text>
+        <Text className="mt-0 mb-1 font-font-16 font-semibold text-fg text-left">
+          Team workspaces
+        </Text>
         <Text className="m-0 font-font-13 text-fg-2 text-left">
           Roles, guests, and access levels so the right people see the right work.
         </Text>
       </Column>
       <Column className="w-1/2 pl-2.5 align-top">
-        <Text className="mt-0 mb-1 font-font-16 font-semibold text-fg text-left">Shared Storage</Text>
+        <Text className="mt-0 mb-1 font-font-16 font-semibold text-fg text-left">
+          Shared Storage
+        </Text>
         <Text className="m-0 font-font-13 text-fg-2 text-left">
           Manage assets and documents in a centralized organization context.
         </Text>

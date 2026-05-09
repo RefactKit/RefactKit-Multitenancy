@@ -76,7 +76,7 @@ function AppLayout() {
 
           <div className="flex items-center gap-2">
             <SearchCommand orgs={orgs} />
-            <NotificationsDropdown organizationId={currentOrg?.id} />
+            <NotificationsDropdown />
             <LangSwitcher />
             <ThemeToggle />
             <UserDropdown
