@@ -1,5 +1,15 @@
 import { useAuth } from '@better-auth-ui/react'
-import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from 'lucide-react'
+import {
+  BadgeCheck,
+  Bell,
+  BookOpen,
+  CreditCard,
+  LifeBuoy,
+  LogOut,
+  Plus,
+  Sparkles,
+  Users,
+} from 'lucide-react'
 import { useRouter } from '@tanstack/react-router'
 import {
   DropdownMenu,
@@ -18,9 +28,17 @@ interface UserDropdownProps {
   children: React.ReactNode
   side?: 'top' | 'right' | 'bottom' | 'left'
   align?: 'start' | 'center' | 'end'
+  slug?: string
+  userRole?: string
 }
 
-export function UserDropdown({ children, side = 'bottom', align = 'end' }: UserDropdownProps) {
+export function UserDropdown({
+  children,
+  side = 'bottom',
+  align = 'end',
+  slug,
+  userRole,
+}: UserDropdownProps) {
   const { data: session } = useSession()
   const { basePaths, viewPaths, Link } = useAuth()
   const { t } = useI18n()
@@ -28,6 +46,8 @@ export function UserDropdown({ children, side = 'bottom', align = 'end' }: UserD
 
   if (!session) return null
   const user = session.user
+
+  const isAdminOrOwner = userRole === 'admin' || userRole === 'owner'
 
   return (
     <DropdownMenu>
@@ -55,6 +75,22 @@ export function UserDropdown({ children, side = 'bottom', align = 'end' }: UserD
 
         <DropdownMenuSeparator />
 
+        {slug && isAdminOrOwner && (
+          <>
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => router.navigate({ to: `/organizations/${slug}/members` })}>
+                <Users className="size-4" />
+                {t.sidebar.team}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.navigate({ to: `/organizations/${slug}/members` })}>
+                <Plus className="size-4" />
+                {t.sidebar.inviteMembers}
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+          </>
+        )}
+
         <DropdownMenuGroup>
           <DropdownMenuItem
             render={<Link href={`${basePaths.settings}/${viewPaths.settings.account}`} />}
@@ -69,6 +105,19 @@ export function UserDropdown({ children, side = 'bottom', align = 'end' }: UserD
           <DropdownMenuItem>
             <Bell className="size-4" />
             {t.sidebar.notifications}
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => window.open('#', '_blank')}>
+            <LifeBuoy className="size-4" />
+            {t.sidebar.support}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => window.open('https://docs.refactkit.com', '_blank')}>
+            <BookOpen className="size-4" />
+            {t.sidebar.documentation}
           </DropdownMenuItem>
         </DropdownMenuGroup>
 

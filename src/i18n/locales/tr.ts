@@ -140,6 +140,7 @@ export const tr = {
     notifications: 'Bildirimler',
     logOut: 'Çıkış yap',
     team: 'Ekip',
+    inviteMembers: 'Üyeleri Davet Et',
     workspaceSettings: 'Çalışma Alanı Ayarları',
     accountSettings: 'Hesap Ayarları',
     profile: 'Profil',

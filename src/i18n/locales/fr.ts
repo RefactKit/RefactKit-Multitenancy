@@ -137,6 +137,7 @@ export const fr: Translations = {
     notifications: 'Notifications',
     logOut: 'Se déconnecter',
     team: 'Équipe',
+    inviteMembers: 'Inviter des membres',
     workspaceSettings: 'Paramètres du Workspace',
     accountSettings: 'Mon Compte',
     profile: 'Profil',

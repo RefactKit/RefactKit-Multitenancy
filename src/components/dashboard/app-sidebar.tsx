@@ -137,7 +137,7 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
       </SidebarContent>
       <SidebarFooter>
         <SidebarSeparator className="mb-2" />
-        <NavUser />
+        <NavUser slug={slug} userRole={userRole} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

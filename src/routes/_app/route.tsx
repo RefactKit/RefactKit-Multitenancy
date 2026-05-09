@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, Outlet, redirect, useParams } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { Bell } from 'lucide-react'
 import { AppSidebar } from '@/components/dashboard/app-sidebar'
 import { HeaderBreadcrumb } from '@/components/dashboard/header-breadcrumb'
+import { NotificationsDropdown } from '@/components/dashboard/notifications-dropdown'
 import { SearchCommand } from '@/components/dashboard/search-command'
 import { UserAvatar } from '@/components/dashboard/user-avatar'
 import { UserDropdown } from '@/components/dashboard/user-dropdown'
@@ -77,15 +77,10 @@ function AppLayout() {
 
           <div className="flex items-center gap-2">
             <SearchCommand orgs={orgs} />
-            <div className="relative flex items-center justify-center rounded-md p-2 hover:bg-accent cursor-pointer transition-colors">
-              <Bell className="size-5" />
-              {hasUnreadMessages && (
-                <span className="absolute top-2 right-2.5 flex h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
-              )}
-            </div>
+            <NotificationsDropdown />
             <LangSwitcher />
             <ThemeToggle />
-            <UserDropdown side="bottom" align="end">
+            <UserDropdown side="bottom" align="end" slug={effectiveSlug} userRole={currentOrg?.role}>
               <div className="ml-1 transition-opacity hover:opacity-80 cursor-pointer">
                 <UserAvatar className="size-8 ring-1 ring-border" />
               </div>

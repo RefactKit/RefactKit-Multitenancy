@@ -135,6 +135,7 @@ export const en = {
     notifications: 'Notifications',
     logOut: 'Log out',
     team: 'Team',
+    inviteMembers: 'Invite Members',
     workspaceSettings: 'Workspace Settings',
     accountSettings: 'Account Settings',
     profile: 'Profile',

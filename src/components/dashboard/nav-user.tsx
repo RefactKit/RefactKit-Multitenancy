@@ -10,7 +10,7 @@ import { useSession } from '../../../lib/auth-client'
 import { UserAvatar } from './user-avatar'
 import { UserDropdown } from './user-dropdown'
 
-export function NavUser() {
+export function NavUser({ slug, userRole }: { slug?: string; userRole?: string }) {
   const { isMobile } = useSidebar()
   const { data: session, isPending } = useSession()
 
@@ -36,7 +36,7 @@ export function NavUser() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <UserDropdown side={isMobile ? 'bottom' : 'right'} align="end">
+        <UserDropdown side={isMobile ? 'bottom' : 'right'} align="end" slug={slug} userRole={userRole}>
           <SidebarMenuButton
             size="lg"
             className="h-14 gap-3.5 data-[popup-open]:bg-sidebar-accent data-[popup-open]:text-sidebar-accent-foreground px-3"
