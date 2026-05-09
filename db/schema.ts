@@ -152,6 +152,8 @@ export const userRelations = relations(user, ({ many }) => ({
   accounts: many(account),
   members: many(member),
   invitations: many(invitation),
+  notificationsReceived: many(notification, { relationName: 'notificationRecipient' }),
+  notificationsSent: many(notification, { relationName: 'notificationActor' }),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -213,6 +215,49 @@ export const galleryImage = pgTable(
 export const galleryImageRelations = relations(galleryImage, ({ one }) => ({
   organization: one(organization, {
     fields: [galleryImage.organizationId],
+    references: [organization.id],
+  }),
+}))
+
+// ── Notification System ──────────────────────────────────────────────────────
+export const notification = pgTable(
+  'notification',
+  {
+    id: text('id').primaryKey(),
+    recipientId: text('recipient_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    type: text('type').notNull(), // 'invitation_received' | 'member_joined' | 'invitation_rejected' | 'member_added' | 'member_removed' | 'role_changed'
+    actorId: text('actor_id').references(() => user.id, { onDelete: 'set null' }),
+    actorName: text('actor_name'),
+    actorImage: text('actor_image'),
+    organizationId: text('organization_id').references(() => organization.id, {
+      onDelete: 'cascade',
+    }),
+    organizationName: text('organization_name'),
+    metadata: text('metadata'), // JSON string: { role, previousRole, email, etc. }
+    read: boolean('read').default(false).notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => [
+    index('notification_recipientId_idx').on(table.recipientId),
+    index('notification_recipientId_read_idx').on(table.recipientId, table.read),
+  ],
+)
+
+export const notificationRelations = relations(notification, ({ one }) => ({
+  recipient: one(user, {
+    fields: [notification.recipientId],
+    references: [user.id],
+    relationName: 'notificationRecipient',
+  }),
+  actor: one(user, {
+    fields: [notification.actorId],
+    references: [user.id],
+    relationName: 'notificationActor',
+  }),
+  organization: one(organization, {
+    fields: [notification.organizationId],
     references: [organization.id],
   }),
 }))

@@ -13,6 +13,7 @@ import { SecurityAlert } from '../src/emails/security-alert'
 import { VerifyEmail } from '../src/emails/verify-email'
 import { sendEmail } from './email'
 import { getBaseURL } from './env'
+import { createNotification, notifyOrgAdmins } from '../src/server/notification-helpers'
 
 const ac = createAccessControl({
   dashboard: ['read'],
@@ -286,6 +287,72 @@ export const auth = betterAuth({
             orgLogo: data.organization.logo || undefined,
           }),
         })
+      },
+      organizationHooks: {
+        afterCreateInvitation: async ({ invitation, inviter, organization }) => {
+          // → Notify the INVITEE: "[Inviter] invited you to join [Org]"
+          await createNotification({
+            recipientEmail: invitation.email,
+            type: 'invitation_received',
+            actorId: inviter.user.id,
+            actorName: inviter.user.name,
+            actorImage: inviter.user.image,
+            organizationId: organization.id,
+            organizationName: organization.name,
+            metadata: { role: invitation.role || 'member' },
+          })
+        },
+        afterAcceptInvitation: async ({ invitation, member, user, organization }) => {
+          // → Notify ORG ADMINS: "[User] joined [Org]"
+          await notifyOrgAdmins({
+            organizationId: organization.id,
+            excludeUserId: user.id,
+            type: 'member_joined',
+            actorId: user.id,
+            actorName: user.name,
+            actorImage: user.image,
+            organizationName: organization.name,
+          })
+        },
+        afterRejectInvitation: async ({ invitation, user, organization }) => {
+          // → Notify the INVITER: "[User] declined the invitation to [Org]"
+          await createNotification({
+            recipientId: invitation.inviterId,
+            type: 'invitation_rejected',
+            actorId: user.id,
+            actorName: user.name,
+            organizationId: organization.id,
+            organizationName: organization.name,
+          })
+        },
+        afterAddMember: async ({ member, user, organization }) => {
+          // → Notify the NEW MEMBER: "You were added to [Org]"
+          await createNotification({
+            recipientId: user.id,
+            type: 'member_added',
+            organizationId: organization.id,
+            organizationName: organization.name,
+          })
+        },
+        afterRemoveMember: async ({ member, user, organization }) => {
+          // → Notify the REMOVED MEMBER: "You were removed from [Org]"
+          await createNotification({
+            recipientId: user.id,
+            type: 'member_removed',
+            organizationId: organization.id,
+            organizationName: organization.name,
+          })
+        },
+        afterUpdateMemberRole: async ({ member, previousRole, user, organization }) => {
+          // → Notify the MEMBER: "Your role changed to [role] in [Org]"
+          await createNotification({
+            recipientId: user.id,
+            type: 'role_changed',
+            organizationId: organization.id,
+            organizationName: organization.name,
+            metadata: { newRole: member.role, previousRole: previousRole || '' },
+          })
+        },
       },
     }),
     openAPI({
