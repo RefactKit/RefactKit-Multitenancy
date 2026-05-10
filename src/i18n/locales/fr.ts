@@ -315,4 +315,44 @@ export const fr: Translations = {
       'En tant que membre, vous n’avez pas l’autorisation d’accéder à cette section. Veuillez contacter un administrateur ou le propriétaire pour gérer les paramètres de l’organisation ou les membres de l’équipe.',
     backToDashboard: 'Retour au Tableau de Bord',
   },
+  projects: {
+    title: 'Projets',
+    subtitle: 'Gérez et étiquetez vos jeux de données pour les modèles CNN.',
+    createNew: 'Créer un projet',
+    search: 'Rechercher des projets...',
+    noProjects: 'Aucun projet trouvé.',
+    form: {
+      title: 'Titre',
+      description: 'Description',
+      type: 'Type de projet',
+      github: 'Dépôt GitHub',
+      other: 'Autre URL',
+    },
+    card: {
+      files: 'fichier',
+      files_plural: 'fichiers',
+      lastUpdated: 'Mis à jour le',
+      deleteTitle: 'Supprimer le Projet ?',
+      deleteDesc:
+        'Cette action est définitive et supprimera toutes les données labellisées et les fichiers.',
+    },
+    types: {
+      THESE: 'Thèse',
+      STAGE: 'Stage',
+      AUTRE: 'Autre',
+    },
+    studio: {
+      labeling: 'Studio de Labellisation',
+      classes: 'Classes',
+      addClass: 'Ajouter une Classe',
+      unlabeled: 'Non labellisés',
+      bulkLabel: 'Labellisation en masse',
+      syncRoboflow: 'Synchroniser avec Roboflow',
+      noFiles: 'Aucune image trouvée dans ce projet.',
+      stats: '{{percent}}% Labellisés',
+    },
+    errors: {
+      onlyAdminsDelete: 'Seuls les propriétaires ou admins peuvent supprimer des projets.',
+    },
+  },
 }

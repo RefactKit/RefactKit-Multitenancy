@@ -311,6 +311,45 @@ export const en = {
       'As a member, you do not have permission to access this section. Please contact an administrator or owner to manage organization settings or team members.',
     backToDashboard: 'Back to Dashboard',
   },
+  projects: {
+    title: 'Projects',
+    subtitle: 'Manage and label your datasets for CNN models.',
+    createNew: 'Create Project',
+    search: 'Search projects...',
+    noProjects: 'No projects found.',
+    form: {
+      title: 'Title',
+      description: 'Description',
+      type: 'Project Type',
+      github: 'GitHub Repository',
+      other: 'Other URL',
+    },
+    card: {
+      files: 'file',
+      files_plural: 'files',
+      lastUpdated: 'Last updated',
+      deleteTitle: 'Delete Project?',
+      deleteDesc: 'This action is permanent and will delete all labeled data and files.',
+    },
+    types: {
+      THESE: 'Thèse',
+      STAGE: 'Stage',
+      AUTRE: 'Autre',
+    },
+    studio: {
+      labeling: 'Labeling Studio',
+      classes: 'Classes',
+      addClass: 'Add Class',
+      unlabeled: 'Unlabeled',
+      bulkLabel: 'Bulk Label',
+      syncRoboflow: 'Sync to Roboflow',
+      noFiles: 'No images found in this project.',
+      stats: '{{percent}}% Labeled',
+    },
+    errors: {
+      onlyAdminsDelete: 'Only owners or admins can delete projects.',
+    },
+  },
 }
 
 export type Translations = typeof en

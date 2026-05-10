@@ -309,4 +309,43 @@ export const it = {
       "Come membro, non hai il permesso di accedere a questa sezione. Contatta un amministratore o il proprietario per gestire le impostazioni dell'organizzazione o i membri del team.",
     backToDashboard: 'Torna alla Dashboard',
   },
+  projects: {
+    title: 'Progetti',
+    subtitle: 'Gestisci ed etichetta i tuoi dataset per i modelli CNN.',
+    createNew: 'Crea Progetto',
+    search: 'Cerca progetti...',
+    noProjects: 'Nessun progetto trovato.',
+    form: {
+      title: 'Titolo',
+      description: 'Descrizione',
+      type: 'Tipo di progetto',
+      github: 'Repository GitHub',
+      other: 'Altro URL',
+    },
+    card: {
+      files: 'file',
+      files_plural: 'file',
+      lastUpdated: 'Ultimo aggiornamento',
+      deleteTitle: 'Eliminare il progetto?',
+      deleteDesc: 'Questa azione è permanente e cancellerà tutti i dati e i file etichettati.',
+    },
+    types: {
+      THESE: 'Tesi',
+      STAGE: 'Stage',
+      AUTRE: 'Altro',
+    },
+    studio: {
+      labeling: 'Studio di Etichettatura',
+      classes: 'Classi',
+      addClass: 'Aggiungi Classe',
+      unlabeled: 'Non etichettato',
+      bulkLabel: 'Etichettatura massiva',
+      syncRoboflow: 'Sincronizza con Roboflow',
+      noFiles: 'Nessuna immagine trovata in questo progetto.',
+      stats: '{{percent}}% etichettato',
+    },
+    errors: {
+      onlyAdminsDelete: 'Solo i proprietari o gli amministratori possono eliminare i progetti.',
+    },
+  },
 }

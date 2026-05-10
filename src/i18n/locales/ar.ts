@@ -283,4 +283,43 @@ export const ar: Translations = {
       'بصفتك عضواً، ليس لديك الإذن للوصول إلى هذا القسم. يرجى الاتصال بالمسؤول أو المالك لإدارة إعدادات المنظمة أو أعضاء الفريق.',
     backToDashboard: 'العودة إلى لوحة القيادة',
   },
+  projects: {
+    title: 'المشاريع',
+    subtitle: 'إدارة وتصنيف مجموعات البيانات لنماذج CNN.',
+    createNew: 'إنشاء مشروع',
+    search: 'البحث عن مشاريع...',
+    noProjects: 'لم يتم العثور على مشاريع.',
+    form: {
+      title: 'العنوان',
+      description: 'الوصف',
+      type: 'نوع المشروع',
+      github: 'مستودع GitHub',
+      other: 'رابط آخر',
+    },
+    card: {
+      files: 'ملف',
+      files_plural: 'ملفات',
+      lastUpdated: 'آخر تحديث',
+      deleteTitle: 'حذف المشروع؟',
+      deleteDesc: 'هذا الإجراء دائم وسيؤدي إلى حذف جميع البيانات والملفات المصنفة.',
+    },
+    types: {
+      THESE: 'أطروحة',
+      STAGE: 'تدريب',
+      AUTRE: 'آخر',
+    },
+    studio: {
+      labeling: 'استوديو التصنيف',
+      classes: 'الفئات',
+      addClass: 'إضافة فئة',
+      unlabeled: 'غير مصنف',
+      bulkLabel: 'تصنيف جماعي',
+      syncRoboflow: 'مزامنة مع Roboflow',
+      noFiles: 'لم يتم العثور على صور في هذا المشروع.',
+      stats: '{{percent}}% مصنف',
+    },
+    errors: {
+      onlyAdminsDelete: 'يمكن للمالكين أو المسؤولين فقط حذف المشاريع.',
+    },
+  },
 }

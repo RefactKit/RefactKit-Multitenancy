@@ -309,4 +309,44 @@ export const be: Translations = {
       'En tant que membre, vous n’avez pas l’autorisation d’accéder à cette section. Veuillez contacter un administrateur ou le propriétaire pour gérer les paramètres de l’organisation ou les membres de l’équipe.',
     backToDashboard: 'Retour au Tableau de Bord',
   },
+  projects: {
+    title: 'Праекты',
+    subtitle: 'Кіруйце і размячайце вашыя наборы даных для мадэляў CNN.',
+    createNew: 'Стварыць праект',
+    search: 'Пошук праектаў...',
+    noProjects: 'Праекты не знойдзены.',
+    form: {
+      title: 'Назва',
+      description: 'Апісанне',
+      type: 'Тып праекта',
+      github: 'GitHub рэпазіторый',
+      other: 'Іншая спасылка',
+    },
+    card: {
+      files: 'файл',
+      files_plural: 'файлаў',
+      lastUpdated: 'Апошняе абнаўленне',
+      deleteTitle: 'Выдаліць праект?',
+      deleteDesc:
+        'Гэта дзеянне незваротнае і прывядзе да выдалення ўсіх размечаных даных і файлаў.',
+    },
+    types: {
+      THESE: 'Дысертацыя',
+      STAGE: 'Стажыроўка',
+      AUTRE: 'Іншае',
+    },
+    studio: {
+      labeling: 'Студыя разметкі',
+      classes: 'Класы',
+      addClass: 'Дадаць клас',
+      unlabeled: 'Без разметкі',
+      bulkLabel: 'Масавая разметка',
+      syncRoboflow: 'Сінхранізаваць з Roboflow',
+      noFiles: 'Выявы ў гэтым праекце не знойдзены.',
+      stats: '{{percent}}% размечана',
+    },
+    errors: {
+      onlyAdminsDelete: 'Толькі ўладальнікі або адміністратары могуць выдаляць праекты.',
+    },
+  },
 }

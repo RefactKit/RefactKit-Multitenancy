@@ -261,3 +261,128 @@ export const notificationRelations = relations(notification, ({ one }) => ({
     references: [organization.id],
   }),
 }))
+
+// ── Project & Labeling Studio ────────────────────────────────────────────────
+export const projectType = pgTable('project_type', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  organizationId: text('organization_id')
+    .notNull()
+    .references(() => organization.id, { onDelete: 'cascade' }),
+})
+
+export const project = pgTable(
+  'project',
+  {
+    id: text('id').primaryKey(),
+    organizationId: text('organization_id')
+      .notNull()
+      .references(() => organization.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    title: text('title').notNull(),
+    description: text('description'),
+    githubUrl: text('github_url'),
+    otherUrl: text('other_url'),
+    slug: text('slug').notNull(),
+    typeId: text('type_id').references(() => projectType.id, { onDelete: 'set null' }),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index('project_organizationId_idx').on(table.organizationId)],
+)
+
+export const projectCategory = pgTable(
+  'project_category',
+  {
+    id: text('id').primaryKey(),
+    name: text('name').notNull(),
+    projectId: text('project_id')
+      .notNull()
+      .references(() => project.id, { onDelete: 'cascade' }),
+    parentId: text('parent_id'), // Self reference for subcategories
+  },
+  (table) => [index('project_category_projectId_idx').on(table.projectId)],
+)
+
+export const projectFile = pgTable(
+  'project_file',
+  {
+    id: text('id').primaryKey(),
+    projectId: text('project_id')
+      .notNull()
+      .references(() => project.id, { onDelete: 'cascade' }),
+    categoryId: text('category_id').references(() => projectCategory.id, { onDelete: 'set null' }),
+    name: text('name').notNull(),
+    path: text('path').notNull(),
+    url: text('url').notNull(),
+    mimeType: text('mime_type').notNull(),
+    size: integer('size').notNull(),
+    uploadedBy: text('uploaded_by')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    uploadedAt: timestamp('uploaded_at').defaultNow().notNull(),
+    metadata: text('metadata'), // JSON string for COCO attributes
+  },
+  (table) => [
+    index('project_file_projectId_idx').on(table.projectId),
+    index('project_file_categoryId_idx').on(table.categoryId),
+  ],
+)
+
+export const projectTypeRelations = relations(projectType, ({ one }) => ({
+  organization: one(organization, {
+    fields: [projectType.organizationId],
+    references: [organization.id],
+  }),
+}))
+
+export const projectRelations = relations(project, ({ one, many }) => ({
+  organization: one(organization, {
+    fields: [project.organizationId],
+    references: [organization.id],
+  }),
+  user: one(user, {
+    fields: [project.userId],
+    references: [user.id],
+  }),
+  type: one(projectType, {
+    fields: [project.typeId],
+    references: [projectType.id],
+  }),
+  categories: many(projectCategory),
+  files: many(projectFile),
+}))
+
+export const projectCategoryRelations = relations(projectCategory, ({ one, many }) => ({
+  project: one(project, {
+    fields: [projectCategory.projectId],
+    references: [project.id],
+  }),
+  parent: one(projectCategory, {
+    fields: [projectCategory.parentId],
+    references: [projectCategory.id],
+    relationName: 'subcategory',
+  }),
+  subcategories: many(projectCategory, { relationName: 'subcategory' }),
+  files: many(projectFile),
+}))
+
+export const projectFileRelations = relations(projectFile, ({ one }) => ({
+  project: one(project, {
+    fields: [projectFile.projectId],
+    references: [project.id],
+  }),
+  category: one(projectCategory, {
+    fields: [projectFile.categoryId],
+    references: [projectCategory.id],
+  }),
+  user: one(user, {
+    fields: [projectFile.uploadedBy],
+    references: [user.id],
+  }),
+}))

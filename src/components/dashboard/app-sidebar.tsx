@@ -56,6 +56,11 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
           to: `/organizations/${slug}/gallery`,
           icon: Image,
         },
+        {
+          title: t.projects.title,
+          to: `/organizations/${slug}/projects`,
+          icon: LayoutGrid,
+        },
       ]
     : []
 

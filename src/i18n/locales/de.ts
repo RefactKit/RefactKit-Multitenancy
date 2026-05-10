@@ -316,4 +316,43 @@ export const de: Translations = {
       'Als Mitglied haben Sie keine Berechtigung, auf diesen Bereich zuzugreifen. Bitte kontaktieren Sie einen Administrator oder Besitzer.',
     backToDashboard: 'Zurück zum Dashboard',
   },
+  projects: {
+    title: 'Projekte',
+    subtitle: 'Verwalten und kennzeichnen Sie Ihre Datensätze für CNN-Modelle.',
+    createNew: 'Projekt erstellen',
+    search: 'Projekte suchen...',
+    noProjects: 'Keine Projekte gefunden.',
+    form: {
+      title: 'Titel',
+      description: 'Beschreibung',
+      type: 'Projekttyp',
+      github: 'GitHub-Repository',
+      other: 'Andere URL',
+    },
+    card: {
+      files: 'Datei',
+      files_plural: 'Dateien',
+      lastUpdated: 'Zuletzt aktualisiert',
+      deleteTitle: 'Projekt löschen?',
+      deleteDesc: 'Diese Aktion ist dauerhaft und löscht alle gekennzeichneten Daten und Dateien.',
+    },
+    types: {
+      THESE: 'Thesis',
+      STAGE: 'Praktikum',
+      AUTRE: 'Sonstiges',
+    },
+    studio: {
+      labeling: 'Labeling Studio',
+      classes: 'Klassen',
+      addClass: 'Klasse hinzufügen',
+      unlabeled: 'Unbeschriftet',
+      bulkLabel: 'Massenbeschriftung',
+      syncRoboflow: 'Mit Roboflow synchronisieren',
+      noFiles: 'Keine Bilder in diesem Projekt gefunden.',
+      stats: '{{percent}}% beschriftet',
+    },
+    errors: {
+      onlyAdminsDelete: 'Nur Eigentümer oder Admins können Projekte löschen.',
+    },
+  },
 }

@@ -1,5 +1,13 @@
 import { Link, useLocation, useNavigate, useParams } from '@tanstack/react-router'
-import { ChevronDown, Home, LayoutDashboard, Image, Users, Settings } from 'lucide-react'
+import {
+  ChevronDown,
+  Home,
+  LayoutDashboard,
+  Image,
+  Users,
+  Settings,
+  LayoutGrid,
+} from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
   Breadcrumb,
@@ -36,6 +44,16 @@ export function HeaderBreadcrumb({ orgName }: HeaderBreadcrumbProps) {
     if (lastSegment === 'gallery') return { title: t.sidebar.gallery, icon: Image }
     if (lastSegment === 'members') return { title: t.sidebar.members, icon: Users }
     if (lastSegment === 'settings') return { title: t.sidebar.settings, icon: Settings }
+    if (lastSegment === 'projects') return { title: t.projects.title, icon: LayoutGrid }
+
+    // Individual Project Page
+    if (pathname.includes('/projects/') && lastSegment !== 'projects') {
+      return {
+        parent: { title: t.projects.title, to: `/organizations/${slug}/projects` },
+        title: t.projects.studio.labeling,
+        icon: LayoutGrid,
+      }
+    }
 
     // Global Settings Page
     if (pathname.includes('/settings')) {
@@ -59,6 +77,7 @@ export function HeaderBreadcrumb({ orgName }: HeaderBreadcrumbProps) {
   const quickNav = [
     { title: t.sidebar.dashboard, to: `/organizations/${slug}/dashboard`, icon: LayoutDashboard },
     { title: t.sidebar.gallery, to: `/organizations/${slug}/gallery`, icon: Image },
+    { title: t.sidebar.projects, to: `/organizations/${slug}/projects`, icon: LayoutGrid },
     { title: t.sidebar.members, to: `/organizations/${slug}/members`, icon: Users },
     { title: t.sidebar.settings, to: `/organizations/${slug}/settings`, icon: Settings },
   ]

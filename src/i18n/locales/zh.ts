@@ -301,4 +301,43 @@ export const zh: Translations = {
       '作为普通成员，您没有权限访问此部分。请联系管理员或所有者以管理组织设置或团队成员。',
     backToDashboard: '返回仪表板',
   },
+  projects: {
+    title: '项目',
+    subtitle: '管理并标注用于 CNN 模型的数集。',
+    createNew: '创建项目',
+    search: '搜索项目...',
+    noProjects: '未找到项目。',
+    form: {
+      title: '标题',
+      description: '描述',
+      type: '项目类型',
+      github: 'GitHub 仓库',
+      other: '其他链接',
+    },
+    card: {
+      files: '文件',
+      files_plural: '文件',
+      lastUpdated: '最后更新',
+      deleteTitle: '删除项目？',
+      deleteDesc: '此操作是永久性的，将删除所有已标注的数据和文件。',
+    },
+    types: {
+      THESE: '论文',
+      STAGE: '实习',
+      AUTRE: '其他',
+    },
+    studio: {
+      labeling: '标注工作室',
+      classes: '类别',
+      addClass: '添加类别',
+      unlabeled: '未标注',
+      bulkLabel: '批量标注',
+      syncRoboflow: '同步到 Roboflow',
+      noFiles: '此项目中未找到图像。',
+      stats: '{{percent}}% 已标注',
+    },
+    errors: {
+      onlyAdminsDelete: '只有所有者或管理员可以删除项目。',
+    },
+  },
 }

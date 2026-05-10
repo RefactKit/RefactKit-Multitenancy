@@ -310,4 +310,43 @@ export const pt: Translations = {
       'Como membro, você não tem permissão para acessar esta seção. Entre em contato com um administrador ou proprietário para gerenciar as configurações da organização ou os membros da equipe.',
     backToDashboard: 'Voltar ao Painel',
   },
+  projects: {
+    title: 'Projetos',
+    subtitle: 'Gerencie e rotule seus conjuntos de dados para modelos CNN.',
+    createNew: 'Criar Projeto',
+    search: 'Buscar projetos...',
+    noProjects: 'Nenhum projeto encontrado.',
+    form: {
+      title: 'Título',
+      description: 'Descrição',
+      type: 'Tipo de projeto',
+      github: 'Repositório GitHub',
+      other: 'Outra URL',
+    },
+    card: {
+      files: 'arquivo',
+      files_plural: 'arquivos',
+      lastUpdated: 'Última atualização',
+      deleteTitle: 'Excluir Projeto?',
+      deleteDesc: 'Esta ação é permanente e excluirá todos os dados e arquivos rotulados.',
+    },
+    types: {
+      THESE: 'Tese',
+      STAGE: 'Estágio',
+      AUTRE: 'Outro',
+    },
+    studio: {
+      labeling: 'Estúdio de Rotulagem',
+      classes: 'Classes',
+      addClass: 'Adicionar Classe',
+      unlabeled: 'Sem rótulo',
+      bulkLabel: 'Rotulagem em massa',
+      syncRoboflow: 'Sincronizar com Roboflow',
+      noFiles: 'Nenhuma imagem encontrada neste projeto.',
+      stats: '{{percent}}% rotulado',
+    },
+    errors: {
+      onlyAdminsDelete: 'Apenas proprietários ou administradores podem excluir projetos.',
+    },
+  },
 }

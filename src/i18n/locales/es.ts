@@ -286,4 +286,43 @@ export const es: Translations = {
       'Como miembro, no tienes permiso para acceder a esta sección. Ponte en contacto con un administrador o propietario para gestionar la configuración de la organización o los miembros del equipo.',
     backToDashboard: 'Volver al Panel',
   },
+  projects: {
+    title: 'Proyectos',
+    subtitle: 'Administre y etiquete sus conjuntos de datos para modelos CNN.',
+    createNew: 'Crear Proyecto',
+    search: 'Buscar proyectos...',
+    noProjects: 'No se encontraron proyectos.',
+    form: {
+      title: 'Título',
+      description: 'Descripción',
+      type: 'Tipo de proyecto',
+      github: 'Repositorio GitHub',
+      other: 'Otra URL',
+    },
+    card: {
+      files: 'archivo',
+      files_plural: 'archivos',
+      lastUpdated: 'Última actualización',
+      deleteTitle: '¿Eliminar Proyecto?',
+      deleteDesc: 'Esta acción es permanente y eliminará todos los datos y archivos etiquetados.',
+    },
+    types: {
+      THESE: 'Tesis',
+      STAGE: 'Prácticas',
+      AUTRE: 'Otro',
+    },
+    studio: {
+      labeling: 'Studio de Etiquetado',
+      classes: 'Clases',
+      addClass: 'Agregar Clase',
+      unlabeled: 'Sin etiquetar',
+      bulkLabel: 'Etiquetado masivo',
+      syncRoboflow: 'Sincronizar con Roboflow',
+      noFiles: 'No se encontraron imágenes en este proyecto.',
+      stats: '{{percent}}% etiquetado',
+    },
+    errors: {
+      onlyAdminsDelete: 'Solo los propietarios o administradores pueden eliminar proyectos.',
+    },
+  },
 }
