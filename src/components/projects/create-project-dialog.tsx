@@ -1,5 +1,3 @@
-'use client'
-
 import { useState, useEffect } from 'react'
 import {
   Dialog,
@@ -56,11 +54,23 @@ export function CreateProjectDialog({
     if (open) {
       setTitle('')
       setDescription('')
-      setTypeId(projectTypes[0]?.id || '')
       setGithubUrl('')
       setOtherUrl('')
+      // Only set initial typeId if we have projectTypes
+      if (projectTypes.length > 0) {
+        setTypeId(projectTypes[0].id)
+      } else {
+        setTypeId('')
+      }
     }
-  }, [open, projectTypes])
+  }, [open]) // Only run when 'open' changes
+
+  // Update typeId if projectTypes load while the dialog is open and no typeId is set
+  useEffect(() => {
+    if (open && projectTypes.length > 0 && !typeId) {
+      setTypeId(projectTypes[0].id)
+    }
+  }, [open, projectTypes, typeId])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

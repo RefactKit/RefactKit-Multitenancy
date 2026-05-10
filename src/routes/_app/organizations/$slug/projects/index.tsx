@@ -21,7 +21,10 @@ function ProjectsPage() {
   const { data: session } = useSession()
   const [isCreateOpen, setIsCreateOpen] = useState(false)
 
-  const { data: org } = useQuery(orgBySlugQuery(slug))
+  const { data: orgData } = useQuery(orgBySlugQuery(slug))
+  const org = orgData?.org
+  const userRole = orgData?.role
+
   const { data: projects, isLoading } = useQuery({
     queryKey: ['projects', org?.id],
     queryFn: () => getProjects({ data: org?.id! }),
@@ -38,7 +41,6 @@ function ProjectsPage() {
     mutationFn: (data: {
       title: string
       organizationId: string
-      userId: string
       description?: string
       typeId?: string
       githubUrl?: string
@@ -48,6 +50,9 @@ function ProjectsPage() {
       queryClient.invalidateQueries({ queryKey: ['projects'] })
       toast.success('Project created successfully')
       setIsCreateOpen(false)
+    },
+    onError: (err: any) => {
+      toast.error(err.message || 'Failed to create project')
     },
   })
 
@@ -62,8 +67,6 @@ function ProjectsPage() {
       toast.error(err.message || 'Failed to delete project')
     },
   })
-
-  const userRole = org?.members?.find((m) => m.userId === session?.user?.id)?.role
 
   if (isLoading || !org)
     return (
@@ -99,10 +102,13 @@ function ProjectsPage() {
         isPending={createMutation.isPending}
         projectTypes={projectTypes}
         onSubmit={(data) => {
+          if (!session?.user?.id) {
+            toast.error('You must be logged in to create a project')
+            return
+          }
           createMutation.mutate({
             ...data,
             organizationId: org.id,
-            userId: session?.user?.id!,
           })
         }}
       />

@@ -31,6 +31,8 @@ import { Route as AppOrganizationsSlugSettingsRouteImport } from './routes/_app/
 import { Route as AppOrganizationsSlugMembersRouteImport } from './routes/_app/organizations/$slug/members'
 import { Route as AppOrganizationsSlugGalleryRouteImport } from './routes/_app/organizations/$slug/gallery'
 import { Route as AppOrganizationsSlugDashboardRouteImport } from './routes/_app/organizations/$slug/dashboard'
+import { Route as AppOrganizationsSlugProjectsIndexRouteImport } from './routes/_app/organizations/$slug/projects/index'
+import { Route as AppOrganizationsSlugProjectsProjectIdRouteImport } from './routes/_app/organizations/$slug/projects/$projectId'
 
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
@@ -145,6 +147,18 @@ const AppOrganizationsSlugDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => AppOrganizationsSlugRouteRoute,
   } as any)
+const AppOrganizationsSlugProjectsIndexRoute =
+  AppOrganizationsSlugProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
+    getParentRoute: () => AppOrganizationsSlugRouteRoute,
+  } as any)
+const AppOrganizationsSlugProjectsProjectIdRoute =
+  AppOrganizationsSlugProjectsProjectIdRouteImport.update({
+    id: '/projects/$projectId',
+    path: '/projects/$projectId',
+    getParentRoute: () => AppOrganizationsSlugRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -167,6 +181,8 @@ export interface FileRoutesByFullPath {
   '/organizations/$slug/gallery': typeof AppOrganizationsSlugGalleryRoute
   '/organizations/$slug/members': typeof AppOrganizationsSlugMembersRoute
   '/organizations/$slug/settings': typeof AppOrganizationsSlugSettingsRoute
+  '/organizations/$slug/projects/$projectId': typeof AppOrganizationsSlugProjectsProjectIdRoute
+  '/organizations/$slug/projects/': typeof AppOrganizationsSlugProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -189,6 +205,8 @@ export interface FileRoutesByTo {
   '/organizations/$slug/gallery': typeof AppOrganizationsSlugGalleryRoute
   '/organizations/$slug/members': typeof AppOrganizationsSlugMembersRoute
   '/organizations/$slug/settings': typeof AppOrganizationsSlugSettingsRoute
+  '/organizations/$slug/projects/$projectId': typeof AppOrganizationsSlugProjectsProjectIdRoute
+  '/organizations/$slug/projects': typeof AppOrganizationsSlugProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -214,6 +232,8 @@ export interface FileRoutesById {
   '/_app/organizations/$slug/gallery': typeof AppOrganizationsSlugGalleryRoute
   '/_app/organizations/$slug/members': typeof AppOrganizationsSlugMembersRoute
   '/_app/organizations/$slug/settings': typeof AppOrganizationsSlugSettingsRoute
+  '/_app/organizations/$slug/projects/$projectId': typeof AppOrganizationsSlugProjectsProjectIdRoute
+  '/_app/organizations/$slug/projects/': typeof AppOrganizationsSlugProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -238,6 +258,8 @@ export interface FileRouteTypes {
     | '/organizations/$slug/gallery'
     | '/organizations/$slug/members'
     | '/organizations/$slug/settings'
+    | '/organizations/$slug/projects/$projectId'
+    | '/organizations/$slug/projects/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -260,6 +282,8 @@ export interface FileRouteTypes {
     | '/organizations/$slug/gallery'
     | '/organizations/$slug/members'
     | '/organizations/$slug/settings'
+    | '/organizations/$slug/projects/$projectId'
+    | '/organizations/$slug/projects'
   id:
     | '__root__'
     | '/'
@@ -284,6 +308,8 @@ export interface FileRouteTypes {
     | '/_app/organizations/$slug/gallery'
     | '/_app/organizations/$slug/members'
     | '/_app/organizations/$slug/settings'
+    | '/_app/organizations/$slug/projects/$projectId'
+    | '/_app/organizations/$slug/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -454,6 +480,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrganizationsSlugDashboardRouteImport
       parentRoute: typeof AppOrganizationsSlugRouteRoute
     }
+    '/_app/organizations/$slug/projects/': {
+      id: '/_app/organizations/$slug/projects/'
+      path: '/projects'
+      fullPath: '/organizations/$slug/projects/'
+      preLoaderRoute: typeof AppOrganizationsSlugProjectsIndexRouteImport
+      parentRoute: typeof AppOrganizationsSlugRouteRoute
+    }
+    '/_app/organizations/$slug/projects/$projectId': {
+      id: '/_app/organizations/$slug/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/organizations/$slug/projects/$projectId'
+      preLoaderRoute: typeof AppOrganizationsSlugProjectsProjectIdRouteImport
+      parentRoute: typeof AppOrganizationsSlugRouteRoute
+    }
   }
 }
 
@@ -462,6 +502,8 @@ interface AppOrganizationsSlugRouteRouteChildren {
   AppOrganizationsSlugGalleryRoute: typeof AppOrganizationsSlugGalleryRoute
   AppOrganizationsSlugMembersRoute: typeof AppOrganizationsSlugMembersRoute
   AppOrganizationsSlugSettingsRoute: typeof AppOrganizationsSlugSettingsRoute
+  AppOrganizationsSlugProjectsProjectIdRoute: typeof AppOrganizationsSlugProjectsProjectIdRoute
+  AppOrganizationsSlugProjectsIndexRoute: typeof AppOrganizationsSlugProjectsIndexRoute
 }
 
 const AppOrganizationsSlugRouteRouteChildren: AppOrganizationsSlugRouteRouteChildren =
@@ -470,6 +512,10 @@ const AppOrganizationsSlugRouteRouteChildren: AppOrganizationsSlugRouteRouteChil
     AppOrganizationsSlugGalleryRoute: AppOrganizationsSlugGalleryRoute,
     AppOrganizationsSlugMembersRoute: AppOrganizationsSlugMembersRoute,
     AppOrganizationsSlugSettingsRoute: AppOrganizationsSlugSettingsRoute,
+    AppOrganizationsSlugProjectsProjectIdRoute:
+      AppOrganizationsSlugProjectsProjectIdRoute,
+    AppOrganizationsSlugProjectsIndexRoute:
+      AppOrganizationsSlugProjectsIndexRoute,
   }
 
 const AppOrganizationsSlugRouteRouteWithChildren =
