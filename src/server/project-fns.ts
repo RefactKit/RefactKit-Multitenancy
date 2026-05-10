@@ -1,9 +1,11 @@
 import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
 import { and, eq, sql } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 import { db } from '../../db/index'
 import { member, project, projectCategory, projectFile, projectType } from '../../db/schema'
+import { auth } from '../../lib/auth'
 
 // --- Types & Schemas ---
 
@@ -13,7 +15,6 @@ export const createProjectSchema = z.object({
   githubUrl: z.string().optional(),
   otherUrl: z.string().optional(),
   organizationId: z.string(),
-  userId: z.string(),
   typeId: z.string().optional(),
 })
 
@@ -83,21 +84,35 @@ export const getProjectById = createServerFn({ method: 'GET' }).handler(async ({
 })
 
 export const createProject = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
+  const request = getRequest()
+  const session = await auth.api.getSession({ headers: request.headers })
+  if (!session) throw new Error('Unauthorized')
+
   const validated = createProjectSchema.parse(data)
   const id = nanoid()
   const slug = validated.title.toLowerCase().replace(/ /g, '-') + '-' + nanoid(4)
 
   await db.insert(project).values({
     id,
-    userId: validated.userId,
+    userId: session.user.id,
     organizationId: validated.organizationId,
     title: validated.title,
-    description: validated.description,
-    githubUrl: validated.githubUrl,
-    otherUrl: validated.otherUrl,
+    description: validated.description || '',
+    githubUrl: validated.githubUrl || null,
+    otherUrl: validated.otherUrl || null,
     slug,
     typeId: validated.typeId,
   })
+
+  // Seed default categories
+  const defaultCategories = ['Dataset', 'Models', 'Results', 'Documentation']
+  for (const catName of defaultCategories) {
+    await db.insert(projectCategory).values({
+      id: nanoid(),
+      name: catName,
+      projectId: id,
+    })
+  }
 
   return { id, slug }
 })
@@ -151,7 +166,20 @@ export const bulkLabelFiles = createServerFn({ method: 'POST' }).handler(async (
 
 export const getProjectTypes = createServerFn({ method: 'GET' }).handler(async ({ data }) => {
   const organizationId = z.string().parse(data)
-  return db.select().from(projectType).where(eq(projectType.organizationId, organizationId))
+  const types = await db.select().from(projectType).where(eq(projectType.organizationId, organizationId))
+
+  if (types.length === 0) {
+    const defaultTypes = ['THESE', 'STAGE', 'AUTRE']
+    const seededTypes = []
+    for (const name of defaultTypes) {
+      const id = nanoid()
+      await db.insert(projectType).values({ id, name, organizationId })
+      seededTypes.push({ id, name, organizationId })
+    }
+    return seededTypes
+  }
+
+  return types
 })
 
 export const createProjectType = createServerFn({ method: 'POST' }).handler(async ({ data }) => {

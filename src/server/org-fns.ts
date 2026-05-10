@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 import { z } from 'zod'
 import { slugify } from '@/lib/slugify'
 import { db } from '../../db/index'
-import { member, organization } from '../../db/schema'
+import { member, organization, projectType } from '../../db/schema'
 import { auth } from '../../lib/auth'
 
 /** Get all active orgs for the current user */
@@ -125,6 +125,16 @@ export const createOrganization = createServerFn({ method: 'POST' }).handler(asy
   // Update logo_url as well
   if (logo) {
     await db.update(organization).set({ logoUrl: logo }).where(eq(organization.id, createdOrg.id))
+  }
+
+  // Seed default project types
+  const defaultTypes = ['THESE', 'STAGE', 'AUTRE']
+  for (const typeName of defaultTypes) {
+    await db.insert(projectType).values({
+      id: nanoid(),
+      name: typeName,
+      organizationId: createdOrg.id,
+    })
   }
 
   return {
