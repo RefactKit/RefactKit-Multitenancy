@@ -73,7 +73,7 @@ export function ProjectList({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
           <Input
             placeholder={t.projects.search}
-            className="pl-10 h-11 rounded-xl bg-muted/30 border-border/50 focus:bg-background transition-all"
+            className="pl-10 h-11 rounded-2xl bg-card border-border focus:bg-card transition-all"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -81,7 +81,7 @@ export function ProjectList({
 
         <div className="flex flex-wrap items-center gap-3">
           <Select value={sort} onValueChange={setSort}>
-            <SelectTrigger className="w-[140px] h-11 rounded-xl border-border/50 bg-muted/30">
+            <SelectTrigger className="w-[140px] h-11 rounded-2xl border-border bg-card">
               <SortAsc className="mr-2 size-4 text-muted-foreground" />
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
@@ -94,7 +94,7 @@ export function ProjectList({
           </Select>
 
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-[160px] h-11 rounded-xl border-border/50 bg-muted/30">
+            <SelectTrigger className="w-[160px] h-11 rounded-2xl border-border bg-card">
               <Filter className="mr-2 size-4 text-muted-foreground" />
               <SelectValue placeholder="All Projects" />
             </SelectTrigger>

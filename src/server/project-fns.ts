@@ -166,7 +166,10 @@ export const bulkLabelFiles = createServerFn({ method: 'POST' }).handler(async (
 
 export const getProjectTypes = createServerFn({ method: 'GET' }).handler(async ({ data }) => {
   const organizationId = z.string().parse(data)
-  const types = await db.select().from(projectType).where(eq(projectType.organizationId, organizationId))
+  const types = await db
+    .select()
+    .from(projectType)
+    .where(eq(projectType.organizationId, organizationId))
 
   if (types.length === 0) {
     const defaultTypes = ['THESE', 'STAGE', 'AUTRE']

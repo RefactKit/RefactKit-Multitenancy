@@ -1,11 +1,18 @@
-import { Folder, MoreHorizontal, User, Mail, Trash2, Pencil, Globe, Calendar } from 'lucide-react'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Folder, User, Mail, Trash2, Pencil, Globe } from 'lucide-react'
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useI18n } from '@/i18n/context'
 import { motion } from 'framer-motion'
 import { Link } from '@tanstack/react-router'
-import { cn } from '@/lib/utils'
 
 interface ProjectCardProps {
   id: string
@@ -25,7 +32,6 @@ interface ProjectCardProps {
 
 export function ProjectCard({
   id,
-  slug,
   title,
   description,
   fileCount,
@@ -48,96 +54,106 @@ export function ProjectCard({
   })
 
   return (
-    <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
-      <Card className="h-full flex flex-col overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:border-primary/30 group">
-        <CardHeader className="flex flex-row items-start justify-between p-6 pb-2">
-          <div className="flex items-center gap-4">
-            <div className="rounded-xl bg-primary/10 p-3 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-              <Folder className="size-6" />
+    <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }} className="h-full">
+      <Card
+        size="sm"
+        className="h-full flex flex-col overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:border-primary/30 group"
+      >
+        <CardHeader>
+          <div className="row-span-2 flex items-center gap-3">
+            <div className="rounded-xl bg-primary/10 p-2.5 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+              <Folder className="size-5" />
             </div>
-            <div className="space-y-1">
-              <h3 className="font-semibold text-lg leading-tight tracking-tight group-hover:text-primary transition-colors">
-                <Link
-                  to="/organizations/$slug/projects/$projectId"
-                  params={{ slug: orgSlug, projectId: id }}
-                >
-                  {title}
-                </Link>
-              </h3>
-              <div className="flex items-center gap-2">
-                <Badge
-                  variant="secondary"
-                  className="px-1.5 py-0 text-[10px] font-semibold uppercase tracking-wider"
-                >
-                  {fileCount}{' '}
-                  {fileCount === 1 ? t.projects.card.files : t.projects.card.files_plural}
-                </Badge>
-                {type && (
-                  <Badge
-                    variant="outline"
-                    className="px-1.5 py-0 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <div className="group-hover:text-primary transition-colors">
+                <CardTitle className="truncate">
+                  <Link
+                    to="/organizations/$slug/projects/$projectId"
+                    params={{ slug: orgSlug, projectId: id }}
                   >
-                    {type}
-                  </Badge>
-                )}
+                    {title}
+                  </Link>
+                </CardTitle>
               </div>
+              <CardDescription>
+                {fileCount} {fileCount === 1 ? t.projects.card.files : t.projects.card.files_plural}
+              </CardDescription>
             </div>
           </div>
+          <CardAction>
+            <Badge
+              variant="outline"
+              className="shrink-0 px-2 py-0.5 text-xs font-medium rounded-lg"
+            >
+              {fileCount}
+            </Badge>
+          </CardAction>
         </CardHeader>
 
-        <CardContent className="p-6 pt-4 flex-1">
-          <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed mb-6">
-            {description || 'No description provided.'}
-          </p>
+        <CardContent className="flex-1">
+          <div className="flex flex-col gap-2">
+            <CardDescription className="line-clamp-2">
+              {description || 'No description provided.'}
+            </CardDescription>
 
-          <div className="space-y-3">
-            <div className="flex items-center gap-2.5 text-sm text-foreground/70">
-              <User className="size-4 text-muted-foreground" />
-              <span className="truncate">{ownerName}</span>
-            </div>
-            <div className="flex items-center gap-2.5 text-sm text-foreground/70">
-              <Mail className="size-4 text-muted-foreground" />
-              <span className="truncate">{ownerEmail}</span>
+            {type && (
+              <Badge
+                variant="secondary"
+                className="px-1.5 py-0 text-[10px] font-semibold uppercase tracking-wider"
+              >
+                {type}
+              </Badge>
+            )}
+
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2 text-sm text-foreground/70">
+                <User className="size-3.5 text-muted-foreground" />
+                <span className="truncate">{ownerName}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-foreground/70">
+                <Mail className="size-3.5 text-muted-foreground" />
+                <span className="truncate">{ownerEmail}</span>
+              </div>
             </div>
           </div>
         </CardContent>
 
-        <CardFooter className="p-6 pt-2 border-t border-border/40 bg-muted/20 flex items-center justify-between mt-auto">
-          <div className="flex items-center gap-1">
+        <CardFooter className="flex items-center justify-between mt-auto">
+          <div className="flex items-center gap-1.5">
             <Button
               variant="ghost"
-              size="icon"
-              className="size-8 rounded-lg hover:bg-primary/10 hover:text-primary"
+              size="icon-xs"
+              className="bg-muted/40 hover:bg-primary/10 hover:text-primary"
               onClick={onEdit}
             >
-              <Pencil className="size-4" />
+              <Pencil />
             </Button>
             <Button
               variant="ghost"
-              size="icon"
-              className="size-8 rounded-lg hover:bg-primary/10 hover:text-primary"
-              asChild
+              size="icon-xs"
+              className="bg-muted/40 hover:bg-primary/10 hover:text-primary"
+              render={
+                <Link
+                  to="/organizations/$slug/projects/$projectId"
+                  params={{ slug: orgSlug, projectId: id }}
+                />
+              }
             >
-              <Link
-                to="/organizations/$slug/projects/$projectId"
-                params={{ slug: orgSlug, projectId: id }}
-              >
-                <Globe className="size-4" />
-              </Link>
+              <Globe />
             </Button>
             {canDelete && (
               <Button
                 variant="ghost"
-                size="icon"
-                className="size-8 rounded-lg hover:bg-destructive/10 hover:text-destructive"
+                size="icon-xs"
+                className="bg-muted/40 hover:bg-destructive/10 hover:text-destructive"
                 onClick={onDelete}
               >
-                <Trash2 className="size-4" />
+                <Trash2 />
               </Button>
             )}
           </div>
 
-          <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground uppercase tracking-widest">
+          <div className="text-xs text-muted-foreground">
             {t.projects.card.lastUpdated} {formattedDate}
           </div>
         </CardFooter>
