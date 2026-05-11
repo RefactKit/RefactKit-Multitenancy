@@ -134,7 +134,7 @@ export const ar: Translations = {
     activeMembers: 'الأعضاء النشطون',
     storageTotal: 'إجمالي التخزين',
     pendingInvites: 'دعوات معلقة',
-    uploadedImages: 'صور مرفوعة',
+    totalFiles: 'ملفات المشروع',
     totalOf: 'من إجمالي {{total}}',
     currentSessions: 'جلسات حالية',
   },

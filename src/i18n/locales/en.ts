@@ -157,7 +157,7 @@ export const en = {
     activeMembers: 'Active Members',
     storageTotal: 'Storage Total',
     pendingInvites: 'Pending invites',
-    uploadedImages: 'Images uploaded',
+    totalFiles: 'Project Files',
     totalOf: 'of {{total}} total',
     currentSessions: 'Current sessions',
   },

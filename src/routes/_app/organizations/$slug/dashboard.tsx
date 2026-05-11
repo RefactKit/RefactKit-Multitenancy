@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { HardDriveIcon, ImageIcon, LayoutDashboardIcon, UsersIcon } from 'lucide-react'
+import { FolderIcon, HardDriveIcon, LayoutDashboardIcon, UsersIcon } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useI18n } from '@/i18n/context'
 import { cn } from '@/lib/utils'
@@ -35,10 +35,10 @@ function DashboardPage() {
       color: 'text-slate-400',
     },
     {
-      title: t.sidebar.gallery,
+      title: t.projects.title,
       value: stats?.imageCount ?? 0,
-      subtitle: t.dashboard.uploadedImages,
-      icon: ImageIcon,
+      subtitle: t.dashboard.totalFiles,
+      icon: FolderIcon,
       color: 'text-purple-400',
     },
     {
