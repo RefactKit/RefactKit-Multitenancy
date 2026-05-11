@@ -15,9 +15,9 @@ export const uploadFile = createServerFn({ method: 'POST' }).handler(
       throw new Error('No file provided')
     }
 
-    // Basic size validation (10MB for datasets)
-    if (file.size > 10 * 1024 * 1024) {
-      throw new Error('File size exceeds 10MB limit')
+    // Basic size validation (50MB for project files)
+    if (file.size > 50 * 1024 * 1024) {
+      throw new Error('File size exceeds 50MB limit')
     }
 
     const fileExt = file.name.split('.').pop()

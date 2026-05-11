@@ -3,6 +3,16 @@ import { Check, Image as ImageIcon, Upload, Trash2, CheckCircle2 } from 'lucide-
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useI18n } from '@/i18n/context'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination'
+import { Download, FileText, FileSpreadsheet, File as FileIcon } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
@@ -13,6 +23,10 @@ interface ProjectFile {
   categoryId: string | null
   size: number
   mimeType: string
+  category?: {
+    id: string
+    name: string
+  } | null
 }
 
 interface LabelingGalleryProps {
@@ -32,135 +46,181 @@ export function LabelingGallery({
 }: LabelingGalleryProps) {
   const { t } = useI18n()
   const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12
 
   const filteredFiles = useMemo(() => {
-    return files.filter((f) => f.categoryId === selectedCategoryId)
+    return files.filter((f) => (selectedCategoryId ? f.categoryId === selectedCategoryId : true))
   }, [files, selectedCategoryId])
+
+  const totalPages = Math.ceil(filteredFiles.length / itemsPerPage)
+  const paginatedFiles = filteredFiles.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  )
 
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]))
   }
 
-  const selectAll = () => {
-    if (selectedIds.length === filteredFiles.length) {
-      setSelectedIds([])
-    } else {
-      setSelectedIds(filteredFiles.map((f) => f.id))
-    }
+  const formatSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
+  }
+
+  const getFileIcon = (mimeType: string) => {
+    if (mimeType.includes('image')) return <ImageIcon className="size-10 text-primary/40" />
+    if (mimeType.includes('spreadsheet') || mimeType.includes('csv') || mimeType.includes('excel'))
+      return <FileSpreadsheet className="size-10 text-green-500/40" />
+    if (mimeType.includes('pdf') || mimeType.includes('text'))
+      return <FileText className="size-10 text-blue-500/40" />
+    return <FileIcon className="size-10 text-muted-foreground/40" />
+  }
+
+  const getBadgeColor = (mimeType: string) => {
+    if (mimeType.includes('image')) return 'bg-blue-500 text-white'
+    if (mimeType.includes('spreadsheet') || mimeType.includes('csv') || mimeType.includes('excel'))
+      return 'bg-green-500 text-white'
+    return 'bg-gray-500 text-white'
+  }
+
+  const getFileTypeName = (mimeType: string) => {
+    if (mimeType.includes('image')) return 'Image'
+    if (mimeType.includes('spreadsheet') || mimeType.includes('csv') || mimeType.includes('excel'))
+      return 'Excel'
+    return 'File'
   }
 
   return (
-    <div className="flex-1 flex flex-col min-w-0 bg-background/30 backdrop-blur-sm">
-      {/* Gallery Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border/40 bg-card/30 sticky top-0 z-20">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" className="rounded-xl h-10 px-4" onClick={selectAll}>
-            <CheckCircle2
-              className={cn(
-                'size-4 mr-2',
-                selectedIds.length === filteredFiles.length && 'text-primary',
-              )}
-            />
-            {selectedIds.length === filteredFiles.length ? 'Deselect All' : 'Select All'}
-          </Button>
-          <AnimatePresence>
-            {selectedIds.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                className="flex items-center gap-2"
-              >
-                <Badge variant="default" className="rounded-lg px-2 h-7 font-semibold">
-                  {selectedIds.length} selected
-                </Badge>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  className="h-8 rounded-lg"
-                  onClick={() => onBulkLabel(selectedIds)}
-                >
-                  Apply Class
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="h-8 rounded-lg text-destructive hover:bg-destructive/10"
-                  onClick={() => onDeleteFiles(selectedIds)}
-                >
-                  <Trash2 className="size-4" />
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+    <div className="flex-1 flex flex-col min-w-0">
+      {/* Selection Actions Overlay (when selected) */}
+      <AnimatePresence>
+        {selectedIds.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-6 py-3 bg-card border border-border/50 rounded-2xl shadow-2xl backdrop-blur-xl"
+          >
+            <span className="text-sm font-medium">{selectedIds.length} files selected</span>
+            <div className="h-4 w-px bg-border" />
+            <Button size="sm" onClick={() => onBulkLabel(selectedIds)} className="rounded-xl">
+              Apply Label
+            </Button>
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={() => onDeleteFiles(selectedIds)}
+              className="rounded-xl"
+            >
+              Delete
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setSelectedIds([])}
+              className="rounded-xl"
+            >
+              Cancel
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        <Button
-          onClick={onUploadClick}
-          className="rounded-xl gap-2 h-10 px-5 shadow-lg shadow-primary/10"
-        >
-          <Upload className="size-4" />
-          Upload Images
-        </Button>
-      </div>
-
-      {/* Grid */}
-      <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
-        {filteredFiles.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
-            {filteredFiles.map((file) => (
-              <motion.div
+      {/* Grid - Matching Screenshot */}
+      <div className="flex-1">
+        {paginatedFiles.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {paginatedFiles.map((file) => (
+              <div
                 key={file.id}
-                layout
-                className="relative aspect-square group cursor-pointer"
+                className={cn(
+                  'group relative flex flex-col bg-card border border-border/50 rounded-2xl overflow-hidden transition-all hover:shadow-lg',
+                  selectedIds.includes(file.id) && 'ring-2 ring-primary border-primary',
+                )}
                 onClick={() => toggleSelect(file.id)}
               >
-                <div
-                  className={cn(
-                    'absolute inset-0 rounded-2xl border-2 transition-all overflow-hidden bg-muted/20 shadow-sm',
-                    selectedIds.includes(file.id)
-                      ? 'border-primary shadow-lg shadow-primary/20 scale-95'
-                      : 'border-transparent group-hover:border-border/80 group-hover:scale-98',
+                {/* Image / Icon Preview */}
+                <div className="relative aspect-4/3 bg-muted/20 flex items-center justify-center overflow-hidden">
+                  {file.mimeType.includes('image') ? (
+                    <img
+                      src={file.url}
+                      alt={file.name}
+                      className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    getFileIcon(file.mimeType)
                   )}
-                >
-                  <img
-                    src={file.url}
-                    alt={file.name}
-                    className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
 
-                  {/* Overlay */}
-                  <div
-                    className={cn(
-                      'absolute inset-0 bg-black/40 transition-opacity flex items-center justify-center',
-                      selectedIds.includes(file.id)
-                        ? 'opacity-100'
-                        : 'opacity-0 group-hover:opacity-100',
-                    )}
-                  >
-                    <div
+                  {/* Type Badge (Top Left) */}
+                  <div className="absolute top-2 left-2">
+                    <Badge
                       className={cn(
-                        'rounded-full p-2 transition-transform',
-                        selectedIds.includes(file.id)
-                          ? 'bg-primary scale-110'
-                          : 'bg-white/20 scale-90',
+                        'h-5 px-1.5 text-[10px] rounded-lg border-0',
+                        getBadgeColor(file.mimeType),
                       )}
                     >
-                      <Check
-                        className={cn(
-                          'size-5',
-                          selectedIds.includes(file.id) ? 'text-white' : 'text-transparent',
-                        )}
-                      />
-                    </div>
+                      {file.mimeType.includes('image') && <ImageIcon className="size-3 mr-1" />}
+                      {getFileTypeName(file.mimeType)}
+                    </Badge>
                   </div>
 
-                  {/* File Info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
-                    <p className="text-[10px] text-white/80 truncate font-medium">{file.name}</p>
+                  {/* Selection Checkbox */}
+                  <div
+                    className={cn(
+                      'absolute top-2 right-2 size-5 rounded-full border-2 transition-all flex items-center justify-center',
+                      selectedIds.includes(file.id)
+                        ? 'bg-primary border-primary'
+                        : 'bg-black/20 border-white/40 opacity-0 group-hover:opacity-100',
+                    )}
+                  >
+                    <Check
+                      className={cn(
+                        'size-3 text-white',
+                        !selectedIds.includes(file.id) && 'hidden',
+                      )}
+                    />
                   </div>
                 </div>
-              </motion.div>
+
+                {/* File Metadata */}
+                <div className="p-3 flex flex-col gap-1">
+                  <p className="text-sm font-medium truncate text-foreground">{file.name}</p>
+                  <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                    <span>• {formatSize(file.size)}</span>
+                    <span>• {file.mimeType.split('/')[1]?.toUpperCase() || 'FILE'}</span>
+                  </div>
+                </div>
+
+                {/* Actions Footer */}
+                <div className="mt-auto border-t border-border/40 p-2 flex items-center justify-between">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 px-2 text-[10px] gap-1 rounded-lg text-primary hover:bg-primary/5"
+                    asChild
+                  >
+                    <a href={file.url} download={file.name} onClick={(e) => e.stopPropagation()}>
+                      <Download className="size-3" />
+                      Download
+                    </a>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-7 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/5"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onDeleteFiles([file.id])
+                    }}
+                  >
+                    <Trash2 className="size-3" />
+                  </Button>
+                </div>
+              </div>
             ))}
           </div>
         ) : (
@@ -168,20 +228,57 @@ export function LabelingGallery({
             <div className="rounded-full bg-muted p-8 mb-6">
               <ImageIcon className="size-12 text-muted-foreground" />
             </div>
-            <h3 className="text-2xl font-semibold mb-2">{t.projects.studio.noFiles}</h3>
-            <p className="text-muted-foreground">
-              Select a class on the left or upload new images.
-            </p>
-            <Button
-              onClick={onUploadClick}
-              variant="outline"
-              className="mt-8 rounded-xl h-11 px-8 font-semibold"
-            >
-              Start Uploading
-            </Button>
+            <h3 className="text-2xl font-medium mb-2">{t.projects.studio.noFiles}</h3>
+            <p className="text-muted-foreground">No files found in this category.</p>
           </div>
         )}
       </div>
+
+      {/* Pagination - Matching Screenshot */}
+      {totalPages > 1 && (
+        <div className="mt-10 py-4 border-t border-border/40">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setCurrentPage((p) => Math.max(1, p - 1))
+                  }}
+                  className={cn(currentPage === 1 && 'pointer-events-none opacity-50')}
+                />
+              </PaginationItem>
+
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setCurrentPage(i + 1)
+                    }}
+                    isActive={currentPage === i + 1}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                  }}
+                  className={cn(currentPage === totalPages && 'pointer-events-none opacity-50')}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   )
 }

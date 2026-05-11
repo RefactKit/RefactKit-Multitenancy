@@ -5,15 +5,36 @@ import {
   createCategory,
   bulkLabelFiles,
   linkProjectFile,
+  deleteFiles,
 } from '@/server/project-fns'
 import { uploadFile } from '@/server/storage-fns'
-import { CategoryManager } from '@/components/projects/category-manager'
 import { LabelingGallery } from '@/components/projects/labeling-gallery'
 import { useI18n } from '@/i18n/context'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
-import { useState } from 'react'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useState, useMemo } from 'react'
 import { toast } from 'sonner'
 import { orgBySlugQuery } from '@/server/query-keys'
+import { cn } from '@/lib/utils'
+import {
+  Folder,
+  LayoutGrid,
+  List,
+  MoreHorizontal,
+  Pencil,
+  Github,
+  Globe,
+  Plus,
+  ArrowLeft,
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app/organizations/$slug/projects/$projectId')({
   component: ProjectStudioPage,
@@ -24,6 +45,7 @@ function ProjectStudioPage() {
   const { t } = useI18n()
   const queryClient = useQueryClient()
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', projectId],
@@ -36,7 +58,6 @@ function ProjectStudioPage() {
     const input = document.createElement('input')
     input.type = 'file'
     input.multiple = true
-    input.accept = 'image/*'
     input.onchange = async (e) => {
       const files = (e.target as HTMLInputElement).files
       if (!files) return
@@ -46,6 +67,7 @@ function ProjectStudioPage() {
           for (const file of Array.from(files)) {
             const formData = new FormData()
             formData.append('file', file)
+            formData.append('bucket', 'projects')
             const catName =
               project?.categories.find((c) => c.id === selectedCategoryId)?.name || 'unlabeled'
             formData.append('path', `data-${project?.slug}/${catName}`)
@@ -58,7 +80,7 @@ function ProjectStudioPage() {
                   projectId,
                   categoryId: selectedCategoryId,
                   name: file.name,
-                  path: `data-${project?.slug}/${catName}/${file.name}`,
+                  path: result.path,
                   url: result.url,
                   mimeType: file.type,
                   size: file.size,
@@ -70,9 +92,9 @@ function ProjectStudioPage() {
           queryClient.invalidateQueries({ queryKey: ['project', projectId] })
         },
         {
-          loading: 'Uploading images...',
-          success: 'Images uploaded successfully',
-          error: 'Failed to upload some images',
+          loading: 'Uploading files...',
+          success: 'Files uploaded successfully',
+          error: 'Failed to upload some files',
         },
       )
     }
@@ -81,50 +103,189 @@ function ProjectStudioPage() {
 
   if (isLoading || !project)
     return (
-      <div className="flex h-screen items-center justify-center">
-        <LoadingSpinner />
+      <div className="flex flex-col gap-6 max-w-7xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
+        {/* Back button skeleton */}
+        <Skeleton className="size-8 rounded-lg" />
+
+        {/* Project header skeleton */}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-10 w-64 rounded-lg" />
+            <Skeleton className="size-8 rounded-lg" />
+          </div>
+          <Skeleton className="h-6 w-96 rounded-lg" />
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-4 w-24 rounded-lg" />
+            <Skeleton className="h-4 w-28 rounded-lg" />
+          </div>
+        </div>
+
+        {/* Gallery controls skeleton */}
+        <div className="flex items-center justify-between border-b border-border/40 pb-4">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-5 w-28 rounded-lg" />
+            <Skeleton className="h-6 w-8 rounded-lg" />
+          </div>
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-8 w-20 rounded-xl" />
+            <Skeleton className="h-10 w-28 rounded-xl" />
+          </div>
+        </div>
+
+        {/* File grid skeleton */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="flex flex-col gap-2">
+              <Skeleton className="aspect-4/3 rounded-2xl" />
+              <Skeleton className="h-4 w-full rounded-lg" />
+              <Skeleton className="h-3 w-2/3 rounded-lg" />
+            </div>
+          ))}
+        </div>
       </div>
     )
 
   return (
-    <div className="flex flex-col gap-8 max-w-6xl mx-auto w-full">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-          {project.title}
-        </h1>
-        <p className="text-muted-foreground">{t.projects.subtitle}</p>
+    <div className="flex flex-col gap-6 max-w-7xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
+      {/* Breadcrumb / Back */}
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon" asChild className="size-8 rounded-lg">
+          <Link to="/organizations/$slug/projects" params={{ slug }}>
+            <ArrowLeft className="size-4" />
+          </Link>
+        </Button>
       </div>
 
-      <div className="flex h-[calc(100vh-280px)] overflow-hidden rounded-3xl border border-border/40 shadow-2xl bg-muted/10">
-        <CategoryManager
-          categories={project.categories}
-          selectedCategoryId={selectedCategoryId}
-          onSelectCategory={setSelectedCategoryId}
-          onCreateCategory={(name) => {
-            createCategory({ data: { projectId, name } }).then(() => {
-              queryClient.invalidateQueries({ queryKey: ['project', projectId] })
-              toast.success('Category added')
-            })
-          }}
-          onDeleteCategory={(id) => {
-            // Delete logic
-          }}
-        />
+      {/* Project Header - Matching Screenshot */}
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-medium tracking-tight text-foreground">{project.title}</h1>
+          <Button variant="ghost" size="icon" className="size-8 rounded-lg">
+            <Pencil className="size-4 text-muted-foreground" />
+          </Button>
+        </div>
 
-        <LabelingGallery
-          files={project.files}
-          selectedCategoryId={selectedCategoryId}
-          onBulkLabel={(ids) => {
-            bulkLabelFiles({ data: { fileIds: ids, categoryId: selectedCategoryId } }).then(() => {
-              queryClient.invalidateQueries({ queryKey: ['project', projectId] })
-              toast.success('Files labeled')
-            })
-          }}
-          onDeleteFiles={(ids) => {
-            // Delete logic
-          }}
-          onUploadClick={handleUpload}
-        />
+        <div className="flex flex-col gap-1">
+          <p className="text-lg text-muted-foreground">
+            {project.description || 'Project de classification -thèse'}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 hover:text-foreground transition-colors"
+            >
+              <Github className="size-4" />
+              GitHub
+            </a>
+          )}
+          {project.otherUrl && (
+            <a
+              href={project.otherUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 hover:text-foreground transition-colors"
+            >
+              <Globe className="size-4" />
+              Website
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-col gap-6">
+        {/* Gallery Section Controls */}
+        <div className="flex items-center justify-between border-b border-border/40 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-foreground font-medium">
+              <Folder className="size-5" />
+              Project Files
+            </div>
+            <Badge variant="outline" className="rounded-lg px-2 h-6 text-xs font-medium bg-muted/30">
+              {project.files.length}
+            </Badge>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="flex items-center bg-muted/30 p-1 rounded-xl">
+              <Button
+                variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
+                size="icon"
+                className={cn(
+                  'size-8 rounded-lg',
+                  viewMode === 'grid' && 'bg-background shadow-sm',
+                )}
+                onClick={() => setViewMode('grid')}
+              >
+                <LayoutGrid className="size-4" />
+              </Button>
+              <Button
+                variant={viewMode === 'list' ? 'secondary' : 'ghost'}
+                size="icon"
+                className={cn(
+                  'size-8 rounded-lg',
+                  viewMode === 'list' && 'bg-background shadow-sm',
+                )}
+                onClick={() => setViewMode('list')}
+              >
+                <List className="size-4" />
+              </Button>
+            </div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="rounded-xl h-10 px-5 gap-2 font-medium shadow-sm">
+                  <Plus className="size-4" />
+                  Actions
+                  <MoreHorizontal className="size-4 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 rounded-xl">
+                <DropdownMenuItem onClick={handleUpload}>Upload Images</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    const name = prompt('New class name:')
+                    if (name) {
+                      createCategory({ data: { projectId, name } }).then(() => {
+                        queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+                        toast.success('Category added')
+                      })
+                    }
+                  }}
+                >
+                  Create Class
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+
+        {/* Studio Content */}
+        <div className="w-full">
+          <LabelingGallery
+            files={project.files}
+            selectedCategoryId={selectedCategoryId}
+            onBulkLabel={(ids) => {
+              bulkLabelFiles({ data: { fileIds: ids, categoryId: selectedCategoryId } }).then(
+                () => {
+                  queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+                  toast.success('Files labeled')
+                },
+              )
+            }}
+            onDeleteFiles={(ids) => {
+              deleteFiles({ data: ids }).then(() => {
+                queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+                toast.success('Files deleted')
+              })
+            }}
+            onUploadClick={handleUpload}
+          />
+        </div>
       </div>
     </div>
   )

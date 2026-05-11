@@ -11,7 +11,13 @@ import {
 import { Search, Filter, SortAsc, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useI18n } from '@/i18n/context'
-
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyMedia,
+} from '@/components/ui/empty'
 interface Project {
   id: string
   title: string
@@ -131,13 +137,15 @@ export function ProjectList({
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-24 rounded-[2rem] border-2 border-dashed border-border/50 bg-muted/10">
-          <div className="rounded-full bg-muted p-6 mb-4">
-            <Search className="size-10 text-muted-foreground" />
-          </div>
-          <h3 className="text-xl font-semibold">{t.projects.noProjects}</h3>
-          <p className="text-muted-foreground mt-2">Try adjusting your search or filters.</p>
-        </div>
+        <Empty className="py-24 rounded-[2rem] border-2 border-border/50 bg-muted/10">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Search />
+            </EmptyMedia>
+            <EmptyTitle>{t.projects.noProjects}</EmptyTitle>
+            <EmptyDescription>Try adjusting your search or filters.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       )}
     </div>
   )

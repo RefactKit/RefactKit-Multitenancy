@@ -13,6 +13,8 @@ import { Button } from '@/components/ui/button'
 import { useI18n } from '@/i18n/context'
 import { motion } from 'framer-motion'
 import { Link } from '@tanstack/react-router'
+import { authClient } from 'lib/auth-client'
+
 
 interface ProjectCardProps {
   id: string
@@ -45,7 +47,16 @@ export function ProjectCard({
   orgSlug,
 }: ProjectCardProps) {
   const { t, dateLocale } = useI18n()
-  const canDelete = userRole === 'owner' || userRole === 'admin'
+  const canDelete =
+    userRole === 'owner' ||
+    (userRole
+      ? authClient.organization.checkRolePermission({
+        role: userRole,
+        permission: {
+          project: ['delete'],
+        },
+      })
+      : false)
 
   const formattedDate = new Date(updatedAt).toLocaleDateString(dateLocale, {
     day: 'numeric',
@@ -126,7 +137,7 @@ export function ProjectCard({
               className="bg-muted/40 hover:bg-primary/10 hover:text-primary"
               onClick={onEdit}
             >
-              <Pencil />
+              <Pencil data-icon="inline-start" />
             </Button>
             <Button
               variant="ghost"
@@ -139,7 +150,7 @@ export function ProjectCard({
                 />
               }
             >
-              <Globe />
+              <Globe data-icon="inline-start" />
             </Button>
             {canDelete && (
               <Button
@@ -148,7 +159,7 @@ export function ProjectCard({
                 className="bg-muted/40 hover:bg-destructive/10 hover:text-destructive"
                 onClick={onDelete}
               >
-                <Trash2 />
+                <Trash2 data-icon="inline-start" />
               </Button>
             )}
           </div>

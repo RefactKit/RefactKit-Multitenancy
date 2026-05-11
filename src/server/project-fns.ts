@@ -104,15 +104,6 @@ export const createProject = createServerFn({ method: 'POST' }).handler(async ({
     typeId: validated.typeId,
   })
 
-  // Seed default categories
-  const defaultCategories = ['Dataset', 'Models', 'Results', 'Documentation']
-  for (const catName of defaultCategories) {
-    await db.insert(projectCategory).values({
-      id: nanoid(),
-      name: catName,
-      projectId: id,
-    })
-  }
 
   return { id, slug }
 })
@@ -197,6 +188,13 @@ export const createProjectType = createServerFn({ method: 'POST' }).handler(asyn
     organizationId,
   })
   return { id }
+})
+
+export const deleteFiles = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
+  const fileIds = z.array(z.string()).parse(data)
+  if (fileIds.length === 0) return { success: true }
+  await db.delete(projectFile).where(sql`${projectFile.id} IN ${fileIds}`)
+  return { success: true }
 })
 
 export const linkProjectFile = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
