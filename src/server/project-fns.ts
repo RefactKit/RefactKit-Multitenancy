@@ -147,7 +147,9 @@ export const createProject = createServerFn({ method: 'POST' }).handler(async ({
     typeId: validated.typeId,
   })
 
-  console.log(`[PROJECT] Created new project: ${validated.title} in org ${validated.organizationId}`)
+  console.log(
+    `[PROJECT] Created new project: ${validated.title} in org ${validated.organizationId}`,
+  )
   return { id, slug }
 })
 
