@@ -645,10 +645,10 @@ Grâce à la fonctionnalité `dynamicAccessControl` de Better Auth, les Proprié
 
 Il est essentiel de comprendre les deux couches d'administration distinctes fournies dans RefactKit :
 
-| Couche | Portée | Public Cible | Objectif |
-|---|---|---|---|
-| **Contrôle d'Accès Dynamique (RBAC)** | **Organisation** | Locataires SaaS (Vos Utilisateurs) | Permet au propriétaire d'une organisation de gérer les permissions de sa propre équipe et de créer des rôles personnalisés au sein de son espace de travail isolé. |
-| **Plugin Admin (Super Admin)** | **Global** | Propriétaire du SaaS (Vous) | Vous donne le pouvoir absolu sur l'ensemble de l'application. Vous pouvez accéder au tableau de bord Better Auth via `/api/auth/dashboard` pour gérer/bannir tous les utilisateurs, usurper des comptes (impersonate) pour le support client, et superviser le système global. |
+| Couche | Portée | Public Cible | Stockage | Objectif |
+|---|---|---|---|---|
+| **Contrôle d'Accès Dynamique (RBAC)** | **Organisation** | Locataires SaaS | `member.role` | Permet au propriétaire d'une organisation de gérer les permissions de sa propre équipe et de créer des rôles personnalisés au sein de son espace de travail isolé. |
+| **Plugin Admin (Super Admin)** | **Global** | Propriétaire du SaaS (Vous) | `user.role` | Vous donne le pouvoir absolu sur l'ensemble de l'application. Vous pouvez accéder au tableau de bord Better Auth via `/api/auth/dashboard` pour gérer/bannir tous les utilisateurs et superviser le système. |
 
 ### Comment le RBAC est appliqué
 

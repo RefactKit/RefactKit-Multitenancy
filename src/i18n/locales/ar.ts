@@ -338,4 +338,18 @@ export const ar: Translations = {
     systemRoleNote: 'أدوار النظام (مالك، مسؤول، عضو) للقراءة فقط.',
     ownerNote: 'صلاحيات المالك ثابتة.',
   },
+  resources: {
+    project: 'مشروع',
+    member: 'عضو',
+    invitation: 'دعوة',
+    organization: 'منظمة',
+    dashboard: 'لوحة القيادة',
+    ac: 'إدارة الأدوار',
+  },
+  actions: {
+    create: 'إنشاء',
+    read: 'قراءة',
+    update: 'تحديث',
+    delete: 'حذف',
+  },
 }
