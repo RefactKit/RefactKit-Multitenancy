@@ -351,6 +351,7 @@ export const de: Translations = {
       noFiles: 'Keine Bilder in diesem Projekt gefunden.',
       stats: '{{percent}}% beschriftet',
     },
+    errors: {
       onlyAdminsDelete: 'Nur Eigentümer oder Admins können Projekte löschen.',
     },
   },

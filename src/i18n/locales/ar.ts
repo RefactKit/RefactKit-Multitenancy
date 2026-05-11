@@ -318,6 +318,7 @@ export const ar: Translations = {
       noFiles: 'لم يتم العثور على صور في هذا المشروع.',
       stats: '{{percent}}% مصنف',
     },
+    errors: {
       onlyAdminsDelete: 'يمكن للمالكين أو المسؤولين فقط حذف المشاريع.',
     },
   },

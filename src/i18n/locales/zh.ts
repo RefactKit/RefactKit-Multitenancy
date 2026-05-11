@@ -336,6 +336,7 @@ export const zh: Translations = {
       noFiles: '此项目中未找到图像。',
       stats: '{{percent}}% 已标注',
     },
+    errors: {
       onlyAdminsDelete: '只有所有者或管理员可以删除项目。',
     },
   },

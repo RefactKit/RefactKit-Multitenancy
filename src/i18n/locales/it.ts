@@ -344,6 +344,7 @@ export const it = {
       noFiles: 'Nessuna immagine trovata in questo progetto.',
       stats: '{{percent}}% etichettato',
     },
+    errors: {
       onlyAdminsDelete: 'Solo i proprietari o gli amministratori possono eliminare i progetti.',
     },
   },

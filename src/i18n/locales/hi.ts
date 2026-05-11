@@ -339,6 +339,7 @@ export const hi: Translations = {
       noFiles: 'इस परियोजना में कोई चित्र नहीं मिला।',
       stats: '{{percent}}% लेबल किया गया',
     },
+    errors: {
       onlyAdminsDelete: 'केवल मालिक या व्यवस्थापक ही परियोजनाओं को हटा सकते हैं।',
     },
   },

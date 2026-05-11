@@ -362,6 +362,7 @@ export const fr: Translations = {
       noFiles: 'Aucune image trouvée dans ce projet.',
       stats: '{{percent}}% Labellisés',
     },
+    errors: {
       onlyAdminsDelete: 'Seuls les propriétaires ou admins peuvent supprimer des projets.',
     },
   },

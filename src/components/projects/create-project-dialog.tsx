@@ -93,9 +93,7 @@ export function CreateProjectDialog({
               <LayoutGrid className="size-6 text-primary" />
               {t.projects.createNew}
             </DialogTitle>
-            <DialogDescription>
-              {t.projects.form.configureDesc}
-            </DialogDescription>
+            <DialogDescription>{t.projects.form.configureDesc}</DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-6 py-6">

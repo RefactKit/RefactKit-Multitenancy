@@ -1,13 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { authClient } from '../../../../lib/auth-client'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -70,10 +64,9 @@ export function RoleMatrix() {
 
   const dynamicRoles = orgRolesResponse?.data || []
 
-  const allRoleNames = Array.from(new Set([
-    ...Object.keys(DEFAULT_STATIC_ROLES),
-    ...dynamicRoles.map((r: any) => r.role)
-  ]))
+  const allRoleNames = Array.from(
+    new Set([...Object.keys(DEFAULT_STATIC_ROLES), ...dynamicRoles.map((r: any) => r.role)]),
+  )
 
   const createRoleMutation = useMutation({
     mutationFn: async (roleName: string) => {
@@ -98,7 +91,7 @@ export function RoleMatrix() {
       role,
       resource,
       action,
-      currentPermissions
+      currentPermissions,
     }: {
       role: any // The full role object or string for static
       resource: string
@@ -122,7 +115,7 @@ export function RoleMatrix() {
 
       return authClient.organization.updateRole({
         roleId: role.id,
-        permission: newPermissions
+        permission: newPermissions,
       })
     },
     onSuccess: (res) => {
@@ -134,7 +127,7 @@ export function RoleMatrix() {
     },
     onError: (err: any) => {
       toast.error(err.message)
-    }
+    },
   })
 
   const deleteRoleMutation = useMutation({
@@ -187,9 +180,7 @@ export function RoleMatrix() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <CardTitle>{t.roles.title}</CardTitle>
-            <CardDescription>
-              {t.roles.subtitle}
-            </CardDescription>
+            <CardDescription>{t.roles.subtitle}</CardDescription>
           </div>
           <form onSubmit={handleCreateRole} className="flex items-center gap-2">
             <Input
@@ -199,7 +190,11 @@ export function RoleMatrix() {
               className="w-[180px]"
             />
             <Button type="submit" disabled={createRoleMutation.isPending || !newRoleName.trim()}>
-              {createRoleMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4 mr-1" />}
+              {createRoleMutation.isPending ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Plus className="h-4 w-4 mr-1" />
+              )}
               {t.roles.add}
             </Button>
           </form>
@@ -214,11 +209,11 @@ export function RoleMatrix() {
                 {allRoleNames.map((rn) => {
                   const isStatic = Object.keys(DEFAULT_STATIC_ROLES).includes(rn)
                   const dynamicRole = dynamicRoles.find((dr: any) => dr.role === rn)
-                  
+
                   return (
                     <TableHead key={rn} className="text-center font-bold">
                       <div className="flex items-center justify-center gap-2">
-                        <Badge variant={isStatic ? "outline" : "secondary"} className="capitalize">
+                        <Badge variant={isStatic ? 'outline' : 'secondary'} className="capitalize">
                           {rn}
                         </Badge>
                         {!isStatic && dynamicRole && (
@@ -242,7 +237,10 @@ export function RoleMatrix() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={allRoleNames.length + 1} className="h-32 text-center text-muted-foreground">
+                  <TableCell
+                    colSpan={allRoleNames.length + 1}
+                    className="h-32 text-center text-muted-foreground"
+                  >
                     {t.common.loading}
                   </TableCell>
                 </TableRow>
@@ -250,12 +248,18 @@ export function RoleMatrix() {
                 Object.entries(AVAILABLE_RESOURCES).map(([resource, actions]) => (
                   <React.Fragment key={resource}>
                     <TableRow className="bg-muted/30">
-                      <TableCell colSpan={allRoleNames.length + 1} className="py-2 font-bold text-[10px] uppercase tracking-widest text-muted-foreground/70">
+                      <TableCell
+                        colSpan={allRoleNames.length + 1}
+                        className="py-2 font-bold text-[10px] uppercase tracking-widest text-muted-foreground/70"
+                      >
                         {t.resources[resource as keyof typeof t.resources] || resource}
                       </TableCell>
                     </TableRow>
                     {actions.map((action) => (
-                      <TableRow key={`${resource}-${action}`} className="hover:bg-muted/10 transition-colors">
+                      <TableRow
+                        key={`${resource}-${action}`}
+                        className="hover:bg-muted/10 transition-colors"
+                      >
                         <TableCell className="pl-6 py-3 text-sm text-muted-foreground">
                           {t.actions[action as keyof typeof t.actions] || action}
                         </TableCell>
@@ -265,17 +269,20 @@ export function RoleMatrix() {
                           const roleObj = isStatic ? rn : dynamicRole
                           const isOwner = rn === 'owner'
                           const isDisabled = isStatic || togglePermissionMutation.isPending
- 
+
                           return (
                             <TableCell key={`${resource}-${action}-${rn}`} className="text-center">
                               <div className="flex justify-center">
-                                <Checkbox 
+                                <Checkbox
                                   checked={getRolePermissions(rn)[resource]?.includes(action)}
-                                  onCheckedChange={() => !isDisabled && handleToggle(roleObj, resource, action)}
+                                  onCheckedChange={() =>
+                                    !isDisabled && handleToggle(roleObj, resource, action)
+                                  }
                                   disabled={isDisabled}
                                   className={cn(
-                                    isStatic && "opacity-40 grayscale cursor-not-allowed",
-                                    isOwner && "data-[checked]:bg-muted data-[checked]:text-muted-foreground data-[checked]:border-muted"
+                                    isStatic && 'opacity-40 grayscale cursor-not-allowed',
+                                    isOwner &&
+                                      'data-[checked]:bg-muted data-[checked]:text-muted-foreground data-[checked]:border-muted',
                                   )}
                                 />
                               </div>
@@ -298,5 +305,3 @@ export function RoleMatrix() {
     </Card>
   )
 }
-
-

@@ -62,13 +62,16 @@ function SetPassword({ className }: { className?: string }) {
           <Button
             size="sm"
             disabled={isPending || !session}
-            onClick={() => session && requestPasswordReset(
-              { email: session.user.email },
-              {
-                onError: (error: any) => toast.error(error.error?.message || error.message),
-                onSuccess: () => toast.success(localization.auth.passwordResetEmailSent),
-              }
-            )}
+            onClick={() =>
+              session &&
+              requestPasswordReset(
+                { email: session.user.email },
+                {
+                  onError: (error: any) => toast.error(error.error?.message || error.message),
+                  onSuccess: () => toast.success(localization.auth.passwordResetEmailSent),
+                },
+              )
+            }
           >
             {isPending && <Spinner />}
             {localization.auth.sendResetLink}
@@ -124,7 +127,7 @@ function ChangePasswordForm({
           setConfirmPassword('')
           toast.success(localization.settings.changePasswordSuccess)
         },
-      }
+      },
     )
   }
 
