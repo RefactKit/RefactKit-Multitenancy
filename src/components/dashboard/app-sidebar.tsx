@@ -6,6 +6,7 @@ import {
   LifeBuoy,
   MessageSquareText,
   Settings,
+  ShieldCheck,
   Users,
 } from 'lucide-react'
 import {
@@ -78,6 +79,15 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
             to: `/organizations/${slug}/settings`,
             icon: Settings,
           },
+          ...(userRole === 'owner'
+            ? [
+                {
+                  title: 'Rôles & Permissions',
+                  to: `/organizations/${slug}/roles`,
+                  icon: ShieldCheck,
+                },
+              ]
+            : []),
         ]
       : []
 

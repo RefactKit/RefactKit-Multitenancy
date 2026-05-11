@@ -57,8 +57,7 @@ function ProjectsPage() {
   })
 
   const deleteMutation = useMutation({
-    mutationFn: (projectId: string) =>
-      deleteProject({ data: { projectId, userId: session?.user?.id! } }),
+    mutationFn: (projectId: string) => deleteProject({ data: { projectId } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] })
       toast.success('Project deleted successfully')

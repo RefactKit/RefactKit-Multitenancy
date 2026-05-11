@@ -94,7 +94,7 @@ export function CreateProjectDialog({
               {t.projects.createNew}
             </DialogTitle>
             <DialogDescription>
-              Configure your new dataset project. Click create when you're done.
+              {t.projects.form.configureDesc}
             </DialogDescription>
           </DialogHeader>
 
@@ -105,7 +105,7 @@ export function CreateProjectDialog({
               </Label>
               <Input
                 id="title"
-                placeholder="Brain MRI Dataset"
+                placeholder={t.projects.form.placeholderTitle}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -120,7 +120,7 @@ export function CreateProjectDialog({
               </Label>
               <Select value={typeId} onValueChange={setTypeId}>
                 <SelectTrigger id="type" className="h-11 rounded-xl">
-                  <SelectValue placeholder="Select type" />
+                  <SelectValue placeholder={t.projects.form.selectType} />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">
                   {projectTypes.length > 0 ? (
@@ -132,13 +132,13 @@ export function CreateProjectDialog({
                   ) : (
                     <>
                       <SelectItem value="THESE" className="rounded-lg">
-                        THÈSE
+                        {t.projects.types.THESE}
                       </SelectItem>
                       <SelectItem value="STAGE" className="rounded-lg">
-                        STAGE
+                        {t.projects.types.STAGE}
                       </SelectItem>
                       <SelectItem value="AUTRE" className="rounded-lg">
-                        AUTRE
+                        {t.projects.types.AUTRE}
                       </SelectItem>
                     </>
                   )}
@@ -152,7 +152,7 @@ export function CreateProjectDialog({
               </Label>
               <Textarea
                 id="description"
-                placeholder="Dataset for CNN classification..."
+                placeholder={t.projects.form.placeholderDesc}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="min-h-[100px] rounded-xl resize-none p-3"
@@ -205,7 +205,7 @@ export function CreateProjectDialog({
               className="rounded-xl h-11 px-6"
             >
               {isPending ? <Spinner className="mr-2 size-4" /> : <Plus className="mr-2 size-4" />}
-              {t.common.create || 'Create Project'}
+              {t.projects.createNew}
             </Button>
           </DialogFooter>
         </form>

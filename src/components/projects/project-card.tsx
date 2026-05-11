@@ -15,7 +15,6 @@ import { motion } from 'framer-motion'
 import { Link } from '@tanstack/react-router'
 import { authClient } from 'lib/auth-client'
 
-
 interface ProjectCardProps {
   id: string
   slug: string
@@ -51,11 +50,11 @@ export function ProjectCard({
     userRole === 'owner' ||
     (userRole
       ? authClient.organization.checkRolePermission({
-        role: userRole,
-        permission: {
-          project: ['delete'],
-        },
-      })
+          role: userRole,
+          permission: {
+            project: ['delete'],
+          },
+        })
       : false)
 
   const formattedDate = new Date(updatedAt).toLocaleDateString(dateLocale, {
@@ -104,7 +103,7 @@ export function ProjectCard({
         <CardContent className="flex-1">
           <div className="flex flex-col gap-2">
             <CardDescription className="line-clamp-2">
-              {description || 'No description provided.'}
+              {description || t.projects.form.noDescription}
             </CardDescription>
 
             {type && (

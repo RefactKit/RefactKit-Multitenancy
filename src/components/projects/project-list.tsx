@@ -11,13 +11,7 @@ import {
 import { Search, Filter, SortAsc, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useI18n } from '@/i18n/context'
-import {
-  Empty,
-  EmptyHeader,
-  EmptyTitle,
-  EmptyDescription,
-  EmptyMedia,
-} from '@/components/ui/empty'
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyMedia } from '@/components/ui/empty'
 interface Project {
   id: string
   title: string
@@ -89,23 +83,23 @@ export function ProjectList({
           <Select value={sort} onValueChange={setSort}>
             <SelectTrigger className="w-[140px] h-11 rounded-2xl border-border bg-card">
               <SortAsc className="mr-2 size-4 text-muted-foreground" />
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder={t.projects.form.sortNewest} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="newest">Newest</SelectItem>
-              <SelectItem value="oldest">Oldest</SelectItem>
-              <SelectItem value="az">A-Z</SelectItem>
-              <SelectItem value="za">Z-A</SelectItem>
+              <SelectItem value="newest">{t.projects.form.sortNewest}</SelectItem>
+              <SelectItem value="oldest">{t.projects.form.sortOldest}</SelectItem>
+              <SelectItem value="az">{t.projects.form.sortAZ}</SelectItem>
+              <SelectItem value="za">{t.projects.form.sortZA}</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[160px] h-11 rounded-2xl border-border bg-card">
               <Filter className="mr-2 size-4 text-muted-foreground" />
-              <SelectValue placeholder="All Projects" />
+              <SelectValue placeholder={t.projects.form.filterAll} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Projects</SelectItem>
+              <SelectItem value="all">{t.projects.form.filterAll}</SelectItem>
               <SelectItem value="THESE">{t.projects.types.THESE}</SelectItem>
               <SelectItem value="STAGE">{t.projects.types.STAGE}</SelectItem>
               <SelectItem value="AUTRE">{t.projects.types.AUTRE}</SelectItem>
@@ -143,7 +137,7 @@ export function ProjectList({
               <Search />
             </EmptyMedia>
             <EmptyTitle>{t.projects.noProjects}</EmptyTitle>
-            <EmptyDescription>Try adjusting your search or filters.</EmptyDescription>
+            <EmptyDescription>{t.projects.emptyDesc}</EmptyDescription>
           </EmptyHeader>
         </Empty>
       )}

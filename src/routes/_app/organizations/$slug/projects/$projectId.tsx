@@ -205,7 +205,10 @@ function ProjectStudioPage() {
               <Folder className="size-5" />
               Project Files
             </div>
-            <Badge variant="outline" className="rounded-lg px-2 h-6 text-xs font-medium bg-muted/30">
+            <Badge
+              variant="outline"
+              className="rounded-lg px-2 h-6 text-xs font-medium bg-muted/30"
+            >
               {project.files.length}
             </Badge>
           </div>

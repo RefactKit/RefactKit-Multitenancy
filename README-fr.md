@@ -396,7 +396,7 @@ RefactKit-multitenancy/
 │   ├── schema.ts              # Source unique de vérité — tables & relations
 │   └── index.ts               # Pool de connexion postgres.js (Pooler Supabase)
 ├── lib/
-│   ├── auth.ts                # Config Better Auth (RBAC, rate limit, hooks)
+│   ├── auth.ts                # Config Better Auth (RBAC, rôles dynamiques, hooks)
 │   ├── auth-client.ts         # Client auth navigateur (plugin organizationClient)
 │   ├── email.ts               # Service d'email transactionnel Resend
 │   ├── env.ts                 # Aides pour les variables d'environnement
@@ -404,40 +404,33 @@ RefactKit-multitenancy/
 ├── src/
 │   ├── components/
 │   │   ├── dashboard/         # Sidebar, Navbar, Fil d'Ariane
-│   │   ├── settings/          # Onglets Compte, Sécurité, Apparence
+│   │   ├── settings/          # Compte, Sécurité, Apparence
+│   │   │   └── roles/         # Composant de matrice RBAC dynamique
+│   │   ├── projects/          # Composants de gestion de projets
 │   │   ├── shared/            # Header, AuthShell, UI partagée
-│   │   ├── landing/           # Composants de la page d'accueil (landing)
-│   │   └── ui/                # Primitives Base UI (Bouton, Input, Dialog...)
-│   ├── hooks/                 # useFont, useTheme
+│   │   └── ui/                # Primitives Base UI + Shadcn (Bouton, Input, Checkbox...)
 │   ├── i18n/
 │   │   ├── context.tsx        # Fournisseur de contexte React
-│   │   ├── index.ts           # Détection de locale & gestion de cookie
-│   │   └── locales/           # Traductions en, fr, es, pt, ar...
+│   │   ├── locales/           # en, fr, es, pt, ar... (12 langues)
+│   │   └── index.ts           # Détection de locale & persistance
 │   ├── routes/
 │   │   ├── __root.tsx         # Layout principal (fournisseurs, meta, polices)
 │   │   ├── index.tsx          # Page d'accueil (Landing page)
 │   │   ├── _auth/             # Public : login, signup, forgot/reset-password
 │   │   ├── _app/              # Protégé : coquille dashboard, paramètres
 │   │   │   └── organizations/
-│   │   │       └── $slug/     # Espace Org : dashboard, membres, galerie, paramètres
+│   │   │       └── $slug/     # Org : dashboard, membres, rôles, galerie, paramètres
 │   │   ├── api/auth/          # Gestionnaire de routes API Better Auth
-│   │   ├── onboarding.tsx     # Création d'org lors de la première visite
-│   │   └── accept-invite.tsx  # Flux d'acceptation d'invitation
+│   │   └── onboarding.tsx     # Flux de configuration d'espace de travail
 │   ├── server/
-│   │   ├── auth-fns.ts        # Fonctions d'aide pour la session
-│   │   ├── org-fns.ts         # CRUD organisations + vérification des membres
-│   │   ├── dashboard-fns.ts   # Statistiques de l'organisation
-│   │   ├── gallery-fns.ts     # CRUD de la galerie
+│   │   ├── auth-fns.ts        # Fonctions d'aide pour la session & auth
+│   │   ├── org-fns.ts         # CRUD organisations & membres
+│   │   ├── project-fns.ts     # Logique de gestion de projets
 │   │   ├── storage-fns.ts     # Upload de fichier Supabase (serveur uniquement)
 │   │   └── query-keys.ts      # Fabriques d'options TanStack Query
 │   └── styles/
-│       └── globals.css        # Tailwind v4, variables CSS, imports de polices
-├── e2e/                       # Scénarios de tests E2E Playwright
-├── vite.config.ts             # Vite + TanStack Start + Nitro + Tailwind
-├── drizzle.config.ts          # Configuration Drizzle Kit
-├── playwright.config.ts       # Configuration multi-navigateur Playwright
-├── biome.json                 # Configuration linter/formatter Biome
-└── package.json               # Scripts, dépendances
+│       └── globals.css        # Tailwind v4 & tokens globaux
+└── package.json               # Scripts & dépendances
 ```
 
 ---
@@ -631,7 +624,9 @@ RefactKit utilise `createAccessControl` de Better Auth avec un modèle granulair
 | `organization:update` | — | — | ✅ |
 | `organization:delete` | — | — | ✅ |
 
-### Hiérarchie des Rôles
+### Hiérarchie des Rôles & Rôles Personnalisés (Dynamic Access Control)
+
+Par défaut, une organisation possède trois rôles statiques :
 
 ```mermaid
 graph TB
@@ -641,6 +636,19 @@ graph TB
 
     Owner --> Admin --> Member
 ```
+
+**Création de Rôles Personnalisés (Dynamic Access Control)** :
+Bien que les trois rôles par défaut couvrent la majorité des cas d'usage, les utilisateurs du SaaS (Locataires) ont la liberté de créer des **rôles personnalisés** dynamiquement via l'onglet **"Rôles & Permissions"** dans les paramètres de leur organisation. 
+Grâce à la fonctionnalité `dynamicAccessControl` de Better Auth, les Propriétaires et Admins peuvent créer de nouveaux rôles (ex: "Éditeur", "Responsable Facturation") et sélectionner précisément les permissions qu'ils souhaitent accorder pour chaque ressource via une matrice visuelle. Ces rôles personnalisés sont stockés en toute sécurité dans la base de données (table `organization_role`).
+
+### RBAC de l'Organisation vs. Super Admin Global
+
+Il est essentiel de comprendre les deux couches d'administration distinctes fournies dans RefactKit :
+
+| Couche | Portée | Public Cible | Objectif |
+|---|---|---|---|
+| **Contrôle d'Accès Dynamique (RBAC)** | **Organisation** | Locataires SaaS (Vos Utilisateurs) | Permet au propriétaire d'une organisation de gérer les permissions de sa propre équipe et de créer des rôles personnalisés au sein de son espace de travail isolé. |
+| **Plugin Admin (Super Admin)** | **Global** | Propriétaire du SaaS (Vous) | Vous donne le pouvoir absolu sur l'ensemble de l'application. Vous pouvez accéder au tableau de bord Better Auth via `/api/auth/dashboard` pour gérer/bannir tous les utilisateurs, usurper des comptes (impersonate) pour le support client, et superviser le système global. |
 
 ### Comment le RBAC est appliqué
 
@@ -780,6 +788,22 @@ export const myDataQuery = (slug: string) =>
     queryKey: ['my-data', slug] as const,
     queryFn: () => getMyData({ data: { slug } }),
   })
+```
+
+**Étape 4** — Mettre à jour les Permissions RBAC (`lib/auth.ts`) :
+Si votre nouvelle page introduit une nouvelle entité (ex: `my-data`), vous devez la déclarer dans la matrice de contrôle d'accès Better Auth pour appliquer la sécurité côté serveur.
+```typescript
+// lib/auth.ts
+const ac = createAccessControl({
+  // ... entités existantes
+  myData: ['create', 'read', 'update', 'delete'],
+})
+
+const memberRole = ac.newRole({
+  // ...
+  myData: ['read'], // Accès en lecture seule pour les membres
+})
+// Mettre à jour adminRole et ownerRole en conséquence
 ```
 
 ### Bonnes Pratiques de Réactivité

@@ -53,7 +53,7 @@ export function ActiveSession({ activeSession, providers }: ActiveSessionProps) 
   const handleRevokeSession = async (sessionToRevoke: Session) => {
     setIsRevoking(true)
     const { error } = await authClient.revokeSession({
-      id: sessionToRevoke.id,
+      token: sessionToRevoke.token,
     })
     setIsRevoking(false)
 

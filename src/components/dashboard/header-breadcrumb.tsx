@@ -1,11 +1,5 @@
 import { useLocation, useParams } from '@tanstack/react-router'
-import {
-  LayoutDashboard,
-  Image,
-  Users,
-  Settings,
-  LayoutGrid,
-} from 'lucide-react'
+import { LayoutDashboard, Image, Users, Settings, LayoutGrid } from 'lucide-react'
 import {
   Breadcrumb,
   BreadcrumbItem,

@@ -24,7 +24,7 @@ interface ChangePasswordProps {
 export function ChangePassword({ className }: ChangePasswordProps) {
   const { emailAndPassword, localization } = useAuth()
   const { data: session } = useSession()
-  const { data: accounts, isPending: isAccountsPending } = useListAccounts()
+  const { data: accounts, isPending: isAccountsPending } = useListAccounts({})
 
   const hasCredentialAccount = accounts?.some((a) => a.providerId === 'credential')
 
@@ -46,10 +46,7 @@ function SetPassword({ className }: { className?: string }) {
   const { localization } = useAuth()
   const { data: session } = useSession()
 
-  const { mutate: requestPasswordReset, isPending } = useRequestPasswordReset({
-    onError: (error) => toast.error(error.error?.message || error.message),
-    onSuccess: () => toast.success(localization.auth.passwordResetEmailSent),
-  })
+  const { mutate: requestPasswordReset, isPending } = useRequestPasswordReset()
 
   return (
     <div>
@@ -65,7 +62,13 @@ function SetPassword({ className }: { className?: string }) {
           <Button
             size="sm"
             disabled={isPending || !session}
-            onClick={() => session && requestPasswordReset({ email: session.user.email })}
+            onClick={() => session && requestPasswordReset(
+              { email: session.user.email },
+              {
+                onError: (error: any) => toast.error(error.error?.message || error.message),
+                onSuccess: () => toast.success(localization.auth.passwordResetEmailSent),
+              }
+            )}
           >
             {isPending && <Spinner />}
             {localization.auth.sendResetLink}
@@ -98,20 +101,7 @@ function ChangePasswordForm({
   const [showConfirm, setShowConfirm] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
-  const { mutate: changePassword, isPending } = useChangePassword({
-    onError: (error) => {
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmPassword('')
-      toast.error(error.error?.message || error.message)
-    },
-    onSuccess: () => {
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmPassword('')
-      toast.success(localization.settings.changePasswordSuccess)
-    },
-  })
+  const { mutate: changePassword, isPending } = useChangePassword()
 
   function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -119,7 +109,23 @@ function ChangePasswordForm({
       toast.error(localization.auth.passwordsDoNotMatch)
       return
     }
-    changePassword({ currentPassword, newPassword, revokeOtherSessions: true })
+    changePassword(
+      { currentPassword, newPassword, revokeOtherSessions: true },
+      {
+        onError: (error: any) => {
+          setCurrentPassword('')
+          setNewPassword('')
+          setConfirmPassword('')
+          toast.error(error.error?.message || error.message)
+        },
+        onSuccess: () => {
+          setCurrentPassword('')
+          setNewPassword('')
+          setConfirmPassword('')
+          toast.success(localization.settings.changePasswordSuccess)
+        },
+      }
+    )
   }
 
   return (
