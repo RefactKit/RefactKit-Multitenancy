@@ -28,12 +28,57 @@ export const updateProjectSchema = z.object({
 })
 
 // --- Helpers ---
-// (checkProjectAccess removed in favor of Better Auth hasPermission)
+
+/**
+ * Robust permission check that works with both static and dynamic roles.
+ * Includes a fallback for 'owner' role to ensure baseline reliability.
+ */
+async function checkProjectPermission(
+  request: Request,
+  organizationId: string,
+  permission: 'create' | 'read' | 'update' | 'delete',
+) {
+  const session = await auth.api.getSession({ headers: request.headers })
+  if (!session) return false
+
+  const permissionString = `project:${permission}`
+
+  // 1. Try standard Better Auth permission check
+  const check = await auth.api
+    .hasPermission({
+      body: {
+        organizationId,
+        permission: permissionString,
+      },
+      headers: request.headers,
+    })
+    .catch((err) => {
+      console.error(`[RBAC] Permission check failed for ${permissionString}:`, err)
+      return null
+    })
+
+  if (check?.hasPermission) return true
+
+  // 2. Fallback: Owners always have all project permissions
+  const memberData = await auth.api.getActiveMember({
+    headers: request.headers,
+  })
+
+  if (memberData?.role === 'owner') return true
+
+  return false
+}
 
 // --- Functions ---
 
+/** Get all projects for an organization */
 export const getProjects = createServerFn({ method: 'GET' }).handler(async ({ data }) => {
   const organizationId = z.string().parse(data)
+  const request = getRequest()
+
+  const hasAccess = await checkProjectPermission(request, organizationId, 'read')
+  if (!hasAccess) throw new Error('Unauthorized')
+
   return db
     .select({
       id: project.id,
@@ -54,11 +99,16 @@ export const getProjects = createServerFn({ method: 'GET' }).handler(async ({ da
     .groupBy(project.id, projectType.name)
 })
 
+/** Get a single project by ID with all its details */
 export const getProjectById = createServerFn({ method: 'GET' }).handler(async ({ data }) => {
   const projectId = z.string().parse(data)
-  const [proj] = await db.select().from(project).where(eq(project.id, projectId)).limit(1)
+  const request = getRequest()
 
+  const [proj] = await db.select().from(project).where(eq(project.id, projectId)).limit(1)
   if (!proj) return null
+
+  const hasAccess = await checkProjectPermission(request, proj.organizationId, 'read')
+  if (!hasAccess) throw new Error('Unauthorized')
 
   const files = await db.select().from(projectFile).where(eq(projectFile.projectId, projectId))
   const categories = await db
@@ -69,6 +119,7 @@ export const getProjectById = createServerFn({ method: 'GET' }).handler(async ({
   return { ...proj, files, categories }
 })
 
+/** Create a new project */
 export const createProject = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const request = getRequest()
   const session = await auth.api.getSession({ headers: request.headers })
@@ -76,24 +127,13 @@ export const createProject = createServerFn({ method: 'POST' }).handler(async ({
 
   const validated = createProjectSchema.parse(data)
 
-  const permissionCheck = await auth.api
-    .hasPermission({
-      body: {
-        organizationId: validated.organizationId,
-        permission: { project: ['create'] },
-      },
-      headers: request.headers,
-    })
-    .catch(() => null)
-
-  if (!permissionCheck?.hasPermission) {
-    throw new Error(
-      'Unauthorized: You do not have permission to create a project in this organization',
-    )
+  const hasPermission = await checkProjectPermission(request, validated.organizationId, 'create')
+  if (!hasPermission) {
+    throw new Error('Unauthorized: You do not have permission to create a project')
   }
 
   const id = nanoid()
-  const slug = validated.title.toLowerCase().replace(/ /g, '-') + '-' + nanoid(4)
+  const slug = validated.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + nanoid(4)
 
   await db.insert(project).values({
     id,
@@ -107,45 +147,44 @@ export const createProject = createServerFn({ method: 'POST' }).handler(async ({
     typeId: validated.typeId,
   })
 
+  console.log(`[PROJECT] Created new project: ${validated.title} in org ${validated.organizationId}`)
   return { id, slug }
 })
 
+/** Update an existing project */
 export const updateProject = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const { id, ...updates } = updateProjectSchema.parse(data)
+  const request = getRequest()
+
+  const [proj] = await db.select().from(project).where(eq(project.id, id)).limit(1)
+  if (!proj) throw new Error('Project not found')
+
+  const hasAccess = await checkProjectPermission(request, proj.organizationId, 'update')
+  if (!hasAccess) throw new Error('Unauthorized')
+
   await db.update(project).set(updates).where(eq(project.id, id))
   return { success: true }
 })
 
+/** Delete a project */
 export const deleteProject = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const { projectId } = z.object({ projectId: z.string() }).parse(data)
-
   const request = getRequest()
-  const session = await auth.api.getSession({ headers: request.headers })
-  if (!session) throw new Error('Unauthorized')
 
   const [proj] = await db.select().from(project).where(eq(project.id, projectId)).limit(1)
   if (!proj) throw new Error('Project not found')
 
-  const permissionCheck = await auth.api
-    .hasPermission({
-      body: {
-        organizationId: proj.organizationId,
-        permission: { project: ['delete'] },
-      },
-      headers: request.headers,
-    })
-    .catch(() => null)
-
-  if (!permissionCheck?.hasPermission) {
-    throw new Error('Unauthorized')
-  }
+  const hasAccess = await checkProjectPermission(request, proj.organizationId, 'delete')
+  if (!hasAccess) throw new Error('Unauthorized')
 
   await db.delete(project).where(eq(project.id, projectId))
+  console.log(`[PROJECT] Deleted project: ${projectId}`)
   return { success: true }
 })
 
 // --- Category Management ---
 
+/** Create a category for labeling */
 export const createCategory = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const { projectId, name, parentId } = z
     .object({ projectId: z.string(), name: z.string(), parentId: z.string().optional() })
@@ -163,6 +202,7 @@ export const createCategory = createServerFn({ method: 'POST' }).handler(async (
 
 // --- Labeling ---
 
+/** Bulk update categories for multiple files */
 export const bulkLabelFiles = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const { fileIds, categoryId } = z
     .object({ fileIds: z.array(z.string()), categoryId: z.string().nullable() })
@@ -174,6 +214,7 @@ export const bulkLabelFiles = createServerFn({ method: 'POST' }).handler(async (
 
 // --- Project Types ---
 
+/** Get or seed project types for an organization */
 export const getProjectTypes = createServerFn({ method: 'GET' }).handler(async ({ data }) => {
   const organizationId = z.string().parse(data)
   const types = await db
@@ -195,6 +236,7 @@ export const getProjectTypes = createServerFn({ method: 'GET' }).handler(async (
   return types
 })
 
+/** Create a custom project type */
 export const createProjectType = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const { organizationId, name } = z
     .object({ organizationId: z.string(), name: z.string() })
@@ -209,6 +251,7 @@ export const createProjectType = createServerFn({ method: 'POST' }).handler(asyn
   return { id }
 })
 
+/** Delete project files from the database */
 export const deleteFiles = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const fileIds = z.array(z.string()).parse(data)
   if (fileIds.length === 0) return { success: true }
@@ -216,6 +259,7 @@ export const deleteFiles = createServerFn({ method: 'POST' }).handler(async ({ d
   return { success: true }
 })
 
+/** Link an uploaded file to a project */
 export const linkProjectFile = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const validated = z
     .object({
