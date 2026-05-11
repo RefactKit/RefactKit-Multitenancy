@@ -1,16 +1,6 @@
-import { auth } from './lib/auth';
-async function test() {
-  try {
-    const res = await auth.api.hasPermission({
-      body: {
-        permission: { project: ['delete'] },
-        organizationId: 'fake-org-id'
-      },
-      headers: new Headers()
-    });
-    console.log(res);
-  } catch (e) {
-    console.error(e.message);
-  }
-}
-test();
+import { auth } from './lib/auth'
+console.log(
+  Object.keys(auth.api).filter(
+    (k) => k.toLowerCase().includes('member') || k.toLowerCase().includes('org'),
+  ),
+)

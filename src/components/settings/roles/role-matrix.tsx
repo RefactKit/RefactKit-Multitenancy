@@ -251,12 +251,14 @@ export function RoleMatrix() {
                   <React.Fragment key={resource}>
                     <TableRow className="bg-muted/30">
                       <TableCell colSpan={allRoleNames.length + 1} className="py-2 font-bold text-[10px] uppercase tracking-widest text-muted-foreground/70">
-                        {resource}
+                        {t.resources[resource as keyof typeof t.resources] || resource}
                       </TableCell>
                     </TableRow>
                     {actions.map((action) => (
                       <TableRow key={`${resource}-${action}`} className="hover:bg-muted/10 transition-colors">
-                        <TableCell className="pl-6 py-3 text-sm text-muted-foreground">{action}</TableCell>
+                        <TableCell className="pl-6 py-3 text-sm text-muted-foreground">
+                          {t.actions[action as keyof typeof t.actions] || action}
+                        </TableCell>
                         {allRoleNames.map((rn) => {
                           const isStatic = Object.keys(DEFAULT_STATIC_ROLES).includes(rn)
                           const dynamicRole = dynamicRoles.find((dr: any) => dr.role === rn)

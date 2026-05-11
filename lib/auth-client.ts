@@ -3,6 +3,7 @@ import {
   inferAdditionalFields,
   multiSessionClient,
   organizationClient,
+  adminClient,
 } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 import { getBaseURL } from '@/lib/base-url'
@@ -11,7 +12,10 @@ import type { auth } from './auth'
 export const authClient = createAuthClient({
   baseURL: getBaseURL(),
   plugins: [
-    organizationClient(),
+    adminClient(),
+    organizationClient({
+      dynamicAccessControl: { enabled: true },
+    }),
     sentinelClient(),
     multiSessionClient(),
     inferAdditionalFields<typeof auth>(),

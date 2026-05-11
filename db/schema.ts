@@ -29,6 +29,10 @@ export const user = pgTable('user', {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
   imageUrl: text('image_url').default(''),
+  role: text('role').default('user'),
+  banned: boolean('banned').default(false),
+  banReason: text('ban_reason'),
+  banExpires: timestamp('ban_expires'),
 })
 
 export const session = pgTable(
@@ -48,6 +52,7 @@ export const session = pgTable(
       .references(() => user.id, { onDelete: 'cascade' }),
     activeOrganizationId: text('active_organization_id'),
     provider: text('provider'),
+    impersonatedBy: text('impersonated_by'),
   },
   (table) => [index('session_userId_idx').on(table.userId)],
 )
@@ -145,6 +150,23 @@ export const invitation = pgTable(
     index('invitation_organizationId_idx').on(table.organizationId),
     index('invitation_email_idx').on(table.email),
   ],
+)
+
+export const organizationRole = pgTable(
+  'organization_role',
+  {
+    id: text('id').primaryKey(),
+    organizationId: text('organization_id')
+      .notNull()
+      .references(() => organization.id, { onDelete: 'cascade' }),
+    role: text('role').notNull(),
+    permission: text('permission').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index('organization_role_organizationId_idx').on(table.organizationId)],
 )
 
 export const userRelations = relations(user, ({ many }) => ({

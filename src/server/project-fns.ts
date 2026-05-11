@@ -28,21 +28,7 @@ export const updateProjectSchema = z.object({
 })
 
 // --- Helpers ---
-
-async function checkProjectAccess(projectId: string, userId: string, roles: string[]) {
-  const [proj] = await db.select().from(project).where(eq(project.id, projectId)).limit(1)
-  if (!proj) throw new Error('Project not found')
-
-  const [m] = await db
-    .select()
-    .from(member)
-    .where(and(eq(member.organizationId, proj.organizationId), eq(member.userId, userId)))
-
-  if (!m || !roles.includes(m.role)) {
-    throw new Error('Unauthorized')
-  }
-  return { project: proj, member: m }
-}
+// (checkProjectAccess removed in favor of Better Auth hasPermission)
 
 // --- Functions ---
 
@@ -89,6 +75,23 @@ export const createProject = createServerFn({ method: 'POST' }).handler(async ({
   if (!session) throw new Error('Unauthorized')
 
   const validated = createProjectSchema.parse(data)
+
+  const permissionCheck = await auth.api
+    .hasPermission({
+      body: {
+        organizationId: validated.organizationId,
+        permission: { project: ['create'] },
+      },
+      headers: request.headers,
+    })
+    .catch(() => null)
+
+  if (!permissionCheck?.hasPermission) {
+    throw new Error(
+      'Unauthorized: You do not have permission to create a project in this organization',
+    )
+  }
+
   const id = nanoid()
   const slug = validated.title.toLowerCase().replace(/ /g, '-') + '-' + nanoid(4)
 
@@ -104,7 +107,6 @@ export const createProject = createServerFn({ method: 'POST' }).handler(async ({
     typeId: validated.typeId,
   })
 
-
   return { id, slug }
 })
 
@@ -115,12 +117,29 @@ export const updateProject = createServerFn({ method: 'POST' }).handler(async ({
 })
 
 export const deleteProject = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
-  const { projectId, userId } = z.object({ projectId: z.string(), userId: z.string() }).parse(data)
+  const { projectId } = z.object({ projectId: z.string() }).parse(data)
 
-  const { project: proj, member: m } = await checkProjectAccess(projectId, userId, [
-    'owner',
-    'admin',
-  ])
+  const request = getRequest()
+  const session = await auth.api.getSession({ headers: request.headers })
+  if (!session) throw new Error('Unauthorized')
+
+  const [proj] = await db.select().from(project).where(eq(project.id, projectId)).limit(1)
+  if (!proj) throw new Error('Project not found')
+
+  const permissionCheck = await auth.api
+    .hasPermission({
+      body: {
+        organizationId: proj.organizationId,
+        permission: { project: ['delete'] },
+      },
+      headers: request.headers,
+    })
+    .catch(() => null)
+
+  if (!permissionCheck?.hasPermission) {
+    throw new Error('Unauthorized')
+  }
+
   await db.delete(project).where(eq(project.id, projectId))
   return { success: true }
 })

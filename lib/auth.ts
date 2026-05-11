@@ -1,7 +1,8 @@
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { dash, sentinel } from '@better-auth/infra'
-import { createAccessControl, multiSession, organization, openAPI } from 'better-auth/plugins'
+import { multiSession, organization, openAPI, admin } from 'better-auth/plugins'
+import { createAccessControl } from 'better-auth/plugins/access'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { eq } from 'drizzle-orm'
 import React from 'react'
@@ -20,18 +21,22 @@ const ac = createAccessControl({
   member: ['read', 'create', 'update', 'delete'],
   invitation: ['read', 'create', 'update', 'delete'],
   organization: ['update', 'delete'],
+  project: ['create', 'read', 'update', 'delete'],
+  role: ['create', 'read', 'update', 'delete'],
 })
 
 const memberRole = ac.newRole({
   dashboard: ['read'],
   member: [],
   invitation: [],
+  project: ['create', 'read', 'update'],
 })
 
 const adminRole = ac.newRole({
   dashboard: ['read'],
   member: ['read', 'create', 'update'],
   invitation: ['read', 'create', 'delete'],
+  project: ['create', 'read', 'update', 'delete'],
 })
 
 const ownerRole = ac.newRole({
@@ -39,6 +44,8 @@ const ownerRole = ac.newRole({
   member: ['read', 'create', 'update', 'delete'],
   invitation: ['read', 'create', 'update', 'delete'],
   organization: ['update', 'delete'],
+  project: ['create', 'read', 'update', 'delete'],
+  role: ['create', 'read', 'update', 'delete'],
 })
 
 export const auth = betterAuth({
@@ -77,6 +84,15 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+    customSyntheticUser: ({ coreFields, additionalFields, id }) => ({
+      ...coreFields,
+      role: 'user',
+      banned: false,
+      banReason: null,
+      banExpires: null,
+      ...additionalFields,
+      id,
+    }),
     revokeSessionsOnPasswordReset: true,
     minPasswordLength: 11,
     maxPasswordLength: 128, // Prevent DoS via bcrypt long-password attacks
@@ -238,7 +254,7 @@ export const auth = betterAuth({
         // Platform-specific handler
         // Vercel/Nitro support waitUntil
         if (typeof (globalThis as any).waitUntil === 'function') {
-          ;(globalThis as any).waitUntil(promise)
+          ; (globalThis as any).waitUntil(promise)
         }
       },
     },
@@ -263,7 +279,11 @@ export const auth = betterAuth({
 
   plugins: [
     dash(),
+    admin({
+      adminUserIds: ['MkxdaHUOCt2jtbU3IVd0S783uLJhnzqG'], // berdai.labs@gmail.com
+    }),
     organization({
+      dynamicAccessControl: { enabled: true },
       organizationLimit: 5,
       membershipLimit: 100,
       allowUserToCreateOrganization: false, // Enforced via server-side logic in org-fns.ts
