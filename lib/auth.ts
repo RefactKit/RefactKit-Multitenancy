@@ -23,6 +23,7 @@ const ac = createAccessControl({
   organization: ['update', 'delete'],
   project: ['create', 'read', 'update', 'delete'],
   role: ['create', 'read', 'update', 'delete'],
+  ac: ['create', 'read', 'update', 'delete'],
 })
 
 const memberRole = ac.newRole({
@@ -37,6 +38,7 @@ const adminRole = ac.newRole({
   member: ['read', 'create', 'update'],
   invitation: ['read', 'create', 'delete'],
   project: ['create', 'read', 'update', 'delete'],
+  ac: ['read'],
 })
 
 const ownerRole = ac.newRole({
@@ -46,6 +48,7 @@ const ownerRole = ac.newRole({
   organization: ['update', 'delete'],
   project: ['create', 'read', 'update', 'delete'],
   role: ['create', 'read', 'update', 'delete'],
+  ac: ['create', 'read', 'update', 'delete'],
 })
 
 export const auth = betterAuth({
@@ -180,21 +183,6 @@ export const auth = betterAuth({
     },
   },
 
-  databaseHooks: {
-    session: {
-      create: {
-        before: async (session) => {
-          return {
-            data: {
-              ...session,
-              provider: session.provider || 'password',
-            },
-          }
-        },
-      },
-    },
-  },
-
   // Session with encrypted cookie cache — reduces DB queries, JWE = encrypted
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
@@ -216,6 +204,14 @@ export const auth = betterAuth({
   databaseHooks: {
     session: {
       create: {
+        before: async (session) => {
+          return {
+            data: {
+              ...session,
+              provider: session.provider || 'password',
+            },
+          }
+        },
         after: async (session) => {
           if (session?.userId) {
             console.log(`[AUDIT] New session created for user: ${session.userId}`)
@@ -279,9 +275,7 @@ export const auth = betterAuth({
 
   plugins: [
     dash(),
-    admin({
-      adminUserIds: ['MkxdaHUOCt2jtbU3IVd0S783uLJhnzqG'], // berdai.labs@gmail.com
-    }),
+    admin(),
     organization({
       dynamicAccessControl: { enabled: true },
       organizationLimit: 5,

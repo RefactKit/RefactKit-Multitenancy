@@ -85,9 +85,12 @@ function AppLayout() {
               slug={effectiveSlug}
               userRole={currentOrg?.role}
             >
-              <div className="ml-1 transition-opacity hover:opacity-80 cursor-pointer">
+              <button
+                type="button"
+                className="ml-1 transition-opacity hover:opacity-80 cursor-pointer outline-none border-none bg-transparent p-0"
+              >
                 <UserAvatar className="size-8 ring-1 ring-border" />
-              </div>
+              </button>
             </UserDropdown>
           </div>
         </header>

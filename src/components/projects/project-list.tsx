@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { authClient } from 'lib/auth-client'
 import { ProjectCard } from './project-card'
 import { Input } from '@/components/ui/input'
 import {
@@ -29,6 +30,7 @@ interface ProjectListProps {
   projects: Project[]
   orgSlug: string
   userRole?: string
+  permissions?: any
   onDelete?: (id: string) => void
   onEdit?: (id: string) => void
   onCreate?: () => void
@@ -38,6 +40,7 @@ export function ProjectList({
   projects,
   orgSlug,
   userRole,
+  permissions,
   onDelete,
   onEdit,
   onCreate,
@@ -46,6 +49,16 @@ export function ProjectList({
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('newest')
   const [typeFilter, setTypeFilter] = useState('all')
+
+  const canCreate =
+    userRole === 'owner' ||
+    (permissions && permissions.project?.includes('create')) ||
+    (!permissions &&
+      userRole &&
+      authClient.organization.checkRolePermission({
+        role: userRole,
+        permission: { project: ['create'] },
+      }))
 
   const filteredProjects = projects
     .filter((p) => {
@@ -106,13 +119,15 @@ export function ProjectList({
             </SelectContent>
           </Select>
 
-          <Button
-            onClick={onCreate}
-            className="h-11 px-6 rounded-xl gap-2 font-semibold shadow-lg shadow-primary/20"
-          >
-            <Plus className="size-4" />
-            {t.projects.createNew}
-          </Button>
+          {canCreate && (
+            <Button
+              onClick={onCreate}
+              className="h-11 px-6 rounded-xl gap-2 font-semibold shadow-lg shadow-primary/20"
+            >
+              <Plus className="size-4" />
+              {t.projects.createNew}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -125,6 +140,7 @@ export function ProjectList({
               {...project}
               orgSlug={orgSlug}
               userRole={userRole}
+              permissions={permissions}
               onDelete={() => onDelete?.(project.id)}
               onEdit={() => onEdit?.(project.id)}
             />

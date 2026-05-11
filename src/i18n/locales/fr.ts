@@ -388,6 +388,7 @@ export const fr: Translations = {
     invitation: 'Invitation',
     organization: 'Organisation',
     dashboard: 'Tableau de bord',
+    ac: 'Gestion des Rôles',
   },
   actions: {
     create: 'Créer',

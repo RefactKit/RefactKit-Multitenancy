@@ -25,6 +25,7 @@ const AVAILABLE_RESOURCES = {
   invitation: ['read', 'create', 'update', 'delete'],
   organization: ['update', 'delete'],
   dashboard: ['read'],
+  ac: ['create', 'read', 'update', 'delete'],
 } as const
 
 const DEFAULT_STATIC_ROLES: Record<string, Record<string, string[]>> = {
@@ -34,12 +35,14 @@ const DEFAULT_STATIC_ROLES: Record<string, Record<string, string[]>> = {
     invitation: ['read', 'create', 'update', 'delete'],
     organization: ['update', 'delete'],
     project: ['create', 'read', 'update', 'delete'],
+    ac: ['create', 'read', 'update', 'delete'],
   },
   admin: {
     dashboard: ['read'],
     member: ['read', 'create', 'update'],
     invitation: ['read', 'create', 'delete'],
     project: ['create', 'read', 'update', 'delete'],
+    ac: ['read'],
   },
   member: {
     dashboard: ['read'],

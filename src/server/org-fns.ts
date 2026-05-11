@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 import { z } from 'zod'
 import { slugify } from '@/lib/slugify'
 import { db } from '../../db/index'
-import { member, organization, projectType } from '../../db/schema'
+import { member, organization, projectType, organizationRole } from '../../db/schema'
 import { auth } from '../../lib/auth'
 
 /** Get all active orgs for the current user */
@@ -58,7 +58,27 @@ export const getOrgBySlug = createServerFn({ method: 'GET' }).handler(async ({ d
   const userMembership = await db.query.member.findFirst({
     where: and(eq(member.organizationId, org.id), eq(member.userId, session.user.id)),
   })
-  if (!userMembership) return { org: null, role: null }
+  if (!userMembership) return { org: null, role: null, permissions: null }
+
+  // Fetch permissions for this role
+  let permissions: any = null
+  const dynamicRole = await db.query.organizationRole.findFirst({
+    where: and(
+      eq(organizationRole.organizationId, org.id),
+      eq(organizationRole.role, userMembership.role),
+    ),
+  })
+
+  if (dynamicRole) {
+    try {
+      permissions =
+        typeof dynamicRole.permission === 'string'
+          ? JSON.parse(dynamicRole.permission)
+          : dynamicRole.permission
+    } catch (e) {
+      console.error('Failed to parse dynamic role permissions:', e)
+    }
+  }
 
   return {
     org: {
@@ -68,6 +88,7 @@ export const getOrgBySlug = createServerFn({ method: 'GET' }).handler(async ({ d
       logo: org.logoUrl || org.logo,
     },
     role: userMembership.role,
+    permissions,
   }
 })
 

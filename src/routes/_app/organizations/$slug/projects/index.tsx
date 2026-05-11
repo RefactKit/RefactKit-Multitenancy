@@ -24,6 +24,7 @@ function ProjectsPage() {
   const { data: orgData } = useQuery(orgBySlugQuery(slug))
   const org = orgData?.org
   const userRole = orgData?.role
+  const permissions = orgData?.permissions
 
   const { data: projects, isLoading } = useQuery({
     queryKey: ['projects', org?.id],
@@ -87,6 +88,7 @@ function ProjectsPage() {
         projects={projects || []}
         orgSlug={slug}
         userRole={userRole}
+        permissions={permissions}
         onDelete={(id) => {
           if (confirm('Are you sure you want to delete this project?')) {
             deleteMutation.mutate(id)

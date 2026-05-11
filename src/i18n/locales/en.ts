@@ -383,6 +383,7 @@ export const en = {
     invitation: 'Invitation',
     organization: 'Organization',
     dashboard: 'Dashboard',
+    ac: 'Role Management',
   },
   actions: {
     create: 'Create',

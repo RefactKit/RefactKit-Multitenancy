@@ -29,6 +29,7 @@ interface ProjectCardProps {
   onEdit?: () => void
   userRole?: string
   orgSlug: string
+  permissions?: any
 }
 
 export function ProjectCard({
@@ -44,18 +45,29 @@ export function ProjectCard({
   onEdit,
   userRole,
   orgSlug,
+  permissions,
 }: ProjectCardProps) {
   const { t, dateLocale } = useI18n()
-  const canDelete =
-    userRole === 'owner' ||
-    (userRole
-      ? authClient.organization.checkRolePermission({
-          role: userRole,
-          permission: {
-            project: ['delete'],
-          },
-        })
-      : false)
+
+  const hasPermission = (resource: string, action: string) => {
+    if (userRole === 'owner') return true
+    if (permissions && permissions[resource]) {
+      return permissions[resource].includes(action)
+    }
+    // Fallback to static check if no dynamic permissions loaded
+    if (userRole) {
+      return authClient.organization.checkRolePermission({
+        role: userRole,
+        permission: {
+          [resource]: [action as any],
+        },
+      })
+    }
+    return false
+  }
+
+  const canDelete = hasPermission('project', 'delete')
+  const canUpdate = hasPermission('project', 'update')
 
   const formattedDate = new Date(updatedAt).toLocaleDateString(dateLocale, {
     day: 'numeric',
@@ -130,14 +142,16 @@ export function ProjectCard({
 
         <CardFooter className="flex items-center justify-between mt-auto">
           <div className="flex items-center gap-1.5">
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              className="bg-muted/40 hover:bg-primary/10 hover:text-primary"
-              onClick={onEdit}
-            >
-              <Pencil data-icon="inline-start" />
-            </Button>
+            {canUpdate && (
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                className="bg-muted/40 hover:bg-primary/10 hover:text-primary"
+                onClick={onEdit}
+              >
+                <Pencil data-icon="inline-start" />
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="icon-xs"
