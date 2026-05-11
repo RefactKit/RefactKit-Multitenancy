@@ -14,6 +14,17 @@ import { useI18n } from '@/i18n/context'
 import { motion } from 'framer-motion'
 import { Link } from '@tanstack/react-router'
 import { authClient } from 'lib/auth-client'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 interface ProjectCardProps {
   id: string
@@ -166,14 +177,34 @@ export function ProjectCard({
               <Globe data-icon="inline-start" />
             </Button>
             {canDelete && (
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                className="bg-muted/40 hover:bg-destructive/10 hover:text-destructive"
-                onClick={onDelete}
-              >
-                <Trash2 data-icon="inline-start" />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger
+                  render={
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      className="bg-muted/40 hover:bg-destructive/10 hover:text-destructive"
+                    >
+                      <Trash2 data-icon="inline-start" />
+                    </Button>
+                  }
+                />
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t.projects.card.deleteTitle}</AlertDialogTitle>
+                    <AlertDialogDescription>{t.projects.card.deleteDesc}</AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t.common.cancel}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={onDelete}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      {t.actions.delete}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
 

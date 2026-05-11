@@ -89,11 +89,7 @@ function ProjectsPage() {
         orgSlug={slug}
         userRole={userRole}
         permissions={permissions}
-        onDelete={(id) => {
-          if (confirm('Are you sure you want to delete this project?')) {
-            deleteMutation.mutate(id)
-          }
-        }}
+        onDelete={(id) => deleteMutation.mutate(id)}
         onCreate={() => setIsCreateOpen(true)}
       />
 
