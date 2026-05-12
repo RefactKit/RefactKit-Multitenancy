@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getProjects, createProject, deleteProject, getProjectTypes } from '@/server/project-fns'
 import { ProjectList } from '@/components/projects/project-list'
 import { CreateProjectDialog } from '@/components/projects/create-project-dialog'
+import { EditProjectDialog } from '@/components/projects/edit-project-dialog'
 import { useI18n } from '@/i18n/context'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { toast } from 'sonner'
@@ -20,6 +21,7 @@ function ProjectsPage() {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
   const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [editProjectId, setEditProjectId] = useState<string | null>(null)
 
   const { data: orgData } = useQuery(orgBySlugQuery(slug))
   const org = orgData?.org
@@ -90,6 +92,7 @@ function ProjectsPage() {
         userRole={userRole}
         permissions={permissions}
         onDelete={(id) => deleteMutation.mutate(id)}
+        onEdit={(id) => setEditProjectId(id)}
         onCreate={() => setIsCreateOpen(true)}
       />
 
@@ -108,6 +111,15 @@ function ProjectsPage() {
             organizationId: org.id,
           })
         }}
+      />
+
+      <EditProjectDialog
+        projectId={editProjectId}
+        open={!!editProjectId}
+        onOpenChange={(open) => {
+          if (!open) setEditProjectId(null)
+        }}
+        projectTypes={projectTypes}
       />
     </div>
   )

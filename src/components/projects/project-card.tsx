@@ -1,4 +1,4 @@
-import { Folder, User, Mail, Trash2, Pencil, Globe } from 'lucide-react'
+import { Folder, User, Trash2, Pencil, Globe, MoreVertical, Copy, Share2, ExternalLink } from 'lucide-react'
 import {
   Card,
   CardAction,
@@ -10,6 +10,16 @@ import {
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu'
+import { toast } from 'sonner'
 import { useI18n } from '@/i18n/context'
 import { motion } from 'framer-motion'
 import { Link } from '@tanstack/react-router'
@@ -36,7 +46,9 @@ interface ProjectCardProps {
   ownerEmail: string
   updatedAt: Date | string
   type?: string | null
+  topImages?: string[] | null
   onDelete?: () => void
+
   onEdit?: () => void
   userRole?: string
   orgSlug: string
@@ -52,6 +64,7 @@ export function ProjectCard({
   ownerEmail,
   updatedAt,
   type,
+  topImages,
   onDelete,
   onEdit,
   userRole,
@@ -93,123 +106,153 @@ export function ProjectCard({
         className="h-full flex flex-col overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:border-primary/30 group"
       >
         <CardHeader>
-          <div className="row-span-2 flex items-center gap-3">
-            <div className="rounded-xl bg-primary/10 p-2.5 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-              <Folder className="size-5" />
-            </div>
-            <div className="flex flex-col gap-0.5 min-w-0">
-              <div className="group-hover:text-primary transition-colors">
+          <div className="row-span-2 flex items-center gap-3 min-w-0">
+            {topImages && topImages.length > 0 ? (
+              <div className="flex -space-x-2 shrink-0">
+                {topImages.map((src, index) => (
+                  <Avatar key={index} className="size-8 ring-background ring-2">
+                    <AvatarImage src={src} className="object-cover" />
+                    <AvatarFallback className="text-[10px]">IMG</AvatarFallback>
+                  </Avatar>
+                ))}
+                {fileCount > 3 && (
+                  <Avatar className="size-8 ring-background ring-2 bg-muted/50 flex items-center justify-center">
+                    <AvatarFallback className="text-xs font-medium text-muted-foreground bg-transparent">
+                      +{fileCount - 3}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
+              </div>
+            ) : (
+              <div className="rounded-xl bg-primary/10 p-2.5 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground shrink-0">
+                <Folder className="size-5" />
+              </div>
+            )}
+            <div className="flex flex-col gap-0.5 min-w-0 overflow-hidden">
+              <div className="group-hover:text-primary transition-colors truncate">
                 <CardTitle className="truncate">
                   <Link
                     to="/organizations/$slug/projects/$projectId"
                     params={{ slug: orgSlug, projectId: id }}
+                    className="block truncate"
                   >
                     {title}
                   </Link>
                 </CardTitle>
               </div>
-              <CardDescription>
+              <CardDescription className="truncate">
                 {fileCount} {fileCount === 1 ? t.projects.card.files : t.projects.card.files_plural}
               </CardDescription>
             </div>
           </div>
           <CardAction>
-            <Badge
-              variant="outline"
-              className="shrink-0 px-2 py-0.5 text-xs font-medium rounded-lg"
-            >
-              {fileCount}
-            </Badge>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" className="size-8 rounded-full bg-muted/50 hover:bg-muted/80">
+                  <MoreVertical className="size-4 text-foreground/70" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 rounded-xl">
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/organizations/$slug/projects/$projectId"
+                    params={{ slug: orgSlug, projectId: id }}
+                    className="cursor-pointer"
+                  >
+                    <ExternalLink className="mr-2 size-4 text-muted-foreground" />
+                    Open Project
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigator.clipboard.writeText(id)
+                    toast.success('Project ID copied to clipboard')
+                  }}
+                >
+                  <Copy className="mr-2 size-4 text-muted-foreground" />
+                  Copy ID
+                </DropdownMenuItem>
+                
+                {canUpdate && (
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onEdit?.()
+                    }}
+                  >
+                    <Pencil className="mr-2 size-4 text-muted-foreground" />
+                    Edit Project
+                  </DropdownMenuItem>
+                )}
+                
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    const url = `${window.location.origin}/organizations/${orgSlug}/projects/${id}`
+                    navigator.clipboard.writeText(url)
+                    toast.success('Project link copied to clipboard')
+                  }}
+                >
+                  <Share2 className="mr-2 size-4 text-muted-foreground" />
+                  Share Link
+                </DropdownMenuItem>
+
+                {canDelete && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <DropdownMenuItem
+                          onSelect={(e) => e.preventDefault()}
+                          className="text-destructive focus:bg-destructive/10 focus:text-destructive"
+                        >
+                          <Trash2 className="mr-2 size-4" />
+                          Delete Project
+                        </DropdownMenuItem>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t.projects.card.deleteTitle}</AlertDialogTitle>
+                          <AlertDialogDescription>{t.projects.card.deleteDesc}</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel onClick={(e) => e.stopPropagation()}>{t.common.cancel}</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              onDelete?.()
+                            }}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            {t.actions.delete}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </CardAction>
         </CardHeader>
 
         <CardContent className="flex-1">
           <div className="flex flex-col gap-2">
-            <CardDescription className="line-clamp-2">
+            <CardDescription className="truncate">
               {description || t.projects.form.noDescription}
             </CardDescription>
-
-            {type && (
-              <Badge
-                variant="secondary"
-                className="px-1.5 py-0 text-[10px] font-semibold uppercase tracking-wider"
-              >
-                {type}
-              </Badge>
-            )}
-
-            <div className="flex flex-col gap-1.5">
-              <div className="flex items-center gap-2 text-sm text-foreground/70">
-                <User className="size-3.5 text-muted-foreground" />
-                <span className="truncate">{ownerName}</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-foreground/70">
-                <Mail className="size-3.5 text-muted-foreground" />
-                <span className="truncate">{ownerEmail}</span>
-              </div>
-            </div>
           </div>
         </CardContent>
 
-        <CardFooter className="flex items-center justify-between mt-auto">
-          <div className="flex items-center gap-1.5">
-            {canUpdate && (
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                className="bg-muted/40 hover:bg-primary/10 hover:text-primary"
-                onClick={onEdit}
-              >
-                <Pencil data-icon="inline-start" />
-              </Button>
-            )}
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              className="bg-muted/40 hover:bg-primary/10 hover:text-primary"
-              render={
-                <Link
-                  to="/organizations/$slug/projects/$projectId"
-                  params={{ slug: orgSlug, projectId: id }}
-                />
-              }
-            >
-              <Globe data-icon="inline-start" />
-            </Button>
-            {canDelete && (
-              <AlertDialog>
-                <AlertDialogTrigger
-                  render={
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="bg-muted/40 hover:bg-destructive/10 hover:text-destructive"
-                    >
-                      <Trash2 data-icon="inline-start" />
-                    </Button>
-                  }
-                />
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{t.projects.card.deleteTitle}</AlertDialogTitle>
-                    <AlertDialogDescription>{t.projects.card.deleteDesc}</AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{t.common.cancel}</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={onDelete}
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    >
-                      {t.actions.delete}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )}
+        <CardFooter className="flex items-center justify-between mt-auto pt-4 border-t border-border/40">
+          <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+            <User className="size-3.5" />
+            <span className="truncate max-w-[120px]">{ownerName}</span>
           </div>
-
-          <div className="text-xs text-muted-foreground">
-            {t.projects.card.lastUpdated} {formattedDate}
+          <div className="text-xs font-medium text-muted-foreground">
+            {formattedDate}
           </div>
         </CardFooter>
       </Card>

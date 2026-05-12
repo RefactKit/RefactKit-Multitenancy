@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { db } from '../../db/index'
 import { member, project, projectCategory, projectFile, projectType } from '../../db/schema'
 import { auth } from '../../lib/auth'
+import { supabase } from '@/lib/supabase'
 
 // --- Types & Schemas ---
 
@@ -89,6 +90,15 @@ export const getProjects = createServerFn({ method: 'GET' }).handler(async ({ da
       updatedAt: project.updatedAt,
       type: projectType.name,
       fileCount: sql<number>`count(${projectFile.id})::int`,
+      topImages: sql<string[] | null>`(
+        SELECT json_agg(url)
+        FROM (
+          SELECT url 
+          FROM project_file 
+          WHERE project_id = project.id AND mime_type LIKE 'image/%'
+          LIMIT 3
+        ) sub
+      )`,
       ownerName: sql<string>`(select name from "user" where id = ${project.userId})`,
       ownerEmail: sql<string>`(select email from "user" where id = ${project.userId})`,
     })
@@ -204,13 +214,61 @@ export const createCategory = createServerFn({ method: 'POST' }).handler(async (
 
 // --- Labeling ---
 
-/** Bulk update categories for multiple files */
+/** Bulk update categories and move files in storage */
 export const bulkLabelFiles = createServerFn({ method: 'POST' }).handler(async ({ data }) => {
   const { fileIds, categoryId } = z
     .object({ fileIds: z.array(z.string()), categoryId: z.string().nullable() })
     .parse(data)
 
-  await db.update(projectFile).set({ categoryId }).where(sql`${projectFile.id} IN ${fileIds}`)
+  if (!fileIds.length) return { success: true }
+
+  // 1. Fetch the files to know their current paths
+  const files = await db
+    .select()
+    .from(projectFile)
+    .where(sql`${projectFile.id} IN ${fileIds}`)
+
+  // 2. Determine target state
+  const isLabeling = categoryId !== null
+  const targetFolder = isLabeling ? 'labeled' : 'unlabeled'
+  const sourceFolder = isLabeling ? 'unlabeled' : 'labeled'
+
+  // 3. Move files in storage and collect updates
+  for (const file of files) {
+    if (!file.path.includes(`/${sourceFolder}/`)) continue // Skip if already in correct state or custom path
+
+    const newPath = file.path.replace(`/${sourceFolder}/`, `/${targetFolder}/`)
+
+    if (file.path !== newPath) {
+      const { error: moveError } = await supabase.storage
+        .from('projects')
+        .move(file.path, newPath)
+
+      if (moveError) {
+        console.error(`Failed to move file ${file.path}:`, moveError)
+        continue // Skip DB update if storage move fails
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from('projects').getPublicUrl(newPath)
+
+      // 4. Update DB for this specific file
+      await db
+        .update(projectFile)
+        .set({
+          categoryId,
+          labeled: isLabeling,
+          path: newPath,
+          url: publicUrl,
+        })
+        .where(eq(projectFile.id, file.id))
+    } else {
+       // Just update category if path replacement didn't happen (edge case)
+       await db.update(projectFile).set({ categoryId, labeled: isLabeling }).where(eq(projectFile.id, file.id))
+    }
+  }
+
   return { success: true }
 })
 

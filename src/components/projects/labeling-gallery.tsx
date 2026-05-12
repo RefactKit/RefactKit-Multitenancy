@@ -80,18 +80,33 @@ export function LabelingGallery({
     return <FileIcon className="size-10 text-muted-foreground/40" />
   }
 
-  const getBadgeColor = (mimeType: string) => {
-    if (mimeType.includes('image')) return 'bg-blue-500 text-white'
+  const getBadgeColor = (name: string, mimeType: string) => {
+    const ext = name.split('.').pop()?.toLowerCase()
+    
+    // Exact extensions for brand colors
+    if (['xls', 'xlsx', 'csv'].includes(ext || '')) return 'bg-emerald-600 text-white'
+    if (['doc', 'docx'].includes(ext || '')) return 'bg-blue-600 text-white'
+    if (['ppt', 'pptx'].includes(ext || '')) return 'bg-orange-500 text-white'
+    if (ext === 'pdf') return 'bg-red-500 text-white'
+    
+    // Mime type fallbacks
+    if (mimeType.includes('image')) return 'bg-indigo-500 text-white'
     if (mimeType.includes('spreadsheet') || mimeType.includes('csv') || mimeType.includes('excel'))
-      return 'bg-green-500 text-white'
-    return 'bg-gray-500 text-white'
+      return 'bg-emerald-600 text-white'
+    if (mimeType.includes('pdf')) return 'bg-red-500 text-white'
+    
+    return 'bg-slate-600 text-white'
   }
 
-  const getFileTypeName = (mimeType: string) => {
-    if (mimeType.includes('image')) return 'Image'
-    if (mimeType.includes('spreadsheet') || mimeType.includes('csv') || mimeType.includes('excel'))
-      return 'Excel'
-    return 'File'
+  const getFileExtension = (name: string, mimeType: string) => {
+    const ext = name.split('.').pop()?.toUpperCase()
+    if (ext && ext !== name.toUpperCase() && ext.length <= 4) {
+      return ext
+    }
+    // Fallback if no valid extension found
+    if (mimeType.includes('image')) return 'IMG'
+    if (mimeType.includes('pdf')) return 'PDF'
+    return 'FILE'
   }
 
   return (
@@ -160,11 +175,11 @@ export function LabelingGallery({
                     <Badge
                       className={cn(
                         'h-5 px-1.5 text-[10px] rounded-lg border-0',
-                        getBadgeColor(file.mimeType),
+                        getBadgeColor(file.name, file.mimeType),
                       )}
                     >
                       {file.mimeType.includes('image') && <ImageIcon className="size-3 mr-1" />}
-                      {getFileTypeName(file.mimeType)}
+                      {getFileExtension(file.name, file.mimeType)}
                     </Badge>
                   </div>
 
@@ -191,7 +206,7 @@ export function LabelingGallery({
                   <p className="text-sm font-medium truncate text-foreground">{file.name}</p>
                   <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
                     <span>• {formatSize(file.size)}</span>
-                    <span>• {file.mimeType.split('/')[1]?.toUpperCase() || 'FILE'}</span>
+                    <span>• {getFileExtension(file.name, file.mimeType)}</span>
                   </div>
                 </div>
 

@@ -22,6 +22,7 @@ interface Project {
   updatedAt: Date | string
   type: string | null
   fileCount: number
+  topImages: string[] | null
   ownerName: string
   ownerEmail: string
 }

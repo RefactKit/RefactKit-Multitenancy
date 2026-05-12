@@ -347,6 +347,7 @@ export const projectFile = pgTable(
     uploadedBy: text('uploaded_by')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
+    labeled: boolean('labeled').default(false).notNull(),
     uploadedAt: timestamp('uploaded_at').defaultNow().notNull(),
     metadata: text('metadata'), // JSON string for COCO attributes
   },

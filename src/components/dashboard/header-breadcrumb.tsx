@@ -1,10 +1,12 @@
-import { useLocation, useParams } from '@tanstack/react-router'
-import { LayoutDashboard, Image, Users, Settings, LayoutGrid } from 'lucide-react'
+import { Link, useLocation, useParams } from '@tanstack/react-router'
+import { LayoutDashboard, Image, Users, Settings, LayoutGrid, Home } from 'lucide-react'
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { useI18n } from '@/i18n/context'
 
@@ -55,18 +57,48 @@ export function HeaderBreadcrumb({ orgName }: HeaderBreadcrumbProps) {
     return { title: '' }
   }
 
-  const { title: pageTitle, icon: PageIcon } = getPageConfig()
+  const { title: pageTitle, icon: PageIcon, parent } = getPageConfig()
+
+  const isDashboard = lastSegment === 'dashboard'
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {pageTitle && (
-          <BreadcrumbItem>
-            <BreadcrumbPage className="flex items-center gap-1.5 text-sm font-medium text-foreground">
-              {PageIcon && <PageIcon className="size-3.5" />}
-              {pageTitle}
-            </BreadcrumbPage>
-          </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link
+              to={slug ? '/organizations/$slug/dashboard' : '/'}
+              params={slug ? { slug } : {}}
+              className="flex items-center gap-1.5"
+            >
+              <Home className="size-3.5" />
+              {orgName || 'Home'}
+            </Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+
+        {parent && (
+          <>
+            <BreadcrumbSeparator> / </BreadcrumbSeparator>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to={parent.to} className="flex items-center gap-1.5">
+                  {parent.title}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </>
+        )}
+
+        {pageTitle && !isDashboard && (
+          <>
+            <BreadcrumbSeparator> / </BreadcrumbSeparator>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex items-center gap-1.5 text-sm font-medium text-foreground">
+                {pageTitle}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </>
         )}
       </BreadcrumbList>
     </Breadcrumb>

@@ -9,6 +9,7 @@ import {
 } from '@/server/project-fns'
 import { uploadFile } from '@/server/storage-fns'
 import { LabelingGallery } from '@/components/projects/labeling-gallery'
+import { ProjectFilesTable } from '@/components/projects/project-files-table'
 import { useI18n } from '@/i18n/context'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState, useMemo } from 'react'
@@ -34,6 +35,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 import { Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app/organizations/$slug/projects/$projectId')({
@@ -68,9 +77,7 @@ function ProjectStudioPage() {
             const formData = new FormData()
             formData.append('file', file)
             formData.append('bucket', 'projects')
-            const catName =
-              project?.categories.find((c) => c.id === selectedCategoryId)?.name || 'unlabeled'
-            formData.append('path', `data-${project?.slug}/${catName}`)
+            formData.append('path', `dataset-${project?.slug}/unlabeled`)
 
             const result = await uploadFile({ data: formData })
 
@@ -146,19 +153,17 @@ function ProjectStudioPage() {
     )
 
   return (
-    <div className="flex flex-col gap-6 max-w-7xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
-      {/* Breadcrumb / Back */}
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" asChild className="size-8 rounded-lg">
-          <Link to="/organizations/$slug/projects" params={{ slug }}>
-            <ArrowLeft className="size-4" />
-          </Link>
-        </Button>
-      </div>
-
-      {/* Project Header - Matching Screenshot */}
+    <div className="flex flex-col gap-4 max-w-7xl mx-auto w-full px-4 py-6 sm:px-6 lg:px-8">
+      {/* Project Header */}
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-3">
+          <Link
+            to="/organizations/$slug/projects"
+            params={{ slug }}
+            className="flex items-center justify-center size-8 rounded-md hover:bg-muted text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 mr-1"
+          >
+            <ArrowLeft className="size-5 stroke-[2.5px]" />
+          </Link>
           <h1 className="text-3xl font-medium tracking-tight text-foreground">{project.title}</h1>
           <Button variant="ghost" size="icon" className="size-8 rounded-lg">
             <Pencil className="size-4 text-muted-foreground" />
@@ -269,27 +274,49 @@ function ProjectStudioPage() {
 
         {/* Studio Content */}
         <div className="w-full">
-          <LabelingGallery
-            files={project.files}
-            selectedCategoryId={selectedCategoryId}
-            onBulkLabel={(ids) => {
-              bulkLabelFiles({ data: { fileIds: ids, categoryId: selectedCategoryId } }).then(
-                () => {
+          {viewMode === 'grid' ? (
+            <LabelingGallery
+              files={project.files}
+              selectedCategoryId={selectedCategoryId}
+              onBulkLabel={(ids) => {
+                bulkLabelFiles({ data: { fileIds: ids, categoryId: selectedCategoryId } }).then(
+                  () => {
+                    queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+                    toast.success('Files labeled')
+                  },
+                )
+              }}
+              onDeleteFiles={(ids) => {
+                deleteFiles({ data: ids }).then(() => {
                   queryClient.invalidateQueries({ queryKey: ['project', projectId] })
-                  toast.success('Files labeled')
-                },
-              )
-            }}
-            onDeleteFiles={(ids) => {
-              deleteFiles({ data: ids }).then(() => {
-                queryClient.invalidateQueries({ queryKey: ['project', projectId] })
-                toast.success('Files deleted')
-              })
-            }}
-            onUploadClick={handleUpload}
-          />
+                  toast.success('Files deleted')
+                })
+              }}
+              onUploadClick={handleUpload}
+            />
+          ) : (
+            <ProjectFilesTable
+              files={project.files}
+              selectedCategoryId={selectedCategoryId}
+              onBulkLabel={(ids) => {
+                bulkLabelFiles({ data: { fileIds: ids, categoryId: selectedCategoryId } }).then(
+                  () => {
+                    queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+                    toast.success('Files labeled')
+                  },
+                )
+              }}
+              onDeleteFiles={(ids) => {
+                deleteFiles({ data: ids }).then(() => {
+                  queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+                  toast.success('Files deleted')
+                })
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
   )
 }
+
