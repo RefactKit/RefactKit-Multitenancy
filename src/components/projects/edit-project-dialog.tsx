@@ -176,7 +176,10 @@ export function EditProjectDialog({
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="edit-github" className="font-semibold flex items-center gap-2 ml-1">
+                  <Label
+                    htmlFor="edit-github"
+                    className="font-semibold flex items-center gap-2 ml-1"
+                  >
                     <Github className="size-3.5 text-primary" />
                     {t.projects.form.github}
                   </Label>
@@ -190,7 +193,10 @@ export function EditProjectDialog({
                 </div>
 
                 <div className="grid gap-2">
-                  <Label htmlFor="edit-other" className="font-semibold flex items-center gap-2 ml-1">
+                  <Label
+                    htmlFor="edit-other"
+                    className="font-semibold flex items-center gap-2 ml-1"
+                  >
                     <LinkIcon className="size-3.5 text-primary" />
                     {t.projects.form.other}
                   </Label>
@@ -219,7 +225,11 @@ export function EditProjectDialog({
                 disabled={updateMutation.isPending || !title.trim()}
                 className="rounded-xl h-11 px-6"
               >
-                {updateMutation.isPending ? <Spinner className="mr-2 size-4" /> : <Pencil className="mr-2 size-4" />}
+                {updateMutation.isPending ? (
+                  <Spinner className="mr-2 size-4" />
+                ) : (
+                  <Pencil className="mr-2 size-4" />
+                )}
                 Save Changes
               </Button>
             </DialogFooter>

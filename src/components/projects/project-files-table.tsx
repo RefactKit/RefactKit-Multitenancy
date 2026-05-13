@@ -220,11 +220,7 @@ export function ProjectFilesTable({
                       {/* Avatar-like preview */}
                       <div className="flex-shrink-0 size-10 rounded-lg overflow-hidden bg-muted/30 border border-border/50 flex items-center justify-center">
                         {file.mimeType.includes('image') ? (
-                          <img
-                            src={file.url}
-                            alt={file.name}
-                            className="size-full object-cover"
-                          />
+                          <img src={file.url} alt={file.name} className="size-full object-cover" />
                         ) : (
                           getFileIcon(file.mimeType)
                         )}

@@ -1,4 +1,14 @@
-import { Folder, User, Trash2, Pencil, Globe, MoreVertical, Copy, Share2, ExternalLink } from 'lucide-react'
+import {
+  Folder,
+  User,
+  Trash2,
+  Pencil,
+  Globe,
+  MoreVertical,
+  Copy,
+  Share2,
+  ExternalLink,
+} from 'lucide-react'
 import {
   Card,
   CardAction,
@@ -12,7 +22,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
-
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -148,7 +157,11 @@ export function ProjectCard({
           <CardAction>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="size-8 rounded-full bg-muted/50 hover:bg-muted/80">
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="size-8 rounded-full bg-muted/50 hover:bg-muted/80"
+                >
                   <MoreVertical className="size-4 text-foreground/70" />
                 </Button>
               </DropdownMenuTrigger>
@@ -174,7 +187,7 @@ export function ProjectCard({
                   <Copy className="mr-2 size-4 text-muted-foreground" />
                   Copy ID
                 </DropdownMenuItem>
-                
+
                 {canUpdate && (
                   <DropdownMenuItem
                     onClick={(e) => {
@@ -186,7 +199,7 @@ export function ProjectCard({
                     Edit Project
                   </DropdownMenuItem>
                 )}
-                
+
                 <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation()
@@ -215,10 +228,14 @@ export function ProjectCard({
                       <AlertDialogContent onClick={(e) => e.stopPropagation()}>
                         <AlertDialogHeader>
                           <AlertDialogTitle>{t.projects.card.deleteTitle}</AlertDialogTitle>
-                          <AlertDialogDescription>{t.projects.card.deleteDesc}</AlertDialogDescription>
+                          <AlertDialogDescription>
+                            {t.projects.card.deleteDesc}
+                          </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel onClick={(e) => e.stopPropagation()}>{t.common.cancel}</AlertDialogCancel>
+                          <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+                            {t.common.cancel}
+                          </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={(e) => {
                               e.stopPropagation()
@@ -251,9 +268,7 @@ export function ProjectCard({
             <User className="size-3.5" />
             <span className="truncate max-w-[120px]">{ownerName}</span>
           </div>
-          <div className="text-xs font-medium text-muted-foreground">
-            {formattedDate}
-          </div>
+          <div className="text-xs font-medium text-muted-foreground">{formattedDate}</div>
         </CardFooter>
       </Card>
     </motion.div>

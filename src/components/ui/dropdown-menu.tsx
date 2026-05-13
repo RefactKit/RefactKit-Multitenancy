@@ -16,7 +16,7 @@ function DropdownMenuTrigger({ render, ...props }: MenuPrimitive.Trigger.Props) 
   return (
     <MenuPrimitive.Trigger
       data-slot="dropdown-menu-trigger"
-      nativeButton={false}
+      nativeButton={true}
       render={render}
       {...props}
     />

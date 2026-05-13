@@ -82,19 +82,19 @@ export function LabelingGallery({
 
   const getBadgeColor = (name: string, mimeType: string) => {
     const ext = name.split('.').pop()?.toLowerCase()
-    
+
     // Exact extensions for brand colors
     if (['xls', 'xlsx', 'csv'].includes(ext || '')) return 'bg-emerald-600 text-white'
     if (['doc', 'docx'].includes(ext || '')) return 'bg-blue-600 text-white'
     if (['ppt', 'pptx'].includes(ext || '')) return 'bg-orange-500 text-white'
     if (ext === 'pdf') return 'bg-red-500 text-white'
-    
+
     // Mime type fallbacks
     if (mimeType.includes('image')) return 'bg-indigo-500 text-white'
     if (mimeType.includes('spreadsheet') || mimeType.includes('csv') || mimeType.includes('excel'))
       return 'bg-emerald-600 text-white'
     if (mimeType.includes('pdf')) return 'bg-red-500 text-white'
-    
+
     return 'bg-slate-600 text-white'
   }
 
