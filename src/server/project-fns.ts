@@ -60,12 +60,16 @@ async function checkProjectPermission(
 
   if (check?.hasPermission) return true
 
-  // 2. Fallback: Owners always have all project permissions
-  const memberData = await auth.api.getActiveMember({
-    headers: request.headers,
+  // 2. Fallback: Check membership directly via DB using the organizationId we already have
+  //    (getActiveMember requires setActiveOrganization, which this app doesn't use)
+  const memberData = await db.query.member.findFirst({
+    where: and(eq(member.organizationId, organizationId), eq(member.userId, session.user.id)),
   })
 
-  if (memberData?.role === 'owner') return true
+  if (memberData?.role === 'owner' || memberData?.role === 'admin') return true
+
+  // Members can still read
+  if (memberData && permission === 'read') return true
 
   return false
 }
@@ -223,10 +227,7 @@ export const bulkLabelFiles = createServerFn({ method: 'POST' }).handler(async (
   if (!fileIds.length) return { success: true }
 
   // 1. Fetch the files to know their current paths
-  const files = await db
-    .select()
-    .from(projectFile)
-    .where(sql`${projectFile.id} IN ${fileIds}`)
+  const files = await db.select().from(projectFile).where(sql`${projectFile.id} IN ${fileIds}`)
 
   // 2. Determine target state
   const isLabeling = categoryId !== null
@@ -240,9 +241,7 @@ export const bulkLabelFiles = createServerFn({ method: 'POST' }).handler(async (
     const newPath = file.path.replace(`/${sourceFolder}/`, `/${targetFolder}/`)
 
     if (file.path !== newPath) {
-      const { error: moveError } = await supabase.storage
-        .from('projects')
-        .move(file.path, newPath)
+      const { error: moveError } = await supabase.storage.from('projects').move(file.path, newPath)
 
       if (moveError) {
         console.error(`Failed to move file ${file.path}:`, moveError)
@@ -264,8 +263,11 @@ export const bulkLabelFiles = createServerFn({ method: 'POST' }).handler(async (
         })
         .where(eq(projectFile.id, file.id))
     } else {
-       // Just update category if path replacement didn't happen (edge case)
-       await db.update(projectFile).set({ categoryId, labeled: isLabeling }).where(eq(projectFile.id, file.id))
+      // Just update category if path replacement didn't happen (edge case)
+      await db
+        .update(projectFile)
+        .set({ categoryId, labeled: isLabeling })
+        .where(eq(projectFile.id, file.id))
     }
   }
 
