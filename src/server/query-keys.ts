@@ -3,6 +3,7 @@ import { getOrgStats } from './dashboard-fns'
 import { getGalleryImages } from './gallery-fns'
 import { getUserNotifications } from './notification-fns'
 import { getOrgBySlug, getUserOrgs } from './org-fns'
+import { getProjectCount } from './project-fns'
 
 export const userOrgsQuery = () =>
   queryOptions({
@@ -32,4 +33,10 @@ export const userNotificationsQuery = () =>
   queryOptions({
     queryKey: ['user-notifications'] as const,
     queryFn: () => getUserNotifications(),
+  })
+
+export const projectsCountQuery = (organizationId: string) =>
+  queryOptions({
+    queryKey: ['projects-count', organizationId] as const,
+    queryFn: () => getProjectCount({ data: organizationId }),
   })

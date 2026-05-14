@@ -18,10 +18,12 @@ import {
   SidebarSeparator,
 } from '@/components/ui/sidebar'
 import { useI18n } from '@/i18n/context'
+import { useQuery } from '@tanstack/react-query'
 import { NavMain } from './nav-main'
 import { NavSecondary } from './nav-secondary'
 import { NavUser } from './nav-user'
 import { OrgSwitcher } from './org-switcher'
+import { projectsCountQuery } from '@/server/query-keys'
 
 interface Org {
   id: string
@@ -40,9 +42,13 @@ interface AppSidebarProps {
 export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
   const { t, dir } = useI18n()
   const slug = currentSlug ?? orgs[0]?.slug ?? ''
-
   const currentOrg = orgs?.find((o) => o.slug === slug)
   const userRole = currentOrg?.role
+
+  const { data: projectsCount } = useQuery({
+    ...projectsCountQuery(currentOrg?.id || ''),
+    enabled: !!currentOrg?.id,
+  })
 
   // Group 1: Workspace Core items (Always visible)
   const platformItems = slug
@@ -61,6 +67,7 @@ export function AppSidebar({ orgs, currentSlug }: AppSidebarProps) {
           title: t.projects.title,
           to: `/organizations/${slug}/projects`,
           icon: LayoutGrid,
+          badge: projectsCount ?? 0,
         },
       ]
     : []

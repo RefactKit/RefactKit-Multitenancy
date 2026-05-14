@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
-import { and, eq, sql } from 'drizzle-orm'
+import { and, count, eq, sql } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 import { db } from '../../db/index'
@@ -113,7 +113,21 @@ export const getProjects = createServerFn({ method: 'GET' }).handler(async ({ da
     .groupBy(project.id, projectType.name)
 })
 
-/** Get a single project by ID with all its details */
+/** Get project count for an organization */
+export const getProjectCount = createServerFn({ method: 'GET' }).handler(async ({ data }) => {
+  const organizationId = z.string().parse(data)
+  const request = getRequest()
+
+  const hasAccess = await checkProjectPermission(request, organizationId, 'read')
+  if (!hasAccess) throw new Error('Unauthorized')
+
+  const [res] = await db
+    .select({ count: count() })
+    .from(project)
+    .where(eq(project.organizationId, organizationId))
+
+  return res.count
+})
 export const getProjectById = createServerFn({ method: 'GET' }).handler(async ({ data }) => {
   const projectId = z.string().parse(data)
   const request = getRequest()

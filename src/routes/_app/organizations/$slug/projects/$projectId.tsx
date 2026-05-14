@@ -245,13 +245,15 @@ function ProjectStudioPage() {
             </div>
 
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="rounded-xl h-10 px-5 gap-2 font-medium shadow-sm">
-                  <Plus className="size-4" />
-                  Actions
-                  <MoreHorizontal className="size-4 ml-1" />
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                render={
+                  <Button className="rounded-xl h-10 px-5 gap-2 font-medium shadow-sm">
+                    <Plus className="size-4" />
+                    Actions
+                    <MoreHorizontal className="size-4 ml-1" />
+                  </Button>
+                }
+              />
               <DropdownMenuContent align="end" className="w-48 rounded-xl">
                 <DropdownMenuItem onClick={handleUpload}>Upload Images</DropdownMenuItem>
                 <DropdownMenuItem

@@ -248,12 +248,14 @@ export function ProjectFilesTable({
                   </TableCell>
                   <TableCell className="text-right pr-4" onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="size-8 rounded-lg">
-                          <MoreHorizontal className="size-4" />
-                          <span className="sr-only">Open menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
+                      <DropdownMenuTrigger
+                        render={
+                          <Button variant="ghost" size="icon" className="size-8 rounded-lg">
+                            <MoreHorizontal className="size-4" />
+                            <span className="sr-only">Open menu</span>
+                          </Button>
+                        }
+                      />
                       <DropdownMenuContent align="end" className="w-40 rounded-xl">
                         <DropdownMenuItem asChild>
                           <a href={file.url} download={file.name} className="cursor-pointer">

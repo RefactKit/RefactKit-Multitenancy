@@ -51,6 +51,7 @@ function ProjectsPage() {
     }) => createProject({ data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['projects-count'] })
       toast.success('Project created successfully')
       setIsCreateOpen(false)
     },
@@ -63,6 +64,7 @@ function ProjectsPage() {
     mutationFn: (projectId: string) => deleteProject({ data: { projectId } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['projects-count'] })
       toast.success('Project deleted successfully')
     },
     onError: (err: any) => {

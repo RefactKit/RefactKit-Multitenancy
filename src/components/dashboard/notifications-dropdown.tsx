@@ -14,6 +14,8 @@ import { useI18n } from '@/i18n/context'
 import { userNotificationsQuery } from '@/server/query-keys'
 import { markAllNotificationsRead } from '@/server/notification-fns'
 import type { NotificationType } from '@/server/notification-fns'
+import { authClient } from '../../../lib/auth-client'
+import { toast } from 'sonner'
 import { Bell, Check, Shield, UserCheck, UserMinus, UserPlus, UserX, Users } from 'lucide-react'
 
 function getInitials(name: string): string {
@@ -71,6 +73,7 @@ export function NotificationsDropdown() {
   })
 
   const notifications = data?.notifications ?? []
+  const invitations = data?.invitations ?? []
   const unreadCount = data?.unreadCount ?? 0
 
   const markAllRead = useMutation({
@@ -79,6 +82,27 @@ export function NotificationsDropdown() {
       queryClient.invalidateQueries({ queryKey: ['user-notifications'] })
     },
   })
+
+  const handleAccept = async (id: string) => {
+    const { error } = await authClient.organization.acceptInvitation({ invitationId: id })
+    if (error) {
+      toast.error(error.message)
+    } else {
+      toast.success('Invitation accepted')
+      queryClient.invalidateQueries({ queryKey: ['user-notifications'] })
+      queryClient.invalidateQueries({ queryKey: ['organizations'] }) // Refresh org list if needed
+    }
+  }
+
+  const handleReject = async (id: string) => {
+    const { error } = await authClient.organization.rejectInvitation({ invitationId: id })
+    if (error) {
+      toast.error(error.message)
+    } else {
+      toast.success('Invitation declined')
+      queryClient.invalidateQueries({ queryKey: ['user-notifications'] })
+    }
+  }
 
   return (
     <DropdownMenu>
@@ -113,62 +137,120 @@ export function NotificationsDropdown() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup className="max-h-[300px] overflow-y-auto">
-            {notifications.length === 0 ? (
+            {notifications.length === 0 && invitations.length === 0 ? (
               <div className="py-6 text-center text-sm text-muted-foreground">
                 {t.notifications?.empty ?? 'No recent activity'}
               </div>
             ) : (
-              notifications.map((n) => {
-                const Icon = NOTIFICATION_ICONS[n.type] || Bell
-                const description = getNotificationText(n.type, t)
-                const isSelfAction =
-                  n.type === 'member_added' ||
-                  n.type === 'member_removed' ||
-                  n.type === 'role_changed'
-
-                return (
+              <>
+                {invitations.map((inv: any) => (
                   <DropdownMenuItem
-                    key={n.id}
-                    className="flex items-start gap-3 py-3 px-3 cursor-pointer"
+                    key={inv.id}
+                    className="flex flex-col items-start gap-2 py-3 px-3 cursor-default focus:bg-transparent hover:bg-transparent"
+                    onSelect={(e) => e.preventDefault()}
                   >
-                    {n.actorImage ? (
-                      <Avatar className="mt-0.5 size-8 shrink-0">
-                        <AvatarImage src={n.actorImage} alt={n.actorName || ''} />
-                        <AvatarFallback className="text-[10px]">
-                          {getInitials(n.actorName || '?')}
-                        </AvatarFallback>
-                      </Avatar>
-                    ) : (
-                      <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
-                        <Icon className="size-4 text-muted-foreground" />
+                    <div className="flex items-start gap-3 w-full">
+                      {inv.inviterImage ? (
+                        <Avatar className="mt-0.5 size-8 shrink-0">
+                          <AvatarImage src={inv.inviterImage} alt={inv.inviterName || ''} />
+                          <AvatarFallback className="text-[10px]">
+                            {getInitials(inv.inviterName || '?')}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
+                          <UserPlus className="size-4 text-muted-foreground" />
+                        </div>
+                      )}
+                      <div className="flex flex-1 flex-col gap-0.5">
+                        <p className="text-sm leading-snug">
+                          <span className="font-semibold">{inv.inviterName}</span>{' '}
+                          <span className="text-muted-foreground">
+                            {t.notifications?.invitedYou ?? 'invited you to join'}
+                          </span>{' '}
+                          <span className="font-semibold bg-secondary/50 px-1 rounded inline-flex items-center gap-1">
+                            <span className="text-primary text-[10px]">■</span>
+                            {inv.organizationName}
+                          </span>
+                        </p>
+                        <span className="text-[11px] text-muted-foreground/70 font-medium">
+                          {timeAgo(inv.createdAt)}
+                        </span>
                       </div>
-                    )}
-                    <div className="flex flex-1 flex-col gap-0.5">
-                      <p className="text-sm leading-snug">
-                        {isSelfAction ? (
-                          <>
-                            <span className="text-muted-foreground">{description}</span>{' '}
-                            <span className="font-semibold">{n.organizationName}</span>
-                            {n.type === 'role_changed' && n.metadata?.newRole && (
-                              <span className="text-muted-foreground"> ({n.metadata.newRole})</span>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            <span className="font-semibold">{n.actorName}</span>{' '}
-                            <span className="text-muted-foreground">{description}</span>{' '}
-                            <span className="font-semibold">{n.organizationName}</span>
-                          </>
-                        )}
-                      </p>
-                      <span className="text-[11px] text-muted-foreground/70 font-medium">
-                        {timeAgo(n.createdAt)}
-                      </span>
+                      <span className="bg-primary mt-2 size-2 shrink-0 rounded-full" />
                     </div>
-                    {!n.read && <span className="bg-primary mt-2 size-2 shrink-0 rounded-full" />}
+                    <div className="flex gap-2 w-full mt-1 pl-11">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7 text-xs flex-1 cursor-pointer"
+                        onClick={() => handleReject(inv.id)}
+                      >
+                        {t.common?.cancel ?? 'Cancel'}
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="h-7 text-xs flex-1 cursor-pointer"
+                        onClick={() => handleAccept(inv.id)}
+                      >
+                        {t.actions?.accept ?? 'Accept'}
+                      </Button>
+                    </div>
                   </DropdownMenuItem>
-                )
-              })
+                ))}
+
+                {notifications.map((n) => {
+                  const Icon = NOTIFICATION_ICONS[n.type] || Bell
+                  const description = getNotificationText(n.type, t)
+                  const isSelfAction =
+                    n.type === 'member_added' ||
+                    n.type === 'member_removed' ||
+                    n.type === 'role_changed'
+
+                  return (
+                    <DropdownMenuItem
+                      key={n.id}
+                      className="flex items-start gap-3 py-3 px-3 cursor-pointer"
+                    >
+                      {n.actorImage ? (
+                        <Avatar className="mt-0.5 size-8 shrink-0">
+                          <AvatarImage src={n.actorImage} alt={n.actorName || ''} />
+                          <AvatarFallback className="text-[10px]">
+                            {getInitials(n.actorName || '?')}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
+                          <Icon className="size-4 text-muted-foreground" />
+                        </div>
+                      )}
+                      <div className="flex flex-1 flex-col gap-0.5">
+                        <p className="text-sm leading-snug">
+                          {isSelfAction ? (
+                            <>
+                              <span className="text-muted-foreground">{description}</span>{' '}
+                              <span className="font-semibold">{n.organizationName}</span>
+                              {n.type === 'role_changed' && n.metadata?.newRole && (
+                                <span className="text-muted-foreground"> ({n.metadata.newRole})</span>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <span className="font-semibold">{n.actorName}</span>{' '}
+                              <span className="text-muted-foreground">{description}</span>{' '}
+                              <span className="font-semibold">{n.organizationName}</span>
+                            </>
+                          )}
+                        </p>
+                        <span className="text-[11px] text-muted-foreground/70 font-medium">
+                          {timeAgo(n.createdAt)}
+                        </span>
+                      </div>
+                      {!n.read && <span className="bg-primary mt-2 size-2 shrink-0 rounded-full" />}
+                    </DropdownMenuItem>
+                  )
+                })}
+              </>
             )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

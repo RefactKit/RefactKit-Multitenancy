@@ -65,15 +65,17 @@ export function HeaderBreadcrumb({ orgName }: HeaderBreadcrumbProps) {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link
-              to={slug ? '/organizations/$slug/dashboard' : '/'}
-              params={slug ? { slug } : {}}
-              className="flex items-center gap-1.5"
-            >
-              <Home className="size-3.5" />
-              {orgName || 'Home'}
-            </Link>
+          <BreadcrumbLink
+            render={
+              <Link
+                to={slug ? '/organizations/$slug/dashboard' : '/'}
+                params={slug ? { slug } : {}}
+                className="flex items-center gap-1.5"
+              />
+            }
+          >
+            <Home className="size-3.5" />
+            {orgName || 'Home'}
           </BreadcrumbLink>
         </BreadcrumbItem>
 
@@ -81,10 +83,10 @@ export function HeaderBreadcrumb({ orgName }: HeaderBreadcrumbProps) {
           <>
             <BreadcrumbSeparator> / </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to={parent.to} className="flex items-center gap-1.5">
-                  {parent.title}
-                </Link>
+              <BreadcrumbLink
+                render={<Link to={parent.to} className="flex items-center gap-1.5" />}
+              >
+                {parent.title}
               </BreadcrumbLink>
             </BreadcrumbItem>
           </>

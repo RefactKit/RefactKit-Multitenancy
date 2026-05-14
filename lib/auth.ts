@@ -19,7 +19,7 @@ import { createNotification, notifyOrgAdmins } from '../src/server/notification-
 const ac = createAccessControl({
   dashboard: ['read'],
   member: ['read', 'create', 'update', 'delete'],
-  invitation: ['read', 'create', 'update', 'delete'],
+  invitation: ['read', 'create', 'update', 'delete', 'cancel'],
   organization: ['update', 'delete'],
   project: ['create', 'read', 'update', 'delete'],
   role: ['create', 'read', 'update', 'delete'],
@@ -36,7 +36,7 @@ const memberRole = ac.newRole({
 const adminRole = ac.newRole({
   dashboard: ['read'],
   member: ['read', 'create', 'update'],
-  invitation: ['read', 'create', 'delete'],
+  invitation: ['read', 'create', 'delete', 'cancel'],
   project: ['create', 'read', 'update', 'delete'],
   ac: ['read'],
 })
@@ -44,7 +44,7 @@ const adminRole = ac.newRole({
 const ownerRole = ac.newRole({
   dashboard: ['read'],
   member: ['read', 'create', 'update', 'delete'],
-  invitation: ['read', 'create', 'update', 'delete'],
+  invitation: ['read', 'create', 'update', 'delete', 'cancel'],
   organization: ['update', 'delete'],
   project: ['create', 'read', 'update', 'delete'],
   role: ['create', 'read', 'update', 'delete'],

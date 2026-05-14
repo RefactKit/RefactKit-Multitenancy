@@ -156,15 +156,17 @@ export function ProjectCard({
           </div>
           <CardAction>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="size-8 rounded-full bg-muted/50 hover:bg-muted/80"
-                >
-                  <MoreVertical className="size-4 text-foreground/70" />
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    className="size-8 rounded-full bg-muted/50 hover:bg-muted/80"
+                  >
+                    <MoreVertical className="size-4 text-foreground/70" />
+                  </Button>
+                }
+              />
               <DropdownMenuContent align="end" className="w-48 rounded-xl">
                 <DropdownMenuItem asChild>
                   <Link
