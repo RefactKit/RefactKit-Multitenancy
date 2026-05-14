@@ -199,8 +199,13 @@ export function NotificationsDropdown() {
                   </DropdownMenuItem>
                 ))}
 
-                {notifications.map((n) => {
+                {invitations.length > 0 && notifications.length > 0 && (
+                  <div className="mx-2 my-1 h-px bg-gradient-to-r from-transparent via-border to-transparent opacity-50" />
+                )}
+
+                {notifications.map((n, index) => {
                   const Icon = NOTIFICATION_ICONS[n.type] || Bell
+
                   const description = getNotificationText(n.type, t)
                   const isSelfAction =
                     n.type === 'member_added' ||
