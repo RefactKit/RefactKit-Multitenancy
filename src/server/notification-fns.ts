@@ -60,10 +60,7 @@ export const getUserNotifications = createServerFn({ method: 'GET' }).handler(as
   // Fetch pending invitations for the user
   const { invitation } = await import('../../db/schema')
   const pendingInvitations = await db.query.invitation.findMany({
-    where: and(
-      eq(invitation.email, session.user.email),
-      eq(invitation.status, 'pending')
-    ),
+    where: and(eq(invitation.email, session.user.email), eq(invitation.status, 'pending')),
     with: {
       organization: true,
       user: true, // Inviter

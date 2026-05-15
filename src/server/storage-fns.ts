@@ -3,11 +3,15 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
 // Fallback to the provided env vars if they aren't in process.env
 const s3Region = process.env.S3_REGION || 'eu-west-3'
-const s3Endpoint = process.env.S3_ENDPOINT || 'https://hyygsbuikolawvjauril.storage.supabase.co/storage/v1/s3'
+const s3Endpoint =
+  process.env.S3_ENDPOINT || 'https://hyygsbuikolawvjauril.storage.supabase.co/storage/v1/s3'
 const s3AccessKeyId = process.env.S3_ACCESS_KEY_ID || 'd2f2f3f250e690a2e3663b01abf2f5ff'
-const s3SecretAccessKey = process.env.S3_SECRET_ACCESS_KEY || 'cdba04bb98480237b9edb77bfd54e43abd076d22481549d0c2950e24d5257597'
+const s3SecretAccessKey =
+  process.env.S3_SECRET_ACCESS_KEY ||
+  'cdba04bb98480237b9edb77bfd54e43abd076d22481549d0c2950e24d5257597'
 const s3Bucket = process.env.S3_BUCKET || 'refactkit'
-const s3PublicUrlBase = process.env.S3_PUBLIC_URL || 'https://hyygsbuikolawvjauril.supabase.co/storage/v1/object/public'
+const s3PublicUrlBase =
+  process.env.S3_PUBLIC_URL || 'https://hyygsbuikolawvjauril.supabase.co/storage/v1/object/public'
 
 const s3Client = new S3Client({
   forcePathStyle: true,
@@ -48,7 +52,7 @@ export const uploadFile = createServerFn({ method: 'POST' }).handler(
           Key: fullPath,
           Body: buffer,
           ContentType: file.type,
-        })
+        }),
       )
     } catch (uploadError: any) {
       console.error('S3 upload error:', uploadError)
