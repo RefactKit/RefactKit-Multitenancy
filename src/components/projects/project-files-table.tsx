@@ -31,6 +31,11 @@ import {
   Image as ImageIcon,
   FileSpreadsheet,
   FileText,
+  FileCode,
+  FileArchive,
+  FileVideo,
+  FileAudio,
+  FileJson,
   File as FileIcon,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -130,12 +135,109 @@ export function ProjectFilesTable({
     return 'FILE'
   }
 
-  const getFileIcon = (mimeType: string) => {
-    if (mimeType.includes('spreadsheet') || mimeType.includes('csv') || mimeType.includes('excel'))
-      return <FileSpreadsheet className="size-5 text-emerald-500" />
-    if (mimeType.includes('pdf') || mimeType.includes('text'))
-      return <FileText className="size-5 text-blue-500" />
-    return <FileIcon className="size-5 text-muted-foreground" />
+  const getFilePreview = (file: ProjectFile) => {
+    const ext = file.name.split('.').pop()?.toLowerCase() || ''
+    const mime = file.mimeType
+
+    // Images → real thumbnail
+    if (mime.includes('image')) {
+      return (
+        <img
+          src={file.url}
+          alt={file.name}
+          className="size-full object-cover"
+          loading="lazy"
+        />
+      )
+    }
+
+    // PDF
+    if (ext === 'pdf' || mime.includes('pdf')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <FileText className="size-5 text-red-500" />
+          <span className="text-[9px] font-bold text-red-500 leading-none">PDF</span>
+        </div>
+      )
+    }
+
+    // HTML
+    if (ext === 'html' || ext === 'htm' || mime.includes('html')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <FileCode className="size-5 text-orange-500" />
+          <span className="text-[9px] font-bold text-orange-500 leading-none">HTML</span>
+        </div>
+      )
+    }
+
+    // JSON
+    if (ext === 'json' || mime.includes('json')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <FileJson className="size-5 text-yellow-500" />
+          <span className="text-[9px] font-bold text-yellow-500 leading-none">JSON</span>
+        </div>
+      )
+    }
+
+    // CSV / Spreadsheet
+    if (['csv', 'xls', 'xlsx'].includes(ext) || mime.includes('spreadsheet') || mime.includes('csv') || mime.includes('excel')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <FileSpreadsheet className="size-5 text-emerald-500" />
+          <span className="text-[9px] font-bold text-emerald-500 leading-none">{ext.toUpperCase() || 'CSV'}</span>
+        </div>
+      )
+    }
+
+    // ZIP / Archive
+    if (['zip', 'rar', 'gz', 'tar', '7z'].includes(ext) || mime.includes('zip') || mime.includes('compressed') || mime.includes('archive')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <FileArchive className="size-5 text-violet-500" />
+          <span className="text-[9px] font-bold text-violet-500 leading-none">{ext.toUpperCase() || 'ZIP'}</span>
+        </div>
+      )
+    }
+
+    // Video
+    if (mime.includes('video')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <FileVideo className="size-5 text-blue-500" />
+          <span className="text-[9px] font-bold text-blue-500 leading-none">{ext.toUpperCase() || 'VID'}</span>
+        </div>
+      )
+    }
+
+    // Audio
+    if (mime.includes('audio')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <FileAudio className="size-5 text-pink-500" />
+          <span className="text-[9px] font-bold text-pink-500 leading-none">{ext.toUpperCase() || 'AUD'}</span>
+        </div>
+      )
+    }
+
+    // Text / doc
+    if (mime.includes('text') || ['txt', 'md', 'doc', 'docx'].includes(ext)) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5">
+          <FileText className="size-5 text-sky-500" />
+          <span className="text-[9px] font-bold text-sky-500 leading-none">{ext.toUpperCase() || 'TXT'}</span>
+        </div>
+      )
+    }
+
+    // Fallback
+    return (
+      <div className="flex flex-col items-center justify-center gap-0.5">
+        <FileIcon className="size-5 text-muted-foreground" />
+        {ext && <span className="text-[9px] font-bold text-muted-foreground leading-none">{ext.toUpperCase()}</span>}
+      </div>
+    )
   }
 
   return (
@@ -217,13 +319,9 @@ export function ProjectFilesTable({
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      {/* Avatar-like preview */}
+                      {/* Rich file type preview */}
                       <div className="flex-shrink-0 size-10 rounded-lg overflow-hidden bg-muted/30 border border-border/50 flex items-center justify-center">
-                        {file.mimeType.includes('image') ? (
-                          <img src={file.url} alt={file.name} className="size-full object-cover" />
-                        ) : (
-                          getFileIcon(file.mimeType)
-                        )}
+                        {getFilePreview(file)}
                       </div>
                       <span className="font-medium text-foreground truncate max-w-[250px]">
                         {file.name}

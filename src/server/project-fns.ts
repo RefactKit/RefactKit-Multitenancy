@@ -105,6 +105,16 @@ export const getProjects = createServerFn({ method: 'GET' }).handler(async ({ da
           LIMIT 3
         ) sub
       )`,
+      topFiles: sql<{ url: string; name: string; mimeType: string }[] | null>`(
+        SELECT json_agg(row_to_json(sub))
+        FROM (
+          SELECT url, name, mime_type AS "mimeType"
+          FROM project_file
+          WHERE project_id = project.id
+          ORDER BY created_at DESC
+          LIMIT 3
+        ) sub
+      )`,
       ownerName: sql<string>`(select name from "user" where id = ${project.userId})`,
       ownerEmail: sql<string>`(select email from "user" where id = ${project.userId})`,
     })

@@ -23,6 +23,7 @@ interface Project {
   type: string | null
   fileCount: number
   topImages: string[] | null
+  topFiles?: { url: string; name: string; mimeType: string }[] | null
   ownerName: string
   ownerEmail: string
 }

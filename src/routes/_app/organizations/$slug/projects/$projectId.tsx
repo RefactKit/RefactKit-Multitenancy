@@ -10,6 +10,7 @@ import {
 import { uploadFile } from '@/server/storage-fns'
 import { LabelingGallery } from '@/components/projects/labeling-gallery'
 import { ProjectFilesTable } from '@/components/projects/project-files-table'
+import { EditProjectDialog } from '@/components/projects/edit-project-dialog'
 import { useI18n } from '@/i18n/context'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState, useMemo } from 'react'
@@ -55,6 +56,7 @@ function ProjectStudioPage() {
   const queryClient = useQueryClient()
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [isEditOpen, setIsEditOpen] = useState(false)
 
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', projectId],
@@ -165,10 +167,22 @@ function ProjectStudioPage() {
             <ArrowLeft className="size-5 stroke-[2.5px]" />
           </Link>
           <h1 className="text-3xl font-medium tracking-tight text-foreground">{project.title}</h1>
-          <Button variant="ghost" size="icon" className="size-8 rounded-lg">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-8 rounded-lg"
+            onClick={() => setIsEditOpen(true)}
+          >
             <Pencil className="size-4 text-muted-foreground" />
           </Button>
         </div>
+
+        {/* Edit Project Dialog */}
+        <EditProjectDialog
+          projectId={projectId}
+          open={isEditOpen}
+          onOpenChange={setIsEditOpen}
+        />
 
         <div className="flex flex-col gap-1">
           <p className="text-lg text-muted-foreground">

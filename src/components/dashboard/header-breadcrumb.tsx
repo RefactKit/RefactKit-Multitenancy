@@ -1,4 +1,5 @@
 import { Link, useLocation, useParams } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { LayoutDashboard, Image, Users, Settings, LayoutGrid, Home } from 'lucide-react'
 import {
   Breadcrumb,
@@ -17,7 +18,14 @@ interface HeaderBreadcrumbProps {
 export function HeaderBreadcrumb({ orgName }: HeaderBreadcrumbProps) {
   const { t } = useI18n()
   const { pathname } = useLocation()
-  const { slug } = useParams({ strict: false }) as { slug?: string }
+  const params = useParams({ strict: false }) as { slug?: string; projectId?: string }
+  const { slug, projectId } = params
+  const queryClient = useQueryClient()
+
+  // Read the project title from cache if we're on a project detail page
+  const cachedProject = projectId
+    ? queryClient.getQueryData<{ title?: string }>(['project', projectId])
+    : null
 
   // Break down the path to determine current page
   const segments = pathname.split('/').filter(Boolean)
@@ -31,11 +39,11 @@ export function HeaderBreadcrumb({ orgName }: HeaderBreadcrumbProps) {
     if (lastSegment === 'settings') return { title: t.sidebar.settings, icon: Settings }
     if (lastSegment === 'projects') return { title: t.projects.title, icon: LayoutGrid }
 
-    // Individual Project Page
+    // Individual Project Page — use cached project title
     if (pathname.includes('/projects/') && lastSegment !== 'projects') {
       return {
         parent: { title: t.projects.title, to: `/organizations/${slug}/projects` },
-        title: t.projects.studio.labeling,
+        title: cachedProject?.title ?? t.projects.studio.labeling,
         icon: LayoutGrid,
       }
     }

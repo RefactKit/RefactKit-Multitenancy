@@ -8,6 +8,14 @@ import {
   Copy,
   Share2,
   ExternalLink,
+  FileText,
+  FileCode,
+  FileSpreadsheet,
+  FileArchive,
+  FileVideo,
+  FileAudio,
+  FileJson,
+  File as FileIcon,
 } from 'lucide-react'
 import {
   Card,
@@ -45,6 +53,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 
+interface TopFile {
+  url: string
+  name: string
+  mimeType: string
+}
+
 interface ProjectCardProps {
   id: string
   slug: string
@@ -56,8 +70,8 @@ interface ProjectCardProps {
   updatedAt: Date | string
   type?: string | null
   topImages?: string[] | null
+  topFiles?: TopFile[] | null
   onDelete?: () => void
-
   onEdit?: () => void
   userRole?: string
   orgSlug: string
@@ -74,6 +88,7 @@ export function ProjectCard({
   updatedAt,
   type,
   topImages,
+  topFiles,
   onDelete,
   onEdit,
   userRole,
@@ -108,6 +123,93 @@ export function ProjectCard({
     year: 'numeric',
   })
 
+  // Prefer topFiles (richer), fall back to topImages for backwards compat
+  const previewFiles: TopFile[] =
+    topFiles && topFiles.length > 0
+      ? topFiles
+      : (topImages || []).map((url) => ({ url, name: '', mimeType: 'image/jpeg' }))
+
+  const getFilePreviewContent = (file: TopFile) => {
+    const ext = file.name?.split('.').pop()?.toLowerCase() || ''
+    const mime = file.mimeType || ''
+
+    if (mime.includes('image')) {
+      return (
+        <img
+          src={file.url}
+          alt={file.name || 'Image'}
+          className="size-full object-cover"
+          loading="lazy"
+        />
+      )
+    }
+    if (ext === 'pdf' || mime.includes('pdf')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5 size-full bg-red-50 dark:bg-red-950/30">
+          <FileText className="size-4 text-red-500" />
+          <span className="text-[8px] font-bold text-red-500 leading-none">PDF</span>
+        </div>
+      )
+    }
+    if (ext === 'html' || ext === 'htm' || mime.includes('html')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5 size-full bg-orange-50 dark:bg-orange-950/30">
+          <FileCode className="size-4 text-orange-500" />
+          <span className="text-[8px] font-bold text-orange-500 leading-none">HTML</span>
+        </div>
+      )
+    }
+    if (ext === 'json' || mime.includes('json')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5 size-full bg-yellow-50 dark:bg-yellow-950/30">
+          <FileJson className="size-4 text-yellow-500" />
+          <span className="text-[8px] font-bold text-yellow-500 leading-none">JSON</span>
+        </div>
+      )
+    }
+    if (['csv', 'xls', 'xlsx'].includes(ext) || mime.includes('spreadsheet') || mime.includes('csv') || mime.includes('excel')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5 size-full bg-emerald-50 dark:bg-emerald-950/30">
+          <FileSpreadsheet className="size-4 text-emerald-500" />
+          <span className="text-[8px] font-bold text-emerald-500 leading-none">{ext.toUpperCase() || 'CSV'}</span>
+        </div>
+      )
+    }
+    if (['zip', 'rar', 'gz', 'tar', '7z'].includes(ext) || mime.includes('zip') || mime.includes('compressed')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5 size-full bg-violet-50 dark:bg-violet-950/30">
+          <FileArchive className="size-4 text-violet-500" />
+          <span className="text-[8px] font-bold text-violet-500 leading-none">{ext.toUpperCase() || 'ZIP'}</span>
+        </div>
+      )
+    }
+    if (mime.includes('video')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5 size-full bg-blue-50 dark:bg-blue-950/30">
+          <FileVideo className="size-4 text-blue-500" />
+          <span className="text-[8px] font-bold text-blue-500 leading-none">{ext.toUpperCase() || 'VID'}</span>
+        </div>
+      )
+    }
+    if (mime.includes('audio')) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-0.5 size-full bg-pink-50 dark:bg-pink-950/30">
+          <FileAudio className="size-4 text-pink-500" />
+          <span className="text-[8px] font-bold text-pink-500 leading-none">{ext.toUpperCase() || 'AUD'}</span>
+        </div>
+      )
+    }
+    return (
+      <div className="flex flex-col items-center justify-center gap-0.5 size-full">
+        <FileIcon className="size-4 text-muted-foreground" />
+        {ext && <span className="text-[8px] font-bold text-muted-foreground leading-none">{ext.toUpperCase()}</span>}
+      </div>
+    )
+  }
+
+  const filesToShow = previewFiles.slice(0, 3)
+  const remainder = fileCount - filesToShow.length
+
   return (
     <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }} className="h-full">
       <Card
@@ -116,20 +218,20 @@ export function ProjectCard({
       >
         <CardHeader>
           <div className="row-span-2 flex items-center gap-3 min-w-0">
-            {topImages && topImages.length > 0 ? (
+            {filesToShow.length > 0 ? (
               <div className="flex -space-x-2 shrink-0">
-                {topImages.map((src, index) => (
-                  <Avatar key={index} className="size-8 ring-background ring-2">
-                    <AvatarImage src={src} className="object-cover" />
-                    <AvatarFallback className="text-[10px]">IMG</AvatarFallback>
-                  </Avatar>
+                {filesToShow.map((file, index) => (
+                  <div
+                    key={index}
+                    className="size-8 rounded-full ring-2 ring-background overflow-hidden border border-border/50 bg-muted shrink-0"
+                  >
+                    {getFilePreviewContent(file)}
+                  </div>
                 ))}
-                {fileCount > 3 && (
-                  <Avatar className="size-8 ring-background ring-2 bg-muted/50 flex items-center justify-center">
-                    <AvatarFallback className="text-xs font-medium text-muted-foreground bg-transparent">
-                      +{fileCount - 3}
-                    </AvatarFallback>
-                  </Avatar>
+                {remainder > 0 && (
+                  <div className="size-8 rounded-full ring-2 ring-background bg-muted/70 flex items-center justify-center shrink-0">
+                    <span className="text-[10px] font-medium text-muted-foreground">+{remainder}</span>
+                  </div>
                 )}
               </div>
             ) : (
