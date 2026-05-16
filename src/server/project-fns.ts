@@ -49,7 +49,9 @@ async function checkProjectPermission(
     .hasPermission({
       body: {
         organizationId,
-        permission: permissionString,
+        permissions: {
+          project: [permission],
+        },
       },
       headers: request.headers,
     })
